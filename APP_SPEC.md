@@ -1,0 +1,26 @@
+# chartwise
+
+Purpose: an explanation-first natal-chart web app for the curious computer worker — free, no signup, 100% client-side compute — that lays your chart out as a clean houses-as-rows table with a 1-2 sentence plain-English reading on every placement, plus a daily current-sky transit note.
+
+Problem: the curious astrology-interested computer worker (marketers/designers/PMs skew here) who knows their Sun sign and wants to understand the rest without learning to read a wheel, plus friends-of-friends moments ("what's your big three?") that recur socially. Someone references rising signs / Mercury retrograde in Slack or at dinner; the person opens a tool to see what it means FOR THEM, cold, on phone or laptop. A person's own chart is computed once, so recurrence rests on two first-class MVP hooks: MULTI-PERSON charting (save profiles for partners, friends, dates, coworkers — done many times a month) and the DAILY CURRENT-SKY / TRANSIT reading (today's Moon/retrogrades vs your chart, the genuine return-visit habit).
+
+Beats alternative: astro-seek.com (the primary free alternative) is comprehensive but DATA-DENSE — it assumes astrological literacy, presents positions/aspects as undefined reference data on a scattered wheel, and makes the user cross-reference separate "planet in house" pages (10-20 min per chart). co-star / the-pattern are polished but PAYWALLED and opaque (black-box, no chart transparency). chartwise wins by being EXPLANATION-FIRST and FREE: a houses-as-rows table with the plain-English meaning INLINED next to each placement, so the decoding work astro-seek pushes onto you is already done. That inline explanation layer is the differentiator and is core flow 2.
+
+Core flows:
+1. Create a profile and (optionally) share it. The user types birth date, birth time, and birth place in plain text; place resolves via a lazy-loaded bundled offline cities dataset (all-the-cities, type-ahead pick-from-suggestions; manual lat/long + optional UTC-offset escape hatch for unknown/historical cases). A named PROFILE is computed fully client-side with circular-natal-horoscope-js (Placidus houses, tropical signs, Sun-Pluto + Chiron, N/S nodes, retrograde flags, Asc/MC; the lib's Origin class derives IANA timezone + historical DST from lat/long internally). A "Load example (Einstein)" button prefills a known chart. Profiles are saved to localStorage (multi-person list, switch between them, no login). An optional "Create share link" writes the profile's birth inputs to Turso and returns a secret URL that, opened fresh, recomputes and renders the same chart (load-on-open, no polling).
+2. Read the chart as an explanation-first table. The chart renders as a STRUCTURED TABLE with the 12 HOUSES as rows (primary key) and Signs / Planets / Nodes as columns showing what falls in each house. An ELEMENT COUNT (Fire / Earth / Air / Water tally) shows as a compact bar. Every planet-in-house and sign-in-house cell, when opened, shows a CONCISE 1-2 sentence plain-English reading from the bundled in-house interpretation dataset (~310 original blurbs; a per-category "_generic" fallback covers any unfilled cell).
+3. Read today's sky against this chart. A CURRENT-SKY / TRANSIT section computes today's planet positions client-side with the same lib, lists today's planet signs, flags any retrogrades, and shows a concise 1-2 sentence note keying each notable current placement (e.g. a retrograde) to the selected profile's chart.
+
+Success checks:
+- Click "Load example (Einstein)": the houses table renders, the House 10 row lists Sun, and Sun's sign cell reads Pisces (Einstein: 14 March 1879, 11:30 LMT, Ulm — fixed/time-invariant input).
+- For that same Einstein chart, the Moon's sign reads Sagittarius and the Ascendant's sign reads Cancer.
+- The element-count bar for the Einstein chart shows numeric Fire / Earth / Air / Water totals that sum to the number of placements tallied (visible four-way breakdown, not blank).
+- Opening any planet-in-house cell (e.g. Einstein's Sun in House 10) shows a 1-2 sentence plain-English reading; opening a sign-in-house entry likewise shows a 1-2 sentence reading.
+- The Current-sky / transit section is present and lists today's planet signs, flags any retrogrades, and shows at least one 1-2 sentence note tied to the loaded profile (structure/presence check — values are today-dependent and not asserted exactly).
+- Entering a custom birth date/time and a place via the type-ahead (e.g. start typing a city, pick a suggestion) produces a named profile and a populated houses table without any network call to a chart/geocoding API.
+- Creating a share link yields a URL that, opened in a fresh session with no localStorage, renders the same houses-as-rows table for that profile.
+- The app loads and computes a chart with the network/DB offline (chart compute is fully client-side; only share-link creation/open touches Turso).
+
+Out of scope: aspects, synastry, and compatibility/relationship readings between two people; the circular chart wheel drawing (we lead with the table — a wheel is at most a later nice-to-have); accounts/login/auth; any paid feature or paid API; push notifications or email; modalities beyond the basic element count if time-constrained (elements are required, modalities optional).
+
+Production URL:
