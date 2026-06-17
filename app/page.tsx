@@ -123,7 +123,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      <div className="max-w-4xl mx-auto px-4 py-10">
+      <div className="max-w-7xl mx-auto px-4 py-10">
 
         {/* Hero */}
         <header className="mb-10 text-center">
@@ -136,7 +136,7 @@ export default function Home() {
         </header>
 
         {/* Main layout: form left, chart right on desktop */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] xl:grid-cols-[340px_1fr] gap-8">
 
           {/* Left: input panel */}
           <aside className="space-y-4">

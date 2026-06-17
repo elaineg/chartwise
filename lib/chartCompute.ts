@@ -17,6 +17,7 @@ export interface BirthData {
   longitude: number;
   placeName: string;
   utcOffset?: number | null; // optional manual override
+  hasBirthTime?: boolean; // explicit flag — false means time was unknown (houses/Asc not meaningful)
 }
 
 export interface Planet {
@@ -48,6 +49,7 @@ export interface ComputedChart {
   nodes: Planet[];
   elements: { fire: number; earth: number; air: number; water: number };
   computedAt: number;
+  hasBirthTime: boolean; // false → houses/Asc are not meaningful; suppress in UI
 }
 
 const SIGN_ELEMENTS: Record<string, "fire" | "earth" | "air" | "water"> = {
@@ -217,6 +219,7 @@ export function computeChart(birth: BirthData): ComputedChart {
     nodes,
     elements,
     computedAt: Date.now(),
+    hasBirthTime: birth.hasBirthTime !== false, // default true if not explicitly set
   };
 }
 
@@ -281,4 +284,5 @@ export const EINSTEIN_BIRTH: BirthData = {
   latitude: 48.4011,
   longitude: 9.9876,
   placeName: "Ulm, Germany",
+  hasBirthTime: true,
 };

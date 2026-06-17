@@ -20,9 +20,25 @@ const PLANET_SYMBOLS: Record<string, string> = {
   pluto: "♇",
 };
 
+// Varied sentence templates for same-sign natal matches (index by planet key to avoid repeats)
+const SAME_SIGN_TEMPLATES: Record<string, (transitLabel: string, sign: string, natalLabel: string) => string> = {
+  sun:     (t, s, n) => `${t} moves through ${s}, joining your natal ${n} — a moment when your core drives and ${n}'s themes amplify each other.`,
+  moon:    (t, s, n) => `${t} passes through ${s} alongside your natal ${n}. Emotional instincts and ${n}'s energy are running on the same frequency right now.`,
+  mercury: (t, s, n) => `${t} transits ${s}, the sign of your natal ${n}. Conversations, ideas, and ${n}'s domain are especially intertwined this week.`,
+  venus:   (t, s, n) => `${t} glides through ${s}, meeting your natal ${n}. What you find beautiful and what ${n} represents share the same sky overhead.`,
+  mars:    (t, s, n) => `${t} charges through ${s} where your natal ${n} lives. Drive and ${n}'s themes are funneling into the same area of your chart.`,
+  jupiter: (t, s, n) => `${t} expands through ${s}, the home of your natal ${n}. Growth and ${n}'s wisdom are pointing in the same direction.`,
+  saturn:  (t, s, n) => `${t} works through ${s}, alongside your natal ${n}. Discipline and ${n}'s lessons are converging — a productive time for serious effort.`,
+  uranus:  (t, s, n) => `${t} rattles through ${s} where your natal ${n} sits. Expect the unexpected to intersect with ${n}'s territory.`,
+  neptune: (t, s, n) => `${t} drifts through ${s}, the sign of your natal ${n}. Imagination and ${n}'s themes blur together in interesting ways.`,
+  pluto:   (t, s, n) => `${t} moves through ${s}, the same ground as your natal ${n}. Deep transformation and ${n}'s domain are merging.`,
+  _default:(t, s, n) => `${t} in ${s} echoes your natal ${n}. Their energies overlap, spotlighting that part of your chart right now.`,
+};
+
 function getTransitNote(
   planet: Planet,
-  natalChart: ComputedChart
+  natalChart: ComputedChart,
+  noteIndex: number
 ): string | null {
   if (planet.isRetrograde) {
     const retroBlurbs: Record<string, string> = {
@@ -31,7 +47,7 @@ function getTransitNote(
       mars: "Mars retrograde — channel drive into review and refinement rather than bold new action.",
       jupiter: "Jupiter retrograde — inner growth and reflection yield more than outward expansion right now.",
       saturn: "Saturn retrograde — reassess your structures and responsibilities; what needs rebuilding?",
-      _generic: `${planet.label} is retrograde — its energy turns inward; review and reflect before acting on its themes.`,
+      _generic: `${planet.label} turns retrograde — its energy pulls inward; reflect and review before acting on its themes.`,
     };
     return retroBlurbs[planet.key] ?? retroBlurbs["_generic"];
   }
@@ -41,13 +57,20 @@ function getTransitNote(
     (np) => np.sign === planet.sign && np.key !== planet.key
   );
   if (natalMatch) {
-    return `${planet.label} in ${planet.signLabel} is visiting your natal ${natalMatch.label}'s sign — themes of ${planet.label.toLowerCase()} and ${natalMatch.label.toLowerCase()} blend right now.`;
+    // Use the template keyed to the transit planet, or cycle through default variants
+    const templateFn = SAME_SIGN_TEMPLATES[planet.key] ?? SAME_SIGN_TEMPLATES["_default"];
+    return templateFn(planet.label, planet.signLabel, natalMatch.label);
   }
 
-  // Check if current planet is in the same sign as the natal planet of the same type
+  // Transit planet has returned to its natal sign (solar/lunar/planetary return)
   const natalSelf = natalChart.planets.find((np) => np.key === planet.key);
   if (natalSelf && natalSelf.sign === planet.sign) {
-    return `${planet.label} has returned to its natal sign of ${planet.signLabel} in your chart — a natural renewal of ${planet.label.toLowerCase()}'s themes.`;
+    const returnTemplates = [
+      `${planet.label} has come back to ${planet.signLabel}, where it sat at your birth — a natural reset point for everything ${planet.label} governs.`,
+      `${planet.label} is back in ${planet.signLabel}, its natal position in your chart. This cycle invites you to revisit and renew ${planet.label.toLowerCase()}'s themes with fresh eyes.`,
+      `${planet.label} completes a cycle in ${planet.signLabel} — the same sign it occupied when you were born. Reflect on how far you've come with ${planet.label.toLowerCase()}'s energy.`,
+    ];
+    return returnTemplates[noteIndex % returnTemplates.length];
   }
 
   return null;
@@ -79,7 +102,7 @@ export default function TransitCard({ natalChart }: TransitCardProps) {
 
   const retrograde = transits.filter((p) => p.isRetrograde);
   const notes = transits
-    .map((p) => ({ planet: p, note: getTransitNote(p, natalChart) }))
+    .map((p, i) => ({ planet: p, note: getTransitNote(p, natalChart, i) }))
     .filter((x) => x.note !== null);
 
   return (

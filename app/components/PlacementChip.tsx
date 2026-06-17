@@ -20,7 +20,7 @@ export default function PlacementChip({
   const [expanded, setExpanded] = useState(preExpanded);
 
   return (
-    <div className="inline-block w-full">
+    <div className="block w-full min-w-0">
       <button
         type="button"
         data-testid={testId ?? undefined}
@@ -50,7 +50,8 @@ export default function PlacementChip({
         <div
           role="status"
           data-testid={testId ? `${testId}-reading` : undefined}
-          className="mt-1 px-3 py-2 text-sm text-slate-300 bg-slate-800/60 rounded-md border border-slate-700/40 leading-relaxed"
+          style={{ width: "100%", minWidth: 0, boxSizing: "border-box" }}
+          className="mt-1 px-3 py-2 text-sm text-slate-300 bg-slate-800/60 rounded-md border border-slate-700/40 leading-relaxed break-words whitespace-normal overflow-hidden"
         >
           {reading}
         </div>

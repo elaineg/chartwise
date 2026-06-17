@@ -161,3 +161,76 @@ describe("Interpretation dataset coverage", () => {
     expect(interp.elements.water).toBeTruthy();
   });
 });
+
+describe("Planet-sign blurb composition — same-sign placements are distinct", () => {
+  it("getPlanetSignBlurb: every planet×sign entry exists and has substance", async () => {
+    const { getPlanetSignBlurb } = await import("../../lib/interpretations");
+    const PLANETS = ["sun", "moon", "mercury", "venus", "mars", "rising"];
+    const SIGNS = [
+      "aries", "taurus", "gemini", "cancer", "leo", "virgo",
+      "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces",
+    ];
+    for (const planet of PLANETS) {
+      for (const sign of SIGNS) {
+        const blurb = getPlanetSignBlurb(planet, sign);
+        expect(blurb, `${planet}/${sign} must have a blurb`).toBeTruthy();
+        expect(blurb.length, `${planet}/${sign} blurb must be substantial`).toBeGreaterThan(30);
+      }
+    }
+  });
+
+  it("two planets in the SAME sign produce different blurbs (not just different prefixes)", async () => {
+    const { getPlanetSignBlurb } = await import("../../lib/interpretations");
+    // Test every sign: mercury vs venus in the same sign
+    const SIGNS = [
+      "aries", "taurus", "gemini", "cancer", "leo", "virgo",
+      "libra", "scorpio", "sagittarius", "capricorn", "aquarius", "pisces",
+    ];
+    for (const sign of SIGNS) {
+      const sunBlurb = getPlanetSignBlurb("sun", sign);
+      const moonBlurb = getPlanetSignBlurb("moon", sign);
+      const mercuryBlurb = getPlanetSignBlurb("mercury", sign);
+      const venusBlurb = getPlanetSignBlurb("venus", sign);
+      const marsBlurb = getPlanetSignBlurb("mars", sign);
+      const risingBlurb = getPlanetSignBlurb("rising", sign);
+
+      // Each pair must be a completely different string
+      expect(sunBlurb, `sun/${sign} vs moon/${sign} must differ`).not.toBe(moonBlurb);
+      expect(mercuryBlurb, `mercury/${sign} vs venus/${sign} must differ`).not.toBe(venusBlurb);
+      expect(marsBlurb, `mars/${sign} vs rising/${sign} must differ`).not.toBe(risingBlurb);
+
+      // The body (not just prefix) must differ — strip first word and compare
+      const stripFirstWord = (s: string) => s.split(" ").slice(1).join(" ");
+      expect(
+        stripFirstWord(sunBlurb),
+        `sun/${sign} body (after first word) must differ from moon/${sign} body`
+      ).not.toBe(stripFirstWord(moonBlurb));
+      expect(
+        stripFirstWord(mercuryBlurb),
+        `mercury/${sign} body must differ from venus/${sign} body after first word`
+      ).not.toBe(stripFirstWord(venusBlurb));
+    }
+  });
+
+  it("Einstein's same-planet-group check: Sun(Pisces) and Moon(Sag) blurbs are distinct", async () => {
+    const { getPlanetSignBlurb } = await import("../../lib/interpretations");
+    const sunPisces = getPlanetSignBlurb("sun", "pisces");
+    const moonSag = getPlanetSignBlurb("moon", "sagittarius");
+    expect(sunPisces).not.toBe(moonSag);
+    // Sun/Pisces is identity-domain language
+    expect(sunPisces.toLowerCase()).toMatch(/identity|self|who you are/);
+    // Moon/Sag is emotion-domain language
+    expect(moonSag.toLowerCase()).toMatch(/emotional|emotionally|feel/);
+  });
+
+  it("hypothetical same-sign chart: Mercury and Venus in Aries have different full blurbs", async () => {
+    const { getPlanetSignBlurb } = await import("../../lib/interpretations");
+    const mercuryAries = getPlanetSignBlurb("mercury", "aries");
+    const venusAries = getPlanetSignBlurb("venus", "aries");
+    // Full strings must differ
+    expect(mercuryAries).not.toBe(venusAries);
+    // Strip first word — still must differ (body is not the same sentence)
+    const body = (s: string) => s.split(" ").slice(1).join(" ");
+    expect(body(mercuryAries)).not.toBe(body(venusAries));
+  });
+});

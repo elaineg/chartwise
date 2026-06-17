@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { ComputedChart } from "../../lib/chartCompute";
 import HousesTable from "./HousesTable";
 import ElementBar from "./ElementBar";
 import TransitCard from "./TransitCard";
+import PlainEnglishReading from "./PlainEnglishReading";
+import ShareImageCard from "./ShareImageCard";
 
 interface ChartViewProps {
   chart: ComputedChart;
@@ -22,6 +24,14 @@ export default function ChartView({
   shareUrl,
 }: ChartViewProps) {
   const [showShareCopied, setShowShareCopied] = useState(false);
+  const topRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to the chart when it first renders (P2)
+  useEffect(() => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [chart.computedAt]);
 
   async function copyShareUrl() {
     if (!shareUrl) return;
@@ -34,19 +44,22 @@ export default function ChartView({
     }
   }
 
-  const { birthData, elements } = chart;
+  const { birthData, elements, hasBirthTime } = chart;
 
   return (
-    <div>
+    <div ref={topRef}>
       {/* Profile summary */}
       <div className="mb-6 p-4 bg-slate-800/40 rounded-xl border border-slate-700/40">
-        <h2 className="text-xl font-bold text-white mb-1">{birthData.name}</h2>
+        <div className="flex items-start justify-between gap-2 mb-1">
+          <h2 className="text-xl font-bold text-white">{birthData.name}</h2>
+          <ShareImageCard chart={chart} />
+        </div>
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-400">
           <span>
             {birthData.year}-{String(birthData.month).padStart(2, "0")}-
             {String(birthData.day).padStart(2, "0")}
           </span>
-          {(birthData.hour != null && birthData.minute != null) && (
+          {(birthData.hour != null && birthData.minute != null && hasBirthTime) && (
             <span>
               {String(birthData.hour).padStart(2, "0")}:
               {String(birthData.minute).padStart(2, "0")}
@@ -54,21 +67,43 @@ export default function ChartView({
           )}
           {birthData.placeName && <span>{birthData.placeName}</span>}
         </div>
-        <div className="mt-2 flex flex-wrap gap-2 text-sm">
-          <span className="px-2.5 py-1 bg-indigo-900/30 border border-indigo-700/30 rounded-full text-indigo-300">
-            {chart.ascendant.signLabel} rising
-          </span>
-          {chart.planets.find((p) => p.key === "sun") && (
-            <span className="px-2.5 py-1 bg-amber-900/30 border border-amber-700/30 rounded-full text-amber-300">
-              ☉ {chart.planets.find((p) => p.key === "sun")!.signLabel} Sun
+        <div data-testid="big-three-chips" className="mt-2 flex flex-wrap gap-2 text-sm">
+          {hasBirthTime ? (
+            <span className="px-2.5 py-1 bg-indigo-900/30 border border-indigo-700/30 rounded-full text-indigo-300">
+              {chart.ascendant.signLabel} {Math.floor(chart.ascendant.degrees % 30)}° rising
+            </span>
+          ) : (
+            <span className="px-2.5 py-1 bg-slate-800/60 border border-slate-700/30 rounded-full text-slate-500 line-through">
+              Rising unknown
             </span>
           )}
-          {chart.planets.find((p) => p.key === "moon") && (
-            <span className="px-2.5 py-1 bg-slate-700/50 border border-slate-600/40 rounded-full text-slate-300">
-              ☽ {chart.planets.find((p) => p.key === "moon")!.signLabel} Moon
-            </span>
-          )}
+          {chart.planets.find((p) => p.key === "sun") && (() => {
+            const sun = chart.planets.find((p) => p.key === "sun")!;
+            const deg = Math.floor(sun.eclipticDegrees % 30);
+            return (
+              <span className="px-2.5 py-1 bg-amber-900/30 border border-amber-700/30 rounded-full text-amber-300">
+                ☉ Sun {deg}° {sun.signLabel}{hasBirthTime && sun.house > 0 && ` · House ${sun.house}`}
+              </span>
+            );
+          })()}
+          {chart.planets.find((p) => p.key === "moon") && (() => {
+            const moon = chart.planets.find((p) => p.key === "moon")!;
+            const deg = Math.floor(moon.eclipticDegrees % 30);
+            return (
+              <span className="px-2.5 py-1 bg-slate-700/50 border border-slate-600/40 rounded-full text-slate-300">
+                ☽ Moon {deg}° {moon.signLabel}
+                {!hasBirthTime && (
+                  <span className="text-slate-500 ml-1 text-xs">(approx.)</span>
+                )}
+              </span>
+            );
+          })()}
         </div>
+        {!hasBirthTime && (
+          <p role="status" className="mt-2 text-xs text-amber-400/80">
+            Houses and your rising sign need an exact birth time — add one to unlock them.
+          </p>
+        )}
       </div>
 
       {/* Privacy copy */}
@@ -77,8 +112,11 @@ export default function ChartView({
         {!isSharedView && " Creating a share link sends this chart's birth info to our server so the link works."}
       </p>
 
+      {/* Plain-English reading — always visible, no caret needed */}
+      <PlainEnglishReading chart={chart} />
+
       {/* Houses table */}
-      <HousesTable chart={chart} preExpandedPlanet="sun" />
+      <HousesTable chart={chart} preExpandedPlanet="sun" hasBirthTime={hasBirthTime} />
 
       {/* Element bar */}
       <ElementBar

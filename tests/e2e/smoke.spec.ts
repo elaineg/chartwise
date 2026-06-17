@@ -68,9 +68,8 @@ test("Einstein chart shows Moon in Sagittarius", async ({ page }) => {
   const moonChip = page.getByTestId("planet-chip-moon").first();
   await expect(moonChip).toBeVisible();
 
-  // The profile summary shows "Moon Sagittarius" pill
-  // Moon sign is Sagittarius — check the profile summary which shows the Moon sign
-  await expect(page.getByText("Sagittarius Moon")).toBeVisible();
+  // The profile summary shows "Sagittarius Moon" pill (use first() since plain-english section also mentions it)
+  await expect(page.getByText("Sagittarius Moon").first()).toBeVisible();
 });
 
 test("Ascendant shows Cancer for Einstein", async ({ page }) => {
@@ -83,8 +82,9 @@ test("Ascendant shows Cancer for Einstein", async ({ page }) => {
   // House 1 row should show Cancer as the sign (first = desktop)
   const house1Row = page.getByTestId("house-row-1").first();
   await expect(house1Row).toContainText("Cancer");
-  // ASC pill in profile summary should say Cancer rising
-  await expect(page.getByText("Cancer rising")).toBeVisible();
+  // ASC pill in big-three chips now shows degree: "Cancer 7° rising"
+  await expect(page.getByTestId("big-three-chips")).toContainText("Cancer");
+  await expect(page.getByTestId("big-three-chips")).toContainText("rising");
 });
 
 test("Einstein chart has element bar with non-zero totals", async ({

@@ -91,6 +91,7 @@ export default function BirthForm({ onCompute, isComputing = false }: BirthFormP
       latitude,
       longitude,
       placeName,
+      hasBirthTime: !timeUnknown,
     });
   }
 

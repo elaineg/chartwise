@@ -15,6 +15,12 @@ export interface Interpretations {
   nodes: Record<string, string>;
   retrograde: Record<string, string>;
   houseThemes: Record<string, string>;
+  /**
+   * Planet-sign blurbs: sign quality expressed THROUGH each planet's specific domain.
+   * 6 planets/roles (sun, moon, mercury, venus, mars, rising) × 12 signs = 72 entries.
+   * Two planets in the same sign produce genuinely distinct sentences.
+   */
+  planetSignBlurbs: Record<string, Record<string, string>>;
 }
 
 const interpretations: Interpretations = {
@@ -31,6 +37,99 @@ const interpretations: Interpretations = {
     "10": "Career & public life — your reputation, ambitions, and what the world sees you achieving.",
     "11": "Community & vision — friendships, groups, social causes, and your hopes for the future.",
     "12": "Inner life & solitude — the unconscious, hidden matters, retreat, and spiritual depth.",
+  },
+
+  /**
+   * Planet-sign blurbs: each sign's quality expressed through the specific planet's domain.
+   * Roles: sun (identity), moon (emotions), mercury (mind/speech), venus (love/values),
+   *        mars (drive/action), rising (outward manner/first impression).
+   * All text is original, authored in-house.
+   */
+  planetSignBlurbs: {
+    sun: {
+      aries:    "Your identity is a force of nature — you know who you are, you lead from the front, and you'd rather be first and imperfect than polished and late.",
+      taurus:   "Your sense of self is anchored in what you build and protect; you come alive through steady effort, sensory pleasure, and the satisfaction of something lasting.",
+      gemini:   "Who you are shifts with context — curious, quick, and endlessly adaptable; your identity lives in the conversation, the idea, the next interesting question.",
+      cancer:   "Your core self is inseparable from the people you love; you give everything to those in your inner circle and quietly carry the emotional history of everyone around you.",
+      leo:      "You are here to shine and you know it — not from arrogance but from a deep need to share what's inside you with the world, generously and without apology.",
+      virgo:    "Your sense of purpose comes from being genuinely useful; you find yourself through the craft of improvement, the quiet satisfaction of getting something exactly right.",
+      libra:    "You define yourself through connection — you come most alive in partnership, and your truest self emerges when you're creating harmony, beauty, or a fair outcome.",
+      scorpio:  "Your identity runs deeper than most; you hold power quietly, read rooms instinctively, and transform through cycles of intensity that others rarely see.",
+      sagittarius: "You are expansive by nature — your sense of self grows every time you chase a new horizon, a bigger idea, or a belief worth defending.",
+      capricorn: "Your identity is built, not given; you know that who you are is shaped by what you're willing to work for, and you respect yourself most when you've earned it.",
+      aquarius: "You are genuinely original — your sense of self is tied to your ideas and your independence, and you're most yourself when you're thinking ahead of the room.",
+      pisces:   "Your identity is fluid and deep; you absorb the world around you and express it back through imagination, empathy, and an inner life that never quite switches off.",
+    },
+    moon: {
+      aries:    "Emotionally, you react fast and need room to move — when something upsets you, you say so, and when you feel good, you act on it immediately.",
+      taurus:   "Emotionally, you ground yourself in comfort and routine; change unsettles you, but once you feel safe you're steadier than almost anyone.",
+      gemini:   "Emotionally, you process by talking — when you're anxious you ask questions, when you're happy you want to share it, and your feelings shift as fast as your thoughts.",
+      cancer:   "Emotionally, you feel everything at full volume; you carry others' moods as if they were your own, and home is the only place you fully exhale.",
+      leo:      "Emotionally, you need to be seen and appreciated — warm recognition from the people you love is how you know everything is okay.",
+      virgo:    "Emotionally, you soothe yourself through doing; anxiety shows up as fixing, organising, or analysing, and you feel safest when you have a plan.",
+      libra:    "Emotionally, you need peace — conflict leaves you genuinely unsettled, and you feel most yourself when the people around you are getting along.",
+      scorpio:  "Emotionally, you go deep and rarely show the full picture; you feel things with unusual intensity and need to trust someone completely before you open up.",
+      sagittarius: "Emotionally, you need freedom and forward movement; being trapped — in a place, a commitment, or a mood — is one of the few things that truly unnerves you.",
+      capricorn: "Emotionally, you keep your own counsel; you process quietly, show restraint in public, and feel safest when you're in control of the situation.",
+      aquarius: "Emotionally, you stay at a slight remove — you understand your feelings intellectually before you feel them in your body, and you need space to think things through.",
+      pisces:   "Emotionally, you absorb atmospheres like a sponge; other people's feelings become your own without much effort, and you need regular quiet to know which feelings are actually yours.",
+    },
+    mercury: {
+      aries:    "Your mind moves fast and talks faster — you land on conclusions before others have started thinking and deliver them bluntly, without a lot of diplomacy.",
+      taurus:   "Your thinking is deliberate and concrete; you arrive at conclusions slowly, but once you're there you almost never budge — and you're usually right to hold firm.",
+      gemini:   "Your mind is in perpetual motion — you gather information from everywhere, hold three conversations at once, and think best when you're talking it through.",
+      cancer:   "Your thinking is coloured by memory and feeling; you learn through stories and experience rather than abstract argument, and you rarely forget something that moved you.",
+      leo:      "You communicate with flair and confidence — your ideas come packaged with enthusiasm, you know how to hold a room, and you believe in what you say.",
+      virgo:    "Your mind is a precision instrument; you notice the error in the argument, the misspelling in the brief, and the edge case no one else planned for.",
+      libra:    "You think in dialogue — you consider both sides genuinely, choose your words with care, and are at your best when you're brokering a shared understanding.",
+      scorpio:  "Your mind goes straight past the surface; you read what's unsaid, research obsessively, and rarely accept the official explanation without testing it.",
+      sagittarius: "You think in big pictures and bold claims; precision can bore you, but you inspire people with your enthusiasm and your ability to connect ideas across wide distances.",
+      capricorn: "Your thinking is strategic and economical — you say what's needed, no more, and you trust conclusions that are backed by evidence and experience.",
+      aquarius: "Your mind is original and independent; you arrive at ideas through unconventional routes and are happy to argue a position that everyone else thinks is wrong.",
+      pisces:   "Your thinking is more impressionistic than analytical; you grasp the feeling of a situation before its logic, and your imagination fills in gaps that other minds walk past.",
+    },
+    venus: {
+      aries:    "In love, you're direct and impatient — you go after what you want immediately, you love the chase, and you need a partner who can match your energy rather than wait for you to slow down.",
+      taurus:   "In love, you're steady, sensory, and intensely loyal; you move slowly but you stay forever, and you show affection through touch, comfort, and real-world devotion.",
+      gemini:   "In love, you need mental spark above all — you fall for wit, variety, and the pleasure of never quite knowing what comes next; boredom is a dealbreaker.",
+      cancer:   "In love, you give everything and protect fiercely; you nurture as an act of devotion and need to feel that what you've built together is safe.",
+      leo:      "In love, you are generous and dramatic in equal measure — you give lavishly, love passionately, and need to feel admired and chosen, not taken for granted.",
+      virgo:    "In love, you show care through acts of service; you notice every detail about the person you love and express affection by making their life run better.",
+      libra:    "In love, you are a natural partner — you charm effortlessly, prioritise harmony, and find the most beauty in a relationship that's genuinely equal.",
+      scorpio:  "In love, you go all in or not at all; you want depth, loyalty, and the kind of intimacy that requires complete trust, and you sense instantly when something is being withheld.",
+      sagittarius: "In love, you need freedom and adventure alongside closeness — you want a companion for the journey, not an anchor, and you're at your best with a partner who's also going somewhere.",
+      capricorn: "In love, you're serious and selective; you'd rather be alone than in something half-built, and once you commit you treat that commitment as something worth protecting.",
+      aquarius: "In love, you value friendship and intellectual kinship over romance in the traditional sense; you need a partner who respects your independence and surprises you with their thinking.",
+      pisces:   "In love, you give without measure and idealise easily; the person who earns your heart gets your full imagination, your empathy, and a depth of feeling they may never fully fathom.",
+    },
+    mars: {
+      aries:    "You act first and reconsider later — raw initiative is your default setting, and you bring more starting energy to a task than almost anyone in the room.",
+      taurus:   "Your drive is slow to ignite but nearly impossible to stop; you work with extraordinary endurance, and once you decide something is worth doing, nothing distracts you.",
+      gemini:   "Your energy scatters across multiple fronts at once; you're quick to start, endlessly resourceful, and need enough variety to keep you from losing interest mid-run.",
+      cancer:   "You fight hardest for the people and places you love; your drive is protective rather than competitive, and your energy goes deep when something you care about is threatened.",
+      leo:      "You pursue with passion and pride — your competitive drive is real, but you want to win in a way that looks good, feels meaningful, and earns genuine recognition.",
+      virgo:    "Your energy goes into doing things correctly; you work with precise, methodical effort and feel most driven when the standard you're chasing is genuinely high.",
+      libra:    "You prefer a measured approach — you think before you act, dislike unnecessary conflict, and channel energy most effectively when you have a clear sense of what's fair.",
+      scorpio:  "Your drive is strategic and relentless; you don't rush, you don't broadcast your plans, and you don't quit — you pursue what you want with a focus that unnerves the competition.",
+      sagittarius: "Your drive needs a purpose bigger than the task — you act with real fire when the goal feels meaningful, and you generate enthusiasm in others just by the scale of what you're chasing.",
+      capricorn: "You run a long game; your drive is disciplined, patient, and quietly ferocious — you outwork people who burned bright early, and your ambition only sharpens with time.",
+      aquarius: "Your energy is channelled into ideas, causes, and systems; you act decisively when you're convinced the goal matters, and you're most motivated when the work is genuinely original.",
+      pisces:   "Your drive is intuitive and fluid; you work best when the task connects to something you believe in, and your energy deepens in private rather than under pressure.",
+    },
+    rising: {
+      aries:    "You come across as direct, energetic, and forward — people sense your confidence immediately and rarely have to guess where you stand.",
+      taurus:   "You come across as calm, solid, and dependable — there is a stillness to you that puts people at ease, and first impressions are almost always positive.",
+      gemini:   "You come across as quick, curious, and easy to talk to — people feel engaged around you almost immediately and assume you're interesting before you've said much.",
+      cancer:   "You come across as warm and approachable — there is a genuine softness to you on first meeting that makes people feel welcome, even if you're privately more guarded.",
+      leo:      "You come across as confident and magnetic — you enter spaces in a way people notice, and your warmth tends to draw others in before a word is spoken.",
+      virgo:    "You come across as thoughtful and composed — people sense that you're observant and capable, and you make a better impression than you usually think you do.",
+      libra:    "You come across as charming and easy to be around — your manner is naturally diplomatic, and people find it easy to open up in your company.",
+      scorpio:  "You come across as intense and magnetic — there is something in your presence that people sense without quite being able to name, and first meetings rarely feel shallow.",
+      sagittarius: "You come across as optimistic and open — your enthusiasm is contagious and you have a way of making new people feel like old friends almost immediately.",
+      capricorn: "You come across as serious and capable — people assume you're competent before you've done anything to prove it, and your natural authority tends to age very well.",
+      aquarius: "You come across as original and a little unpredictable — people sense that you see the world differently and are either drawn to that or slightly unnerved by it.",
+      pisces:   "You come across as gentle and a little mysterious — there is a fluid, dreamlike quality to your first impression that people find either deeply appealing or hard to read.",
+    },
   },
 
   signs: {
@@ -468,6 +567,21 @@ const interpretations: Interpretations = {
 export default interpretations;
 
 // Helper functions for lookup with fallbacks
+
+/**
+ * Returns a blurb that expresses the sign's quality THROUGH the specific planet's domain.
+ * planet: "sun" | "moon" | "mercury" | "venus" | "mars" | "rising"
+ * Falls back to the generic sign blurb if no specific entry exists.
+ */
+export function getPlanetSignBlurb(planet: string, sign: string): string {
+  const key = planet === "ascendant" ? "rising" : planet;
+  return (
+    interpretations.planetSignBlurbs[key]?.[sign] ??
+    interpretations.signs[sign] ??
+    `${capitalize(sign)} brings its distinctive qualities to this placement.`
+  );
+}
+
 export function getPlanetInHouseBlurb(
   planet: string,
   house: number

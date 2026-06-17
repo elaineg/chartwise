@@ -1,0 +1,100 @@
+{
+  "app": "chartwise",
+  "round": 1,
+  "url": "http://localhost:3099",
+  "source_roster": "lib/personas/roster.json (2026-06-12 ICP reorientation), astrology-stance overlay added per panel-runner directive",
+  "audience_definition": "IN-AUDIENCE = a computer worker who would PLAUSIBLY EVER open an astrology tool — anyone curious, casually-curious, or even casually-skeptical-but-willing-to-poke (they reference their Sun sign, ask about a friend's chart at dinner, or are intrigued enough to try). NON-FIT = a hard skeptic who considers astrology nonsense and would NEVER use ANY astrology app regardless of how well-built it is — they can still test honestly to surface craft/clarity defects, but their advocacy is not the bar we PARK on.",
+  "astrology_stance_definition": "curious = actively into astrology, knows their big-three or wants to; casual-curious-skeptic = enjoys it as fun/social, doesn't believe it's predictive but happily engages; hard-skeptic = thinks it's pseudoscience, would not voluntarily use an astrology product.",
+  "personas": [
+    {
+      "id": 1, "name": "Priya", "role": "Senior backend software engineer",
+      "tech": "high", "device": "desktop, large monitor, keyboard-first",
+      "stack": "terminal + neovim, GitHub, Kubernetes dashboards, Datadog, Linear, Slack",
+      "temperament": "skeptical of new tools; hates signups; will inspect network tab if suspicious; abandons anything slower than a CLI",
+      "astrology_stance": "hard-skeptic",
+      "audienceFit": "non-fit",
+      "motivation": "Considers astrology pseudoscience and would never open an astrology app for herself. She'll test it cold and judge it brutally on craft, clarity, and whether it actually keeps data client-side (she'll watch the network tab) — but she's a hard non-fit and won't advocate for the category."
+    },
+    {
+      "id": 2, "name": "Marcus", "role": "Frontend engineer, 2 years in",
+      "tech": "high", "device": "desktop, Chrome with devtools open",
+      "stack": "VS Code, GitHub, Vercel, Figma dev mode, Storybook, Discord/Slack",
+      "temperament": "enthusiastic early adopter; shares tools in team Slack when impressed; notices janky CSS instantly",
+      "astrology_stance": "casual-curious-skeptic",
+      "audienceFit": "in-audience",
+      "motivation": "Doesn't believe astrology predicts anything, but his friend group jokes about signs constantly and he thinks a slick, free, no-signup chart explainer is a fun thing to drop in the group chat. He'll try his own chart and a friend's, judge the polish, and share it if it's genuinely well-made."
+    },
+    {
+      "id": 3, "name": "Wen", "role": "Marketing data analyst",
+      "tech": "high-medium", "device": "desktop, two monitors",
+      "stack": "BigQuery/SQL, Google Sheets, Looker Studio, dbt, GA4, Slack",
+      "temperament": "lives in data hygiene; distrusts tools that transform data invisibly; wants to know HOW a number was derived",
+      "astrology_stance": "casual-curious-skeptic",
+      "audienceFit": "in-audience",
+      "motivation": "Treats astrology as entertainment but is genuinely curious to finally understand what 'rising sign' and house placements MEAN without learning to read a wheel. She'll scrutinize whether the explanations are coherent and consistent, and whether the chart math looks credible against what she half-remembers of her own chart."
+    },
+    {
+      "id": 4, "name": "Tomás", "role": "Operations analyst at a mid-size company",
+      "tech": "medium", "device": "corporate Windows laptop, Edge",
+      "stack": "Excel (power user), Tableau, Jira, Teams, SharePoint",
+      "temperament": "pragmatic; wary of pasting personal data into random sites; reads the fine print",
+      "astrology_stance": "hard-skeptic",
+      "audienceFit": "non-fit",
+      "motivation": "Thinks astrology is harmless nonsense and wouldn't use it himself, but his partner is into it. He'll test it cold mainly to judge whether the place/birth-time entry is private and whether a layperson could understand the output — a hard non-fit who can still flag clarity and trust issues."
+    },
+    {
+      "id": 5, "name": "Dana", "role": "Demand-gen marketer",
+      "tech": "medium", "device": "MacBook in cafes; phone between meetings",
+      "stack": "HubSpot, GA4, Notion, Canva, LinkedIn Campaign Manager, Google Ads",
+      "temperament": "ruthless about time; if value isn't obvious in one scroll she's gone; screenshots tools she likes for the team channel",
+      "astrology_stance": "curious",
+      "audienceFit": "in-audience",
+      "motivation": "Genuinely into astrology — knows her big-three and follows a couple of astrology accounts. She wants to look up partners' and coworkers' charts and would screenshot a clean, free explainer to her friends. She's exactly the target user but ruthless about whether value lands in one scroll, especially on her phone."
+    },
+    {
+      "id": 6, "name": "Jules", "role": "Content & community marketer",
+      "tech": "medium", "device": "50/50 desktop and mobile",
+      "stack": "Notion, Buffer, Mailchimp, Figma (consuming), X/LinkedIn/Mastodon, Discord",
+      "temperament": "posts constantly; allergic to anything requiring a login for a small job; mobile-first",
+      "astrology_stance": "curious",
+      "audienceFit": "in-audience",
+      "motivation": "Astrology is part of her social/online identity — she posts about Mercury retrograde and asks people their big-three. A free, no-login, mobile-friendly chart explainer is squarely her thing; she'd use it on friends repeatedly and share it. She'll judge it hard on mobile experience and shareability."
+    },
+    {
+      "id": 7, "name": "Aisha", "role": "Product designer",
+      "tech": "medium-high", "device": "desktop, big display, trackpad",
+      "stack": "Figma, FigJam, Notion, Loom, Maze, Slack",
+      "temperament": "judges craft hard — spacing, copy tone, empty states; a clumsy UI loses her regardless of utility; advocates loudly for tools that feel considered",
+      "astrology_stance": "curious",
+      "audienceFit": "in-audience",
+      "motivation": "Into astrology and reads about her chart for fun; the explanation-first, table-not-wheel approach appeals to her design sensibility. She'll advocate loudly IF it feels considered — copy tone, the houses table layout, empty states — and bounce hard if the craft is sloppy, even though the concept is right up her alley."
+    },
+    {
+      "id": 8, "name": "Rob", "role": "Brand/visual designer, freelance",
+      "tech": "medium", "device": "desktop, color-calibrated monitor",
+      "stack": "Figma, Illustrator, Photoshop, Google Drive, client Slacks/emails",
+      "temperament": "skims fast; price-sensitive; compares everything to what he could do himself; low patience for dense data",
+      "astrology_stance": "casual-curious-skeptic",
+      "audienceFit": "in-audience",
+      "motivation": "Doesn't take astrology seriously but his clients and friends do, and he's idly curious what his own 'big three' are after hearing it at parties. He'll try the example and his own chart and judge whether a non-believer can still find it fun and legible — bounces if it reads like a dense reference manual."
+    },
+    {
+      "id": 9, "name": "Elena", "role": "Engineering manager (8 reports)",
+      "tech": "medium-high but no time", "device": "laptop + phone, half the day in meetings",
+      "stack": "Google Calendar (wall-to-wall), Slack, Linear, Google Docs, Zoom",
+      "temperament": "30-second patience budget; uses tools between meetings on her phone; anything requiring setup is dead to her",
+      "astrology_stance": "casual-curious-skeptic",
+      "audienceFit": "in-audience",
+      "motivation": "Half-believes, mostly enjoys astrology as light fun between meetings; her team jokes about signs in Slack. She'd glance at her chart and a coworker's on her phone in a spare 30 seconds. The DAILY transit hook could pull her back — but only if it's instant and requires zero setup, or she's gone."
+    },
+    {
+      "id": 10, "name": "Sam", "role": "Product manager",
+      "tech": "medium", "device": "mobile-heavy between meetings, laptop otherwise",
+      "stack": "Notion, Sheets, Slack, Zoom, Asana, Amplitude (skims), endless browser tabs",
+      "temperament": "synthesizes and shares constantly — screenshots tools; values anything that makes him look interesting; won't debug anything",
+      "astrology_stance": "curious",
+      "audienceFit": "in-audience",
+      "motivation": "Genuinely curious about astrology and loves having a fun conversation-starter to share. He'd look up his own big-three, then his partner's and a couple of friends', and screenshot the clean explanations into chats. Mobile-first and won't debug anything — if entering a birth time/place is fiddly on his phone, he'll quit."
+    }
+  ]
+}
