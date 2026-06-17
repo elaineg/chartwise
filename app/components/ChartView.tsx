@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import type { ComputedChart } from "../../lib/chartCompute";
+import { formatDegMinInSign } from "../../lib/chartCompute";
 import HousesTable from "./HousesTable";
 import ElementBar from "./ElementBar";
 import TransitCard from "./TransitCard";
 import PlainEnglishReading from "./PlainEnglishReading";
-import ShareImageCard from "./ShareImageCard";
 
 interface ChartViewProps {
   chart: ComputedChart;
@@ -52,7 +52,6 @@ export default function ChartView({
       <div className="mb-6 p-4 bg-slate-800/40 rounded-xl border border-slate-700/40">
         <div className="flex items-start justify-between gap-2 mb-1">
           <h2 className="text-xl font-bold text-white">{birthData.name}</h2>
-          <ShareImageCard chart={chart} />
         </div>
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-400">
           <span>
@@ -70,7 +69,7 @@ export default function ChartView({
         <div data-testid="big-three-chips" className="mt-2 flex flex-wrap gap-2 text-sm">
           {hasBirthTime ? (
             <span className="px-2.5 py-1 bg-indigo-900/30 border border-indigo-700/30 rounded-full text-indigo-300">
-              {chart.ascendant.signLabel} {Math.floor(chart.ascendant.degrees % 30)}° rising
+              {formatDegMinInSign(chart.ascendant.degrees)} {chart.ascendant.signLabel} rising
             </span>
           ) : (
             <span className="px-2.5 py-1 bg-slate-800/60 border border-slate-700/30 rounded-full text-slate-500 line-through">
@@ -79,19 +78,19 @@ export default function ChartView({
           )}
           {chart.planets.find((p) => p.key === "sun") && (() => {
             const sun = chart.planets.find((p) => p.key === "sun")!;
-            const deg = Math.floor(sun.eclipticDegrees % 30);
+            const degMin = formatDegMinInSign(sun.eclipticDegrees);
             return (
               <span className="px-2.5 py-1 bg-amber-900/30 border border-amber-700/30 rounded-full text-amber-300">
-                ☉ Sun {deg}° {sun.signLabel}{hasBirthTime && sun.house > 0 && ` · House ${sun.house}`}
+                ☉ Sun {degMin} {sun.signLabel}{hasBirthTime && sun.house > 0 && ` · House ${sun.house}`}
               </span>
             );
           })()}
           {chart.planets.find((p) => p.key === "moon") && (() => {
             const moon = chart.planets.find((p) => p.key === "moon")!;
-            const deg = Math.floor(moon.eclipticDegrees % 30);
+            const degMin = formatDegMinInSign(moon.eclipticDegrees);
             return (
               <span className="px-2.5 py-1 bg-slate-700/50 border border-slate-600/40 rounded-full text-slate-300">
-                ☽ Moon {deg}° {moon.signLabel}
+                ☽ Moon {degMin} {moon.signLabel}
                 {!hasBirthTime && (
                   <span className="text-slate-500 ml-1 text-xs">(approx.)</span>
                 )}
@@ -124,6 +123,7 @@ export default function ChartView({
         earth={elements.earth}
         air={elements.air}
         water={elements.water}
+        basisLabels={chart.elementBasisLabels}
       />
 
       {/* Today transit card */}

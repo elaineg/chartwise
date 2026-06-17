@@ -5,6 +5,8 @@ interface ElementBarProps {
   earth: number;
   air: number;
   water: number;
+  /** Names of the bodies included in this tally, e.g. ["Sun","Moon","Mercury",...] */
+  basisLabels?: string[];
 }
 
 const ELEMENTS = [
@@ -14,7 +16,7 @@ const ELEMENTS = [
   { key: "water", label: "Water", color: "bg-blue-600", textColor: "text-blue-300" },
 ] as const;
 
-export default function ElementBar({ fire, earth, air, water }: ElementBarProps) {
+export default function ElementBar({ fire, earth, air, water, basisLabels }: ElementBarProps) {
   const counts: Record<string, number> = { fire, earth, air, water };
   const total = fire + earth + air + water;
 
@@ -46,7 +48,13 @@ export default function ElementBar({ fire, earth, air, water }: ElementBarProps)
           </div>
         ))}
       </div>
-      <p className="text-xs text-slate-500 mt-2">Based on {total} planetary placements</p>
+      {basisLabels && basisLabels.length > 0 ? (
+        <p className="text-xs text-slate-500 mt-2" data-testid="element-basis-label">
+          Based on {total} placements: {basisLabels.join(", ")}
+        </p>
+      ) : (
+        <p className="text-xs text-slate-500 mt-2">Based on {total} planetary placements</p>
+      )}
     </div>
   );
 }

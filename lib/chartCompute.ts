@@ -48,6 +48,8 @@ export interface ComputedChart {
   planets: Planet[];
   nodes: Planet[];
   elements: { fire: number; earth: number; air: number; water: number };
+  /** Labels of every body counted in the element tally, in display order */
+  elementBasisLabels: string[];
   computedAt: number;
   hasBirthTime: boolean; // false → houses/Asc are not meaningful; suppress in UI
 }
@@ -98,6 +100,21 @@ function ordinalToNumber(label: string): number {
     Twelfth: 12,
   };
   return map[label] ?? 0;
+}
+
+/**
+ * Format an ecliptic degree value as "D°MM'" within its sign (0–30° range).
+ * e.g. eclipticDegrees=113.87 → "23°52'" (Venus in Cancer)
+ */
+export function formatDegMinInSign(eclipticDegrees: number): string {
+  const inSign = eclipticDegrees % 30;
+  const deg = Math.floor(inSign);
+  const min = Math.round((inSign - deg) * 60);
+  // Handle rounding up to 60' (edge case)
+  if (min === 60) {
+    return `${deg + 1}°00'`;
+  }
+  return `${deg}°${String(min).padStart(2, "0")}'`;
 }
 
 export function computeChart(birth: BirthData): ComputedChart {
@@ -155,16 +172,20 @@ export function computeChart(birth: BirthData): ComputedChart {
     });
   }
 
-  // Nodes
-  const NODE_KEYS = ["northnode", "southnode"];
+  // Nodes + Lilith
+  const NODE_KEYS: Array<{ key: string; label: string }> = [
+    { key: "northnode", label: "North Node" },
+    { key: "southnode", label: "South Node" },
+    { key: "lilith", label: "Black Moon Lilith" },
+  ];
   const nodes: Planet[] = [];
-  for (const key of NODE_KEYS) {
+  for (const { key, label } of NODE_KEYS) {
     const pt = horoscope.CelestialPoints[key];
     if (!pt) continue;
     const houseNum = ordinalToNumber(pt.House?.label ?? "");
     nodes.push({
       key,
-      label: key === "northnode" ? "North Node" : "South Node",
+      label,
       sign: pt.Sign.key,
       signLabel: pt.Sign.label,
       house: houseNum,
@@ -195,11 +216,15 @@ export function computeChart(birth: BirthData): ComputedChart {
   const asc = horoscope.Ascendant;
   const mc = horoscope.Midheaven;
 
-  // Element counts (planets only, not nodes)
+  // Element counts (planets only — Sun through Chiron, not nodes/Lilith)
   const elements = { fire: 0, earth: 0, air: 0, water: 0 };
+  const elementBasisLabels: string[] = [];
   for (const p of planets) {
     const el = SIGN_ELEMENTS[p.sign];
-    if (el) elements[el]++;
+    if (el) {
+      elements[el]++;
+      elementBasisLabels.push(p.label);
+    }
   }
 
   return {
@@ -218,6 +243,7 @@ export function computeChart(birth: BirthData): ComputedChart {
     planets,
     nodes,
     elements,
+    elementBasisLabels,
     computedAt: Date.now(),
     hasBirthTime: birth.hasBirthTime !== false, // default true if not explicitly set
   };
@@ -284,5 +310,23 @@ export const EINSTEIN_BIRTH: BirthData = {
   latitude: 48.4011,
   longitude: 9.9876,
   placeName: "Ulm, Germany",
+  hasBirthTime: true,
+};
+
+/**
+ * QA regression anchor — Elaine/Jiangmen chart (1998-08-08, 16:30 local, Jiangmen China).
+ * Reference: AstroSeek Placidus. The library auto-resolves the local→UTC offset from lat/long.
+ * Pass local time (16:30) + coordinates; the lib derives UTC internally.
+ */
+export const JIANGMEN_BIRTH: BirthData = {
+  name: "Amy",
+  year: 1998,
+  month: 8, // August (1-indexed)
+  day: 8,
+  hour: 16, // 16:30 local CST
+  minute: 30,
+  latitude: 22.583, // 22°35'N
+  longitude: 113.083, // 113°05'E
+  placeName: "Jiangmen, China",
   hasBirthTime: true,
 };

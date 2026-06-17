@@ -102,8 +102,8 @@ test("Einstein chart has element bar with non-zero totals", async ({
   await expect(page.getByTestId("element-bar")).toContainText("Earth");
   await expect(page.getByTestId("element-bar")).toContainText("Air");
   await expect(page.getByTestId("element-bar")).toContainText("Water");
-  // Should show some placements count
-  await expect(page.getByTestId("element-bar")).toContainText("11 planetary");
+  // Should show some placements count — basis label path renders "11 placements: Sun..."
+  await expect(page.getByTestId("element-bar")).toContainText("11 placements");
 });
 
 test("Tapping a planet chip reveals a reading", async ({ page }) => {

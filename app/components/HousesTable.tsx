@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ComputedChart } from "../../lib/chartCompute";
+import { formatDegMinInSign } from "../../lib/chartCompute";
 import {
   getPlanetInHouseBlurb,
   getSignInHouseBlurb,
@@ -67,7 +68,7 @@ function DesktopChip({
       onClick={toggle}
       className="flex items-center gap-1 px-2 py-1 rounded-md bg-indigo-900/40 border border-indigo-700/40 hover:bg-indigo-800/50 transition-colors text-sm font-medium text-indigo-200 cursor-pointer w-full text-left"
     >
-      <span className="flex-1 min-w-0 truncate">
+      <span className="flex-1 min-w-0 whitespace-normal break-words leading-snug">
         {label}
         {isRetrograde && (
           <span className="ml-1 text-amber-400 text-xs font-bold" title="Retrograde">
@@ -169,13 +170,13 @@ export default function HousesTable({
           <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Planet Signs</p>
           <div className="flex flex-wrap gap-2">
             {chart.planets.map((planet) => {
-              const degInSign = Math.floor(planet.eclipticDegrees % 30);
+              const degMin = formatDegMinInSign(planet.eclipticDegrees);
               return (
                 <span
                   key={planet.key}
                   className="px-2.5 py-1 text-xs bg-slate-800/50 border border-slate-700/30 rounded-full text-slate-300"
                 >
-                  {planet.label}: <span className="text-white">{degInSign}° {planet.signLabel}</span>
+                  {planet.label}: <span className="text-white">{degMin} {planet.signLabel}</span>
                   {planet.key === "moon" && (
                     <span className="text-slate-500 ml-1">(approx.)</span>
                   )}
@@ -274,11 +275,11 @@ export default function HousesTable({
                       ) : (
                         planetChips.map(({ planet, shouldPreExpand }) => {
                           const chipId = `planet-chip-${planet.key}`;
-                          const degInSign = Math.floor(planet.eclipticDegrees % 30);
+                          const degMin = formatDegMinInSign(planet.eclipticDegrees);
                           return (
                             <DesktopChip
                               key={planet.key}
-                              label={`${planet.label} ${degInSign}° ${planet.signLabel}`}
+                              label={`${planet.label} ${degMin} ${planet.signLabel}`}
                               reading={getPlanetInHouseBlurb(planet.key, house.number)}
                               isRetrograde={planet.isRetrograde}
                               preExpanded={shouldPreExpand}
@@ -300,15 +301,18 @@ export default function HousesTable({
                       ) : (
                         house.nodes.map((node) => {
                           const chipId = `node-chip-${node.key}`;
+                          const degMin = formatDegMinInSign(node.eclipticDegrees);
+                          const nodeReading =
+                            node.key === "northnode"
+                              ? "Your North Node marks your growth direction — the unfamiliar territory that challenges and ultimately fulfills you in this life."
+                              : node.key === "southnode"
+                              ? "Your South Node marks your comfort zone — innate strengths that come easily but can keep you from evolving."
+                              : "Black Moon Lilith reveals the raw, instinctual side of you that resists conformity — your untamed desires and where you refuse to be tamed.";
                           return (
                             <DesktopChip
                               key={node.key}
-                              label={node.label}
-                              reading={
-                                node.key === "northnode"
-                                  ? "Your North Node marks your growth direction — the unfamiliar territory that challenges and ultimately fulfills you in this life."
-                                  : "Your South Node marks your comfort zone — innate strengths that come easily but can keep you from evolving."
-                              }
+                              label={`${node.label} ${degMin} ${node.signLabel}`}
+                              reading={nodeReading}
                               testId={`node-chip-${node.key}`}
                               chipId={chipId}
                               onToggle={(id, reading, expanded) =>
@@ -408,11 +412,11 @@ export default function HousesTable({
                     const shouldPreExpand =
                       !mobilePreExpandedUsed && preExpandedPlanet === planet.key;
                     if (shouldPreExpand) mobilePreExpandedUsed = true;
-                    const degInSign = Math.floor(planet.eclipticDegrees % 30);
+                    const degMin = formatDegMinInSign(planet.eclipticDegrees);
                     return (
                       <PlacementChip
                         key={planet.key}
-                        label={`${planet.label} ${degInSign}° ${planet.signLabel}`}
+                        label={`${planet.label} ${degMin} ${planet.signLabel}`}
                         reading={getPlanetInHouseBlurb(planet.key, house.number)}
                         isRetrograde={planet.isRetrograde}
                         preExpanded={shouldPreExpand}
@@ -420,18 +424,23 @@ export default function HousesTable({
                       />
                     );
                   })}
-                  {house.nodes.map((node) => (
-                    <PlacementChip
-                      key={node.key}
-                      label={node.label}
-                      reading={
-                        node.key === "northnode"
-                          ? "Your North Node marks your growth direction — the unfamiliar territory that challenges and ultimately fulfills you in this life."
-                          : "Your South Node marks your comfort zone — innate strengths that come easily but can keep you from evolving."
-                      }
-                      testId={`node-chip-${node.key}`}
-                    />
-                  ))}
+                  {house.nodes.map((node) => {
+                    const degMin = formatDegMinInSign(node.eclipticDegrees);
+                    const nodeReading =
+                      node.key === "northnode"
+                        ? "Your North Node marks your growth direction — the unfamiliar territory that challenges and ultimately fulfills you in this life."
+                        : node.key === "southnode"
+                        ? "Your South Node marks your comfort zone — innate strengths that come easily but can keep you from evolving."
+                        : "Black Moon Lilith reveals the raw, instinctual side of you that resists conformity — your untamed desires and where you refuse to be tamed.";
+                    return (
+                      <PlacementChip
+                        key={node.key}
+                        label={`${node.label} ${degMin} ${node.signLabel}`}
+                        reading={nodeReading}
+                        testId={`node-chip-${node.key}`}
+                      />
+                    );
+                  })}
                 </div>
               )}
 
@@ -448,10 +457,10 @@ export default function HousesTable({
       {/* Ascendant / MC summary outside table */}
       <div className="mt-4 flex flex-wrap gap-3 text-sm">
         <span className="px-3 py-1.5 bg-indigo-900/30 border border-indigo-700/30 rounded-full text-indigo-300">
-          Ascendant: {ascendant.signLabel}
+          Ascendant: {formatDegMinInSign(ascendant.degrees)} {ascendant.signLabel}
         </span>
         <span className="px-3 py-1.5 bg-violet-900/30 border border-violet-700/30 rounded-full text-violet-300">
-          Midheaven: {midheaven.signLabel}
+          Midheaven: {formatDegMinInSign(midheaven.degrees)} {midheaven.signLabel}
         </span>
       </div>
     </div>

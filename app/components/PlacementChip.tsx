@@ -29,7 +29,7 @@ export default function PlacementChip({
         onClick={() => setExpanded((v) => !v)}
         className="flex items-center gap-1 px-2 py-1 rounded-md bg-indigo-900/40 border border-indigo-700/40 hover:bg-indigo-800/50 transition-colors text-sm font-medium text-indigo-200 cursor-pointer w-full text-left"
       >
-        <span className="flex-1 min-w-0 truncate">
+        <span className="flex-1 min-w-0 whitespace-normal break-words leading-snug">
           {label}
           {isRetrograde && (
             <span className="ml-1 text-amber-400 text-xs font-bold" title="Retrograde">

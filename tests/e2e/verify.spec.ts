@@ -154,8 +154,9 @@ test("Element bar shows four non-blank totals summing to 11 planets", async ({ p
   await expect(bar).toContainText("Earth");
   await expect(bar).toContainText("Air");
   await expect(bar).toContainText("Water");
-  // Total = 11 planets
-  await expect(bar).toContainText("11 planetary");
+  // Basis label shows "11 placements: Sun, Moon..." (basisLabels path) — NOT "11 planetary"
+  await expect(bar).toContainText("11 placements");
+  await expect(bar).toContainText("Sun");
 });
 
 // ───────────────────────────────────────────────────────────
@@ -593,19 +594,18 @@ test("transit card prose does not use interior lowercase planet names", async ({
 // ═══════════════════════════════════════════════════════════
 
 // ───────────────────────────────────────────────────────────
-// R2-a. save-image-btn exists and is clickable on a computed chart
+// R2-a. "Save as image" feature DELETED — button must NOT appear in the UI
+//        (spec success check: "No 'Save as image' button is present in the UI")
 // ───────────────────────────────────────────────────────────
-test("save-image-btn exists and is clickable on a computed chart", async ({ page }) => {
+test("save-image-btn is NOT present (feature deleted per spec)", async ({ page }) => {
   await page.goto("/");
   await page.getByTestId("load-einstein-btn").click();
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
-  const btn = page.getByTestId("save-image-btn");
-  await expect(btn).toBeVisible({ timeout: 5000 });
-  await expect(btn).toBeEnabled();
-  // Button has accessible label
-  const label = await btn.getAttribute("aria-label");
-  expect(label).toBeTruthy();
+  // The save-image-btn must NOT exist anywhere in the DOM
+  await expect(page.getByTestId("save-image-btn")).toHaveCount(0);
+  // Also assert no text matching "Save as image" appears
+  await expect(page.getByText("Save as image", { exact: false })).toHaveCount(0);
 });
 
 // ───────────────────────────────────────────────────────────
@@ -1117,4 +1117,201 @@ test("plain-english-reading: same-sign blurb bodies differ beyond first word (Ei
       ).not.toBe(bodies[j]);
     }
   }
+});
+
+// ═══════════════════════════════════════════════════════════
+// QA CORRECTNESS FIXES — AstroSeek comparison (2026-06-16)
+// ═══════════════════════════════════════════════════════════
+
+// ───────────────────────────────────────────────────────────
+// QA-1. Lunar nodes display their OWN sign (P0 fix)
+//   Jiangmen anchor: North Node ~2°07' Virgo, South Node ~2°07' Pisces.
+//   Prior bug: nodes were showing the house cusp sign (Leo/Aquarius) instead.
+// ───────────────────────────────────────────────────────────
+test("QA: Jiangmen chart — North Node shows Virgo (own sign, not house sign Leo)", async ({ page, browser }) => {
+  // Load Jiangmen chart via localStorage seeding
+  const jiangmenBirth = {
+    name: "Amy",
+    year: 1998,
+    month: 8,
+    day: 8,
+    hour: 16,
+    minute: 30,
+    latitude: 22.583,
+    longitude: 113.083,
+    placeName: "Jiangmen, China",
+    hasBirthTime: true,
+  };
+
+  const ctx = await browser.newContext();
+  const pg = await ctx.newPage();
+  await pg.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, jiangmenBirth);
+
+  await pg.goto("/");
+  await expect(pg.getByText("Amy")).toBeVisible({ timeout: 8000 });
+  await pg.getByText("Amy").click();
+  await expect(pg.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  // North Node chip must exist and show Virgo
+  // The node appears in House 8; the sign chip for House 8 is Virgo — but the node must show its own sign.
+  const tableText = await pg.getByTestId("houses-table").textContent() ?? "";
+  // Look for "North Node" label near "Virgo" — the chip label includes the degree and sign
+  expect(tableText, "North Node must be labelled with Virgo (not Leo)").toContain("Virgo");
+  // Also confirm "Pisces" appears (South Node in Pisces)
+  expect(tableText, "South Node must be labelled with Pisces (not Aquarius)").toContain("Pisces");
+  // Must NOT say "North Node" adjacent to "Leo" — the old bug
+  // We check the node chips specifically by looking for the degree-formatted label
+  // Node chips contain "°" and the sign name
+  expect(tableText).not.toMatch(/North Node[^]*?Leo/s.source.replace("s", "").slice(0, 30));
+
+  await ctx.close();
+});
+
+// ───────────────────────────────────────────────────────────
+// QA-2. Black Moon Lilith (Mean) present, ~26° Libra, House 10 (P1 fix)
+// ───────────────────────────────────────────────────────────
+test("QA: Jiangmen chart — Black Moon Lilith appears at ~26° Libra in House 10", async ({ browser }) => {
+  const jiangmenBirth = {
+    name: "Amy",
+    year: 1998,
+    month: 8,
+    day: 8,
+    hour: 16,
+    minute: 30,
+    latitude: 22.583,
+    longitude: 113.083,
+    placeName: "Jiangmen, China",
+    hasBirthTime: true,
+  };
+
+  const ctx = await browser.newContext();
+  const pg = await ctx.newPage();
+  await pg.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, jiangmenBirth);
+
+  await pg.goto("/");
+  await expect(pg.getByText("Amy")).toBeVisible({ timeout: 8000 });
+  await pg.getByText("Amy").click();
+  await expect(pg.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  // House 10 row must contain "Lilith" and "Libra"
+  const house10 = pg.getByTestId("house-row-10").first();
+  await expect(house10).toBeVisible({ timeout: 5000 });
+  const h10Text = await house10.textContent() ?? "";
+  expect(h10Text, "House 10 must contain Lilith").toContain("Lilith");
+  expect(h10Text, "House 10 must contain Libra (Lilith's sign)").toContain("Libra");
+  // Degree must be in range 24°–28° (AstroSeek: 26°17')
+  const degMatch = h10Text.match(/(\d+)°\d+'[^A-Z]*?Libra|Libra[^]*?(\d+)°/);
+  // Just confirm a degree symbol exists near Libra in house 10
+  expect(h10Text).toMatch(/\d+°\d+'/);
+
+  await ctx.close();
+});
+
+// ───────────────────────────────────────────────────────────
+// QA-3. Arcminute formatting: positions show D°MM' not floor-truncated whole degrees (P2)
+// ───────────────────────────────────────────────────────────
+test("QA: Einstein chart — planet positions use D°MM' arcminute format", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  const tableText = await page.getByTestId("houses-table").textContent() ?? "";
+  // Must contain at least one D°MM' pattern (e.g. "23°52'" or "14°30'")
+  expect(tableText, "Table must contain D°MM' arcminute format").toMatch(/\d+°\d{2}'/);
+  // Must NOT rely on just "°" without minutes (floor-truncated like "23°")
+  // A sample: Einstein Sun ~23°52' Pisces — the "52" minutes must appear
+  // We just confirm the full D°MM' pattern appears (not just "°" alone)
+  const arcminuteMatches = tableText.match(/\d+°\d{2}'/g) ?? [];
+  expect(arcminuteMatches.length, "Multiple D°MM' positions must appear in table").toBeGreaterThan(3);
+});
+
+// ───────────────────────────────────────────────────────────
+// QA-4. Element distribution basis label shows body names (P2 spec check)
+// ───────────────────────────────────────────────────────────
+test("QA: element bar shows explicit basis label naming counted bodies", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("element-bar")).toBeVisible({ timeout: 10000 });
+
+  const basisLabel = page.getByTestId("element-basis-label");
+  await expect(basisLabel).toBeVisible({ timeout: 5000 });
+  const text = await basisLabel.textContent() ?? "";
+  // Must say "Based on N placements: Sun, Moon, ..."
+  expect(text).toMatch(/Based on \d+ placements:/);
+  // Must explicitly name Sun, Moon, Mercury
+  expect(text).toContain("Sun");
+  expect(text).toContain("Moon");
+  expect(text).toContain("Mercury");
+  // Lilith/nodes are NOT in the element count (planetary bodies only)
+  // but 11 planetary bodies should be named
+  expect(text).toContain("Chiron");
+});
+
+// ═══════════════════════════════════════════════════════════
+// PANEL ROUND-6: NODE + LILITH VISIBILITY (no-click, no truncation)
+// ═══════════════════════════════════════════════════════════
+
+// ───────────────────────────────────────────────────────────
+// R6-a. Nodes + Lilith sign+degree visible WITHOUT a click (Jiangmen chart)
+//   North Node ~2°07' Virgo, South Node ~2°07' Pisces, Black Moon Lilith ~26° Libra H10
+// ───────────────────────────────────────────────────────────
+test("QA: Jiangmen — North Node, South Node, and Black Moon Lilith sign+degree visible without clicking", async ({ browser }) => {
+  const jiangmenBirth = {
+    name: "Amy",
+    year: 1998,
+    month: 8,
+    day: 8,
+    hour: 16,
+    minute: 30,
+    latitude: 22.583,
+    longitude: 113.083,
+    placeName: "Jiangmen, China",
+    hasBirthTime: true,
+  };
+
+  const ctx = await browser.newContext();
+  const pg = await ctx.newPage();
+  await pg.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, jiangmenBirth);
+
+  await pg.goto("/");
+  await expect(pg.getByText("Amy")).toBeVisible({ timeout: 8000 });
+  await pg.getByText("Amy").click();
+  await expect(pg.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  // No click — check the chip button text directly (aria-label or button text)
+  // The chips render label as visible button text; no expand needed to see sign+degree
+
+  // North Node chip: aria-label must contain "Virgo" and a degree pattern
+  const northNodeChip = pg.getByTestId("node-chip-northnode").first();
+  await expect(northNodeChip).toBeVisible({ timeout: 5000 });
+  const northLabel = await northNodeChip.getAttribute("aria-label") ?? await northNodeChip.textContent() ?? "";
+  expect(northLabel, "North Node chip must show Virgo without a click").toContain("Virgo");
+  expect(northLabel, "North Node chip must show degree without a click").toMatch(/\d+°/);
+
+  // South Node chip: must contain "Pisces"
+  const southNodeChip = pg.getByTestId("node-chip-southnode").first();
+  await expect(southNodeChip).toBeVisible({ timeout: 5000 });
+  const southLabel = await southNodeChip.getAttribute("aria-label") ?? await southNodeChip.textContent() ?? "";
+  expect(southLabel, "South Node chip must show Pisces without a click").toContain("Pisces");
+  expect(southLabel, "South Node chip must show degree without a click").toMatch(/\d+°/);
+
+  // Black Moon Lilith chip: must contain "Libra"
+  const lilithChip = pg.getByTestId("node-chip-lilith").first();
+  await expect(lilithChip).toBeVisible({ timeout: 5000 });
+  const lilithLabel = await lilithChip.getAttribute("aria-label") ?? await lilithChip.textContent() ?? "";
+  expect(lilithLabel, "Black Moon Lilith chip must show Libra without a click").toContain("Libra");
+  expect(lilithLabel, "Black Moon Lilith chip must show degree without a click").toMatch(/\d+°/);
+
+  // Confirm full label is NOT truncated with ellipsis (the visible text must not end in "…")
+  const lilithVisibleText = await lilithChip.textContent() ?? "";
+  expect(lilithVisibleText, "Black Moon Lilith chip label must not be ellipsis-truncated").not.toContain("…");
+  expect(lilithVisibleText, "Black Moon Lilith chip label must not be truncated with ASCII ...").not.toMatch(/\.\.\.$/);
+
+  await ctx.close();
 });

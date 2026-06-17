@@ -15,12 +15,17 @@ Success checks:
 - Click "Load example (Einstein)": the houses table renders, the House 10 row lists Sun, and Sun's sign cell reads Pisces (Einstein: 14 March 1879, 11:30 LMT, Ulm — fixed/time-invariant input).
 - For that same Einstein chart, the Moon's sign reads Sagittarius and the Ascendant's sign reads Cancer.
 - The element-count bar for the Einstein chart shows numeric Fire / Earth / Air / Water totals that sum to the number of placements tallied (visible four-way breakdown, not blank).
+- The element-distribution bar displays a "Based on N placements: Sun, Moon, Mercury…" basis label — the counted bodies are named explicitly in the UI.
 - Opening any planet-in-house cell (e.g. Einstein's Sun in House 10) shows a 1-2 sentence plain-English reading; opening a sign-in-house entry likewise shows a 1-2 sentence reading.
 - The Current-sky / transit section is present and lists today's planet signs, flags any retrogrades, and shows at least one 1-2 sentence note tied to the loaded profile (structure/presence check — values are today-dependent and not asserted exactly).
 - Entering a custom birth date/time and a place via the type-ahead (e.g. start typing a city, pick a suggestion) produces a named profile and a populated houses table without any network call to a chart/geocoding API.
 - Creating a share link yields a URL that, opened in a fresh session with no localStorage, renders the same houses-as-rows table for that profile.
 - The app loads and computes a chart with the network/DB offline (chart compute is fully client-side; only share-link creation/open touches Turso).
+- Lunar nodes (North Node / South Node) display their own sign and degree (e.g. "North Node 2°07' Virgo"), not the sign of the house they occupy. For the Jiangmen/1998-08-08 QA anchor chart, the axis reads Virgo–Pisces (not Leo–Aquarius).
+- Black Moon Lilith (Mean) is displayed as a body placement. For the Jiangmen QA anchor chart it appears at ~26° Libra, House 10.
+- All body positions are shown with arcminutes (degree + minutes format, e.g. "23°52' Cancer"), not floor-truncated whole degrees.
+- No "Save as image" button is present in the UI.
 
-Out of scope: aspects, synastry, and compatibility/relationship readings between two people; the circular chart wheel drawing (we lead with the table — a wheel is at most a later nice-to-have); accounts/login/auth; any paid feature or paid API; push notifications or email; modalities beyond the basic element count if time-constrained (elements are required, modalities optional).
+Out of scope: aspects, synastry, and compatibility/relationship readings between two people; the circular chart wheel drawing (we lead with the table — a wheel is at most a later nice-to-have); accounts/login/auth; any paid feature or paid API; push notifications or email; modalities beyond the basic element count if time-constrained (elements are required, modalities optional); save-as-image / chart image download (removed — the canvas approach produced no useful artifact).
 
-Production URL:
+Production URL: https://chartwise.vercel.app
