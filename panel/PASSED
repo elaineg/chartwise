@@ -1,0 +1,8 @@
+PASSED — run 20260616-224336-daily (chartwise SYNASTRY / relationship-compatibility add-feature)
+8/8 in-audience at adv≥9 + value-clear, round 7 (audience-weighted bar).
+In-audience (gate): Dana 9, Jules 9, Aisha 9, Sam 10, Marcus 9, Wen 9, Rob 9, Elena 10.
+Carried non-gating (hard astrology-skeptic non-fits): Priya 5, Tomás 6.
+Prod: https://chartwise.vercel.app  commit e404dd5
+Arc: 0→0→0→4→6→7→8 — pure content-quality convergence (interpretation distinctness/directionality
+across layered template fallbacks); feature was functional + discoverable from R1.
+See apps/chartwise/panel/PANEL_REPORT.md + SYNTHESIS-round1..7.md.
