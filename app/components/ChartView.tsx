@@ -49,11 +49,11 @@ export default function ChartView({
   return (
     <div ref={topRef}>
       {/* Profile summary */}
-      <div className="mb-6 p-4 bg-slate-800/40 rounded-xl border border-slate-700/40">
-        <div className="flex items-start justify-between gap-2 mb-1">
-          <h2 className="text-xl font-bold text-white">{birthData.name}</h2>
+      <div className="ds-card" style={{ marginBottom: "var(--sp-6)" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "var(--sp-2)", marginBottom: "var(--sp-2)" }}>
+          <h2 style={{ fontSize: "var(--fs-h2)", fontWeight: "var(--fw-medium)", color: "var(--ink)", margin: 0 }}>{birthData.name}</h2>
         </div>
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-400">
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--sp-4)", fontSize: "var(--fs-sm)", color: "var(--grey-600)" }}>
           <span>
             {birthData.year}-{String(birthData.month).padStart(2, "0")}-
             {String(birthData.day).padStart(2, "0")}
@@ -66,13 +66,13 @@ export default function ChartView({
           )}
           {birthData.placeName && <span>{birthData.placeName}</span>}
         </div>
-        <div data-testid="big-three-chips" className="mt-2 flex flex-wrap gap-2 text-sm">
+        <div data-testid="big-three-chips" style={{ marginTop: "var(--sp-3)", display: "flex", flexWrap: "wrap", gap: "var(--sp-2)" }}>
           {hasBirthTime ? (
-            <span className="px-2.5 py-1 bg-indigo-900/30 border border-indigo-700/30 rounded-full text-indigo-300">
-              {formatDegMinInSign(chart.ascendant.degrees)} {chart.ascendant.signLabel} rising
+            <span className="ds-tag" style={{ fontSize: "var(--fs-sm)", textTransform: "none", letterSpacing: "normal" }}>
+              ↑ {formatDegMinInSign(chart.ascendant.degrees)} {chart.ascendant.signLabel} rising
             </span>
           ) : (
-            <span className="px-2.5 py-1 bg-slate-800/60 border border-slate-700/30 rounded-full text-slate-500 line-through">
+            <span className="ds-tag" style={{ fontSize: "var(--fs-sm)", color: "var(--grey-400)", textDecoration: "line-through", textTransform: "none", letterSpacing: "normal" }}>
               Rising unknown
             </span>
           )}
@@ -80,7 +80,7 @@ export default function ChartView({
             const sun = chart.planets.find((p) => p.key === "sun")!;
             const degMin = formatDegMinInSign(sun.eclipticDegrees);
             return (
-              <span className="px-2.5 py-1 bg-amber-900/30 border border-amber-700/30 rounded-full text-amber-300">
+              <span className="ds-tag" style={{ fontSize: "var(--fs-sm)", textTransform: "none", letterSpacing: "normal" }}>
                 ☉ Sun {degMin} {sun.signLabel}{hasBirthTime && sun.house > 0 && ` · House ${sun.house}`}
               </span>
             );
@@ -89,24 +89,36 @@ export default function ChartView({
             const moon = chart.planets.find((p) => p.key === "moon")!;
             const degMin = formatDegMinInSign(moon.eclipticDegrees);
             return (
-              <span className="px-2.5 py-1 bg-slate-700/50 border border-slate-600/40 rounded-full text-slate-300">
+              <span className="ds-tag" style={{ fontSize: "var(--fs-sm)", textTransform: "none", letterSpacing: "normal" }}>
                 ☽ Moon {degMin} {moon.signLabel}
                 {!hasBirthTime && (
-                  <span className="text-slate-500 ml-1 text-xs">(approx.)</span>
+                  <span style={{ color: "var(--grey-400)", marginLeft: "var(--sp-1)", fontSize: "var(--fs-micro)" }}>(approx.)</span>
                 )}
               </span>
             );
           })()}
         </div>
         {!hasBirthTime && (
-          <p role="status" className="mt-2 text-xs text-amber-400/80">
+          <p role="status" style={{ marginTop: "var(--sp-2)", fontSize: "var(--fs-sm)", color: "var(--grey-600)" }}>
             Houses and your rising sign need an exact birth time — add one to unlock them.
           </p>
         )}
       </div>
 
+      {/* Element bar — summary block, above detail on all viewports */}
+      <ElementBar
+        fire={elements.fire}
+        earth={elements.earth}
+        air={elements.air}
+        water={elements.water}
+        basisLabels={chart.elementBasisLabels}
+      />
+
+      {/* Today transit card — summary/daily hook, above detail on all viewports */}
+      <TransitCard natalChart={chart} />
+
       {/* Privacy copy */}
-      <p className="text-xs text-slate-500 mb-4">
+      <p style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", marginBottom: "var(--sp-4)" }}>
         Your chart is computed on your device — nothing is sent anywhere.
         {!isSharedView && " Creating a share link sends this chart's birth info to our server so the link works."}
       </p>
@@ -117,32 +129,21 @@ export default function ChartView({
       {/* Houses table */}
       <HousesTable chart={chart} preExpandedPlanet="sun" hasBirthTime={hasBirthTime} />
 
-      {/* Element bar */}
-      <ElementBar
-        fire={elements.fire}
-        earth={elements.earth}
-        air={elements.air}
-        water={elements.water}
-        basisLabels={chart.elementBasisLabels}
-      />
-
-      {/* Today transit card */}
-      <TransitCard natalChart={chart} />
-
       {/* Share section */}
       {!isSharedView && onShare && (
-        <div className="mt-6 p-4 bg-slate-800/30 rounded-xl border border-slate-700/30">
-          <h3 className="text-sm font-semibold text-slate-300 mb-2">Share this chart</h3>
-          <p className="text-xs text-slate-400 mb-3">
-            Creating a share link sends this chart's birth info to our server so anyone with
+        <div className="ds-card" style={{ marginTop: "var(--sp-6)" }}>
+          <h3 style={{ fontSize: "var(--fs-body)", fontWeight: "var(--fw-medium)", color: "var(--ink)", marginBottom: "var(--sp-2)" }}>Share this chart</h3>
+          <p style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", marginBottom: "var(--sp-3)" }}>
+            Creating a share link sends this chart&apos;s birth info to our server so anyone with
             the link can view the same chart.
           </p>
           {shareUrl ? (
-            <div className="flex flex-col sm:flex-row gap-2">
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--sp-2)" }} className="sm:flex-row">
               <input
                 readOnly
                 value={shareUrl}
-                className="flex-1 text-xs bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-300 min-w-0"
+                className="ds-input"
+                style={{ flex: 1, fontSize: "var(--fs-sm)", background: "var(--grey-50)", minWidth: 0 }}
                 onClick={(e) => (e.target as HTMLInputElement).select()}
                 aria-label="Share link URL"
               />
@@ -151,9 +152,10 @@ export default function ChartView({
                 data-testid="copy-share-link"
                 aria-label="Copy share link"
                 onClick={copyShareUrl}
-                className="shrink-0 px-3 py-2 bg-indigo-700 hover:bg-indigo-600 text-white text-xs font-medium rounded-lg transition-colors"
+                className="ds-btn"
+                style={{ flexShrink: 0 }}
               >
-                {showShareCopied ? "Copied!" : "Copy link"}
+                {showShareCopied ? "Copied" : "Copy link"}
               </button>
             </div>
           ) : (
@@ -162,13 +164,13 @@ export default function ChartView({
               data-testid="share-btn"
               onClick={onShare}
               disabled={shareState === "loading"}
-              className="px-4 py-2 bg-indigo-700 hover:bg-indigo-600 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
+              className="ds-btn ds-btn--secondary"
             >
               {shareState === "loading" ? "Creating link…" : "Create share link"}
             </button>
           )}
           {shareState === "error" && (
-            <p role="alert" className="text-xs text-red-400 mt-2">
+            <p role="alert" style={{ fontSize: "var(--fs-sm)", color: "var(--red)", marginTop: "var(--sp-2)" }}>
               Failed to create share link. Please try again.
             </p>
           )}

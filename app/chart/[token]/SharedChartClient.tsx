@@ -43,18 +43,20 @@ export default function SharedChartClient() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <p className="text-indigo-300 text-lg animate-pulse">Loading chart…</p>
+      <main style={{ minHeight: "100vh", background: "var(--paper)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <p style={{ color: "var(--grey-600)", fontSize: "var(--fs-body)" }}>Loading chart…</p>
       </main>
     );
   }
 
   if (error) {
     return (
-      <main className="min-h-screen bg-slate-950 flex items-center justify-center p-8">
-        <div className="text-center">
-          <p role="alert" className="text-red-400 text-lg mb-4">{error}</p>
-          <a href="/" className="text-indigo-400 underline">Create your own chart →</a>
+      <main style={{ minHeight: "100vh", background: "var(--paper)", display: "flex", alignItems: "center", justifyContent: "center", padding: "var(--sp-8)" }}>
+        <div style={{ textAlign: "center" }}>
+          <p role="alert" style={{ color: "var(--red)", fontSize: "var(--fs-body)", marginBottom: "var(--sp-4)" }}>{error}</p>
+          <a href="/" style={{ color: "var(--grey-600)", textDecoration: "underline", fontSize: "var(--fs-body)" }}>
+            Create your own chart →
+          </a>
         </div>
       </main>
     );
@@ -63,18 +65,21 @@ export default function SharedChartClient() {
   if (!chart || !birth) return null;
 
   return (
-    <main className="min-h-screen bg-slate-950">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="mb-6 text-center">
-          <p className="text-slate-400 text-sm mb-1">Shared chart</p>
-          <h1 className="text-2xl font-bold text-white">{birth.name}</h1>
-          <p className="text-slate-400 text-sm mt-1">
+    <main style={{ minHeight: "100vh", background: "var(--paper)", color: "var(--ink)" }}>
+      <div style={{ maxWidth: "896px", margin: "0 auto", padding: "var(--sp-8) var(--ds-page-x)" }}>
+        <div style={{ marginBottom: "var(--sp-6)" }}>
+          <span className="ds-eyebrow">Shared chart</span>
+          <h1 style={{ fontSize: "var(--fs-h1)", fontWeight: "var(--fw-regular)", color: "var(--ink)", margin: "var(--sp-2) 0 var(--sp-1)" }}>
+            {birth.name}
+          </h1>
+          <p style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", margin: "0 0 var(--sp-3)" }}>
             {birth.placeName} · {birth.year}-{String(birth.month).padStart(2, "0")}-{String(birth.day).padStart(2, "0")}
           </p>
-          <a href="/" className="inline-block mt-3 text-indigo-400 text-sm underline">
+          <a href="/" className="ds-btn--text" style={{ fontSize: "var(--fs-sm)" }}>
             Create your own chart →
           </a>
         </div>
+        <hr className="ds-rule" style={{ marginBottom: "var(--sp-6)" }} />
         <ChartView chart={chart} isSharedView />
       </div>
     </main>

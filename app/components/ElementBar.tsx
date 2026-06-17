@@ -9,51 +9,104 @@ interface ElementBarProps {
   basisLabels?: string[];
 }
 
-const ELEMENTS = [
-  { key: "fire", label: "Fire", color: "bg-orange-500", textColor: "text-orange-300" },
-  { key: "earth", label: "Earth", color: "bg-green-600", textColor: "text-green-300" },
-  { key: "air", label: "Air", color: "bg-sky-400", textColor: "text-sky-300" },
-  { key: "water", label: "Water", color: "bg-blue-600", textColor: "text-blue-300" },
-] as const;
+const ELEMENT_KEYS = ["fire", "earth", "air", "water"] as const;
+type ElementKey = (typeof ELEMENT_KEYS)[number];
+
+const ELEMENT_LABELS: Record<ElementKey, string> = {
+  fire: "Fire",
+  earth: "Earth",
+  air: "Air",
+  water: "Water",
+};
+
+// Grey-value ramp by rank: dominant = near-ink, least = light grey
+// Rank 0 (dominant) → near-ink, rank 3 (least) → grey-400
+const RANK_FILLS = ["#101010", "#3A3A3A", "#767676", "#B4B4B4"];
+// Rank 0 font-weight is medium-bold, rest are regular
+const RANK_WEIGHTS = ["600", "500", "400", "400"];
 
 export default function ElementBar({ fire, earth, air, water, basisLabels }: ElementBarProps) {
-  const counts: Record<string, number> = { fire, earth, air, water };
+  const counts: Record<ElementKey, number> = { fire, earth, air, water };
   const total = fire + earth + air + water;
 
+  // Sort dominant-first (descending count). Use stable sort: equal counts keep Fire/Earth/Air/Water order.
+  const sorted = (["fire", "earth", "air", "water"] as ElementKey[])
+    .map((key) => ({ key, count: counts[key] }))
+    .sort((a, b) => b.count - a.count);
+
   return (
-    <div data-testid="element-bar" className="mt-6 p-4 bg-slate-800/40 rounded-xl border border-slate-700/40">
-      <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">
-        Element Distribution
-      </h3>
-      <div className="flex gap-2 mb-3 h-3 rounded-full overflow-hidden">
-        {ELEMENTS.map(({ key, color }) => {
-          const pct = total > 0 ? (counts[key] / total) * 100 : 25;
+    <div data-testid="element-bar" className="ds-panel" style={{ marginTop: "var(--sp-6)" }}>
+      <p className="ds-eyebrow" style={{ marginBottom: "var(--sp-4)" }}>Element Distribution</p>
+
+      {/* 4-row grid — dominant-first, differentiated by bar LENGTH + grey-value ramp */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "var(--sp-3)" }}>
+        {sorted.map(({ key, count }, rank) => {
+          const pct = total > 0 ? (count / total) * 100 : 25;
+          const fillColor = RANK_FILLS[rank];
+          const fontWeight = RANK_WEIGHTS[rank];
+          const label = ELEMENT_LABELS[key];
           return (
             <div
               key={key}
-              className={`${color} rounded-full transition-all`}
-              style={{ width: `${pct}%` }}
-              title={`${counts[key]} ${key}`}
-            />
+              style={{
+                display: "grid",
+                gridTemplateColumns: "64px 2.5rem 1fr",
+                alignItems: "center",
+                gap: "var(--sp-3)",
+              }}
+            >
+              {/* Element label — uppercase micro-label */}
+              <span className="ds-label" style={{ color: fillColor }}>
+                {label}
+              </span>
+              {/* Count — size signals dominance */}
+              <span
+                style={{
+                  fontSize: rank === 0 ? "var(--fs-h2)" : "var(--fs-h3)",
+                  fontWeight,
+                  color: fillColor,
+                  fontVariantNumeric: "tabular-nums",
+                  lineHeight: 1,
+                }}
+              >
+                {count}
+              </span>
+              {/* Proportion bar — full-width grey track, ink fill whose LENGTH is the primary comparator */}
+              <div
+                style={{
+                  height: rank === 0 ? "8px" : "5px",
+                  background: "var(--grey-100)",
+                  borderRadius: 0,
+                  overflow: "hidden",
+                  alignSelf: "center",
+                }}
+              >
+                <div
+                  style={{
+                    height: "100%",
+                    width: `${pct}%`,
+                    background: fillColor,
+                    transition: "width var(--motion)",
+                    borderRadius: 0,
+                  }}
+                />
+              </div>
+            </div>
           );
         })}
       </div>
-      <div className="flex flex-wrap gap-3">
-        {ELEMENTS.map(({ key, label, textColor }) => (
-          <div key={key} className="flex items-center gap-1.5">
-            <span className={`text-sm font-semibold ${textColor}`}>
-              {counts[key]}
-            </span>
-            <span className="text-xs text-slate-400">{label}</span>
-          </div>
-        ))}
-      </div>
+
       {basisLabels && basisLabels.length > 0 ? (
-        <p className="text-xs text-slate-500 mt-2" data-testid="element-basis-label">
+        <p
+          style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", marginTop: "var(--sp-3)", marginBottom: 0 }}
+          data-testid="element-basis-label"
+        >
           Based on {total} placements: {basisLabels.join(", ")}
         </p>
       ) : (
-        <p className="text-xs text-slate-500 mt-2">Based on {total} planetary placements</p>
+        <p style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", marginTop: "var(--sp-3)", marginBottom: 0 }}>
+          Based on {total} planetary placements
+        </p>
       )}
     </div>
   );

@@ -103,7 +103,7 @@ export default function PlaceSearch({
   }
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} style={{ position: "relative" }}>
       <input
         type="text"
         data-testid="place-input"
@@ -113,7 +113,8 @@ export default function PlaceSearch({
         disabled={disabled}
         placeholder={placeholder}
         autoComplete="off"
-        className="w-full px-3 py-2 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/50 disabled:opacity-50"
+        className="ds-input"
+        style={{ opacity: disabled ? 0.4 : 1 }}
         aria-label="Birth place"
         aria-autocomplete="list"
         aria-expanded={showSuggestions}
@@ -121,7 +122,7 @@ export default function PlaceSearch({
       />
       {isLoading && (
         <span
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"
+          style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", fontSize: "var(--fs-micro)", color: "var(--grey-400)" }}
           aria-live="polite"
         >
           searching…
@@ -131,21 +132,48 @@ export default function PlaceSearch({
         <ul
           role="listbox"
           data-testid="place-suggestions"
-          className="absolute z-50 mt-1 w-full bg-slate-800 border border-slate-600 rounded-lg shadow-xl max-h-56 overflow-y-auto"
+          style={{
+            position: "absolute",
+            zIndex: 50,
+            marginTop: "1px",
+            width: "100%",
+            background: "var(--paper)",
+            border: "1px solid var(--grey-200)",
+            borderRadius: 0,
+            boxShadow: "none",
+            maxHeight: "224px",
+            overflowY: "auto",
+            listStyle: "none",
+            padding: 0,
+            margin: "1px 0 0 0",
+          }}
         >
           {suggestions.map((place, i) => (
             <li
               key={`${place.displayName}-${i}`}
               role="option"
               aria-selected={i === activeSuggestion}
-              className={`px-3 py-2 text-sm cursor-pointer ${
-                i === activeSuggestion
-                  ? "bg-indigo-700 text-white"
-                  : "text-slate-300 hover:bg-slate-700"
-              }`}
+              style={{
+                padding: "12px",
+                fontSize: "var(--fs-sm)",
+                cursor: "pointer",
+                borderBottom: i < suggestions.length - 1 ? "1px solid var(--grey-200)" : "none",
+                background: i === activeSuggestion ? "var(--ink)" : "var(--paper)",
+                color: i === activeSuggestion ? "var(--paper)" : "var(--ink)",
+              }}
               onMouseDown={(e) => {
                 e.preventDefault();
                 handleSelect(place);
+              }}
+              onMouseEnter={(e) => {
+                if (i !== activeSuggestion) {
+                  (e.currentTarget as HTMLLIElement).style.background = "var(--grey-50)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (i !== activeSuggestion) {
+                  (e.currentTarget as HTMLLIElement).style.background = "var(--paper)";
+                }
               }}
             >
               {place.displayName}

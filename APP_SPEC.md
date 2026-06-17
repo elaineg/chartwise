@@ -25,6 +25,7 @@ Success checks:
 - Black Moon Lilith (Mean) is displayed as a body placement. For the Jiangmen QA anchor chart it appears at ~26° Libra, House 10.
 - All body positions are shown with arcminutes (degree + minutes format, e.g. "23°52' Cancer"), not floor-truncated whole degrees.
 - No "Save as image" button is present in the UI.
+- Visual language reads as austere SSENSE editorial minimalism — monochrome (no element/zodiac/indigo/violet/amber colors, no shadows, no gradients), square corners, 1px hairline rules, tiny uppercase letter-spaced micro-labels, and generous whitespace — while all chart data, the houses-as-rows table, every reading, the element tally, accuracy (nodes/Lilith/arcminutes), and all flows are unchanged (per DESIGN_REDESIGN.md / lib/design-system/ssense.md).
 
 Out of scope: aspects, synastry, and compatibility/relationship readings between two people; the circular chart wheel drawing (we lead with the table — a wheel is at most a later nice-to-have); accounts/login/auth; any paid feature or paid API; push notifications or email; modalities beyond the basic element count if time-constrained (elements are required, modalities optional); save-as-image / chart image download (removed — the canvas approach produced no useful artifact).
 

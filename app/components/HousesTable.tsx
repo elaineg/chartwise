@@ -66,20 +66,47 @@ function DesktopChip({
       aria-expanded={expanded}
       aria-label={`${label}${isRetrograde ? " (retrograde)" : ""} — tap to ${expanded ? "hide" : "show"} reading`}
       onClick={toggle}
-      className="flex items-center gap-1 px-2 py-1 rounded-md bg-indigo-900/40 border border-indigo-700/40 hover:bg-indigo-800/50 transition-colors text-sm font-medium text-indigo-200 cursor-pointer w-full text-left"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "var(--sp-1)",
+        padding: "var(--sp-1) var(--sp-2)",
+        border: "1px solid var(--grey-200)",
+        borderRadius: 0,
+        background: "transparent",
+        color: "var(--ink)",
+        fontSize: "var(--fs-sm)",
+        cursor: "pointer",
+        width: "100%",
+        textAlign: "left",
+        transition: "border-color var(--motion-fast), background-color var(--motion-fast)",
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLButtonElement).style.background = "var(--grey-50)";
+        (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--ink)";
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+        (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--grey-200)";
+      }}
     >
-      <span className="flex-1 min-w-0 whitespace-normal break-words leading-snug">
+      <span style={{ flex: 1, minWidth: 0, whiteSpace: "normal", wordBreak: "break-word", lineHeight: 1.35 }}>
         {label}
         {isRetrograde && (
-          <span className="ml-1 text-amber-400 text-xs font-bold" title="Retrograde">
+          <span style={{ marginLeft: "var(--sp-1)", fontWeight: "var(--fw-medium)" }} title="Retrograde">
             ℞
           </span>
         )}
       </span>
       <span
-        className={`text-xs text-indigo-400 shrink-0 transition-transform duration-150 ${
-          expanded ? "rotate-180" : ""
-        }`}
+        style={{
+          fontSize: "var(--fs-micro)",
+          color: "var(--grey-600)",
+          flexShrink: 0,
+          transition: "transform 150ms ease",
+          transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+          display: "inline-block",
+        }}
         aria-hidden="true"
       >
         ▾
@@ -155,30 +182,35 @@ export default function HousesTable({
       <div data-testid="houses-table">
         <div
           data-testid="houses-time-unknown-notice"
-          className="rounded-xl border border-slate-700/40 bg-slate-800/20 p-5 text-center"
+          style={{
+            border: "1px solid var(--grey-200)",
+            padding: "var(--sp-6)",
+            textAlign: "center",
+          }}
         >
-          <p className="text-slate-400 text-sm font-medium mb-1">
+          <p style={{ color: "var(--grey-600)", fontSize: "var(--fs-body)", fontWeight: "var(--fw-medium)", marginBottom: "var(--sp-2)" }}>
             House placements and Ascendant are not available
           </p>
-          <p className="text-slate-500 text-xs">
+          <p style={{ color: "var(--grey-400)", fontSize: "var(--fs-sm)" }}>
             Houses and your rising sign require an exact birth time. Add one above to unlock all 12 houses.
           </p>
         </div>
 
         {/* Show planet signs (sign-level reading) without house assignments */}
-        <div className="mt-4">
-          <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Planet Signs</p>
-          <div className="flex flex-wrap gap-2">
+        <div style={{ marginTop: "var(--sp-4)" }}>
+          <p className="ds-eyebrow" style={{ marginBottom: "var(--sp-2)" }}>Planet Signs</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--sp-2)" }}>
             {chart.planets.map((planet) => {
               const degMin = formatDegMinInSign(planet.eclipticDegrees);
               return (
                 <span
                   key={planet.key}
-                  className="px-2.5 py-1 text-xs bg-slate-800/50 border border-slate-700/30 rounded-full text-slate-300"
+                  className="ds-tag"
+                  style={{ fontSize: "var(--fs-sm)", textTransform: "none", letterSpacing: "normal" }}
                 >
-                  {planet.label}: <span className="text-white">{degMin} {planet.signLabel}</span>
+                  {planet.label}: <strong style={{ color: "var(--ink)" }}>{degMin} {planet.signLabel}</strong>
                   {planet.key === "moon" && (
-                    <span className="text-slate-500 ml-1">(approx.)</span>
+                    <span style={{ color: "var(--grey-400)", marginLeft: "var(--sp-1)" }}>(approx.)</span>
                   )}
                 </span>
               );
@@ -193,27 +225,19 @@ export default function HousesTable({
     <div data-testid="houses-table">
       {/* Desktop table */}
       <div className="hidden sm:block overflow-x-auto">
-        <table className="w-full table-fixed border-collapse text-sm">
+        <table className="ds-table table-fixed" style={{ width: "100%" }}>
           <colgroup>
-            <col className="w-[18%]" />
-            <col className="w-[20%]" />
-            <col className="w-[38%]" />
-            <col className="w-[24%]" />
+            <col style={{ width: "18%" }} />
+            <col style={{ width: "20%" }} />
+            <col style={{ width: "38%" }} />
+            <col style={{ width: "24%" }} />
           </colgroup>
           <thead>
-            <tr className="text-left border-b border-slate-700">
-              <th className="py-2 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wide">
-                House
-              </th>
-              <th className="py-2 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wide">
-                Sign
-              </th>
-              <th className="py-2 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wide">
-                Planets
-              </th>
-              <th className="py-2 px-3 text-xs font-semibold text-slate-400 uppercase tracking-wide">
-                Nodes
-              </th>
+            <tr>
+              <th style={{ textAlign: "left" }}>House</th>
+              <th style={{ textAlign: "left" }}>Sign</th>
+              <th style={{ textAlign: "left" }}>Planets</th>
+              <th style={{ textAlign: "left" }}>Nodes</th>
             </tr>
           </thead>
           <tbody>
@@ -237,27 +261,27 @@ export default function HousesTable({
                 <tr
                   key={`house-${house.number}`}
                   data-testid={`house-row-${house.number}`}
-                  className="border-b border-slate-800/60 hover:bg-slate-800/20 transition-colors align-top"
+                  style={{ verticalAlign: "top" }}
                 >
-                  <td className="py-3 px-3 min-w-0">
-                    <div className="font-semibold text-white text-sm">
+                  <td style={{ paddingTop: "var(--sp-3)", paddingBottom: "var(--sp-3)" }}>
+                    <div style={{ fontWeight: "var(--fw-medium)", color: "var(--ink)", fontSize: "var(--fs-sm)" }}>
                       {house.number}
                     </div>
-                    <div className="text-xs text-slate-400 leading-snug mt-0.5">
+                    <div style={{ fontSize: "var(--fs-micro)", color: "var(--grey-600)", marginTop: "2px", lineHeight: 1.3 }}>
                       {HOUSE_THEMES[house.number] ?? ""}
                     </div>
                     {isAscHouse && (
-                      <div className="text-xs text-indigo-400 mt-0.5 font-medium">
+                      <div className="ds-label" style={{ marginTop: "2px", fontWeight: "var(--fw-medium)" }}>
                         ASC: {ascendant.signLabel}
                       </div>
                     )}
                     {isMCHouse && (
-                      <div className="text-xs text-indigo-400 mt-0.5 font-medium">
+                      <div className="ds-label" style={{ marginTop: "2px", fontWeight: "var(--fw-medium)" }}>
                         MC: {midheaven.signLabel}
                       </div>
                     )}
                   </td>
-                  <td className="py-3 px-3 min-w-0">
+                  <td style={{ paddingTop: "var(--sp-3)", paddingBottom: "var(--sp-3)" }}>
                     <DesktopChip
                       label={house.signLabel}
                       reading={getSignInHouseBlurb(house.sign, house.number)}
@@ -268,10 +292,10 @@ export default function HousesTable({
                       }
                     />
                   </td>
-                  <td className="py-3 px-3 min-w-0">
-                    <div className="flex flex-col gap-1">
+                  <td style={{ paddingTop: "var(--sp-3)", paddingBottom: "var(--sp-3)" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "var(--sp-1)" }}>
                       {house.planets.length === 0 ? (
-                        <span className="text-slate-600 text-xs italic">—</span>
+                        <span style={{ color: "var(--grey-400)", fontSize: "var(--fs-sm)", fontStyle: "italic" }}>—</span>
                       ) : (
                         planetChips.map(({ planet, shouldPreExpand }) => {
                           const chipId = `planet-chip-${planet.key}`;
@@ -294,10 +318,10 @@ export default function HousesTable({
                       )}
                     </div>
                   </td>
-                  <td className="py-3 px-3 min-w-0">
-                    <div className="flex flex-col gap-1">
+                  <td style={{ paddingTop: "var(--sp-3)", paddingBottom: "var(--sp-3)" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "var(--sp-1)" }}>
                       {house.nodes.length === 0 ? (
-                        <span className="text-slate-600 text-xs italic">—</span>
+                        <span style={{ color: "var(--grey-400)", fontSize: "var(--fs-sm)", fontStyle: "italic" }}>—</span>
                       ) : (
                         house.nodes.map((node) => {
                           const chipId = `node-chip-${node.key}`;
@@ -333,12 +357,23 @@ export default function HousesTable({
                   <tr key={`reading-${house.number}`}>
                     <td
                       colSpan={COL_COUNT}
-                      className="px-3 pb-3 pt-0"
+                      style={{ paddingTop: 0, paddingBottom: "var(--sp-3)", paddingLeft: "var(--sp-4)", paddingRight: "var(--sp-4)" }}
                     >
                       <div
                         role="status"
                         data-testid={`${desktopExpanded.testId}-reading`}
-                        className="w-full px-4 py-3 text-sm text-slate-300 bg-slate-800/60 rounded-md border border-slate-700/40 leading-relaxed break-words whitespace-normal"
+                        style={{
+                          width: "100%",
+                          padding: "var(--sp-3) var(--sp-4)",
+                          fontSize: "var(--fs-body)",
+                          color: "var(--ink)",
+                          background: "var(--grey-50)",
+                          border: "1px solid var(--grey-200)",
+                          borderRadius: 0,
+                          lineHeight: "var(--lh-body)",
+                          wordBreak: "break-word",
+                          whiteSpace: "normal",
+                        }}
                       >
                         {desktopExpanded.reading}
                       </div>
@@ -353,8 +388,8 @@ export default function HousesTable({
         </table>
       </div>
 
-      {/* Mobile cards — unchanged, use PlacementChip directly */}
-      <div className="sm:hidden flex flex-col gap-3">
+      {/* Mobile cards — unchanged structure, use PlacementChip directly */}
+      <div className="flex flex-col sm:hidden" style={{ gap: "var(--sp-3)" }}>
         {houses.map((house) => {
           const isAscHouse = house.number === 1;
           const isMCHouse = house.number === 10;
@@ -365,25 +400,29 @@ export default function HousesTable({
             <div
               key={house.number}
               data-testid={`house-row-${house.number}`}
-              className="bg-slate-800/40 rounded-xl border border-slate-700/40 p-4"
+              style={{
+                border: "1px solid var(--grey-200)",
+                background: "var(--paper)",
+                padding: "var(--sp-4)",
+              }}
             >
-              <div className="flex items-center justify-between mb-3">
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "var(--sp-3)" }}>
                 <div>
-                  <span className="text-lg font-bold text-white mr-2">
+                  <span style={{ fontSize: "var(--fs-h3)", fontWeight: "var(--fw-medium)", color: "var(--ink)", marginRight: "var(--sp-2)" }}>
                     House {house.number}
                   </span>
-                  <span className="text-sm text-slate-400">
+                  <span style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)" }}>
                     {HOUSE_THEMES[house.number]}
                   </span>
                 </div>
-                <div className="flex gap-1">
+                <div style={{ display: "flex", gap: "var(--sp-1)" }}>
                   {isAscHouse && (
-                    <span className="text-xs bg-indigo-700/40 text-indigo-300 px-2 py-0.5 rounded-full">
+                    <span className="ds-label" style={{ fontWeight: "var(--fw-medium)" }}>
                       ASC
                     </span>
                   )}
                   {isMCHouse && (
-                    <span className="text-xs bg-violet-700/40 text-violet-300 px-2 py-0.5 rounded-full">
+                    <span className="ds-label" style={{ fontWeight: "var(--fw-medium)" }}>
                       MC
                     </span>
                   )}
@@ -391,10 +430,8 @@ export default function HousesTable({
               </div>
 
               {/* Sign */}
-              <div className="mb-2">
-                <span className="text-xs text-slate-500 uppercase tracking-wide mr-1">
-                  Sign{" "}
-                </span>
+              <div style={{ marginBottom: "var(--sp-2)" }}>
+                <span className="ds-label ds-label--secondary" style={{ display: "block", marginBottom: "var(--sp-1)" }}>Sign</span>
                 <PlacementChip
                   label={house.signLabel}
                   reading={getSignInHouseBlurb(house.sign, house.number)}
@@ -404,10 +441,8 @@ export default function HousesTable({
 
               {/* Planets */}
               {hasContent && (
-                <div className="flex flex-col gap-1.5 mt-2">
-                  <span className="text-xs text-slate-500 uppercase tracking-wide">
-                    Placements
-                  </span>
+                <div style={{ display: "flex", flexDirection: "column", gap: "var(--sp-1)", marginTop: "var(--sp-2)" }}>
+                  <span className="ds-label ds-label--secondary" style={{ display: "block", marginBottom: "var(--sp-1)" }}>Placements</span>
                   {house.planets.map((planet) => {
                     const shouldPreExpand =
                       !mobilePreExpandedUsed && preExpandedPlanet === planet.key;
@@ -445,7 +480,7 @@ export default function HousesTable({
               )}
 
               {!hasContent && (
-                <p className="text-slate-600 text-xs italic mt-1">
+                <p style={{ color: "var(--grey-400)", fontSize: "var(--fs-sm)", fontStyle: "italic", marginTop: "var(--sp-1)" }}>
                   No planets in this house
                 </p>
               )}
@@ -455,12 +490,14 @@ export default function HousesTable({
       </div>
 
       {/* Ascendant / MC summary outside table */}
-      <div className="mt-4 flex flex-wrap gap-3 text-sm">
-        <span className="px-3 py-1.5 bg-indigo-900/30 border border-indigo-700/30 rounded-full text-indigo-300">
-          Ascendant: {formatDegMinInSign(ascendant.degrees)} {ascendant.signLabel}
+      <div style={{ marginTop: "var(--sp-4)", display: "flex", flexWrap: "wrap", gap: "var(--sp-3)" }}>
+        <span className="ds-tag" style={{ fontSize: "var(--fs-sm)", textTransform: "none", letterSpacing: "normal" }}>
+          <span className="ds-label" style={{ marginRight: "var(--sp-1)" }}>Ascendant:</span>
+          {formatDegMinInSign(ascendant.degrees)} {ascendant.signLabel}
         </span>
-        <span className="px-3 py-1.5 bg-violet-900/30 border border-violet-700/30 rounded-full text-violet-300">
-          Midheaven: {formatDegMinInSign(midheaven.degrees)} {midheaven.signLabel}
+        <span className="ds-tag" style={{ fontSize: "var(--fs-sm)", textTransform: "none", letterSpacing: "normal" }}>
+          <span className="ds-label" style={{ marginRight: "var(--sp-1)" }}>Midheaven:</span>
+          {formatDegMinInSign(midheaven.degrees)} {midheaven.signLabel}
         </span>
       </div>
     </div>

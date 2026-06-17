@@ -7,7 +7,21 @@ You know your star sign — this shows you your whole birth chart in plain Engli
 Enter birth date, time, and place to get an explained chart. The landing view shows ONE birth-info form, focused on the date field. A prominent "Load example (Einstein)" button sits beside it so a cold visitor sees a fully-explained chart in one click — show, don't tell. The Einstein chart (table + element bar + a sample reading already expanded) IS the demo; the visitor reads a real explanation before typing anything.
 
 ## 3. Emotional tone
-Calm, clear, and friendly — the opposite of a dense professional wheel. Humanist sans (e.g. Inter), generous line-height, warm-neutral background with a soft single accent (dusk indigo/violet), roomy spacing. Reads like a knowledgeable friend explaining, not a star-chart printout.
+Calm, clear, and confident — the opposite of a dense professional wheel. Reads like a
+knowledgeable friend explaining, not a star-chart printout.
+
+**Visual language (source of truth): SSENSE house design system.** The look is austere
+editorial minimalism — see `lib/design-system/ssense.md` (rules) + `lib/design-system/ssense.css`
+(tokens/`.ds-*` classes), mapped surface-by-surface in **`DESIGN_REDESIGN.md`** in this app
+dir (the authority for all styling). Monochrome only: paper white background, near-black ink
+text, a grey ramp — **no indigo/violet/amber/element colors, no gradients, no shadows, no
+rounded corners**. Structure is drawn with 1px hairline rules, not filled cards. Type is one
+neutral grotesque (Helvetica Neue → free Archivo fallback): sentence-case editorial copy for
+readings, tiny UPPERCASE 11px letter-spaced micro-labels for every structural label (section
+eyebrows, table heads, form labels, buttons, "saved charts"). Hierarchy comes from size/
+weight/case/space and inversion (ink↔paper on active/hover), never color. Generous, calm
+whitespace. This is a pure visual reskin: the information hierarchy, flows, and 5-second rule
+below are UNCHANGED — only the visual language updates.
 
 ## 4. Design decisions
 - **Houses-as-rows, reflow to cards on mobile.** Desktop: 12 numbered house rows × Sign / Planets / Nodes columns, scannable top-to-bottom. At ≤640px DO NOT shrink the table or force horizontal scroll — each house becomes a stacked card ("House 10 — Career & public life" header, then its placements as tappable chips). This is the hero surface and the win over astro-seek.

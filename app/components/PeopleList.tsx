@@ -18,26 +18,23 @@ export default function PeopleList({
   if (people.length === 0) return null;
 
   return (
-    <div data-testid="people-list" className="mb-6">
-      <p className="text-xs text-slate-500 uppercase tracking-wide font-semibold mb-2">
+    <div data-testid="people-list" style={{ marginBottom: "var(--sp-6)" }}>
+      <p className="ds-eyebrow" style={{ marginBottom: "var(--sp-2)" }}>
         Saved charts
       </p>
-      <div className="flex flex-wrap gap-2">
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--sp-2)" }}>
         {people.map((person, i) => (
           <div
             key={i}
-            className={`flex items-center gap-1 rounded-full border text-sm transition-colors ${
-              i === activeIndex
-                ? "bg-indigo-700 border-indigo-500 text-white"
-                : "bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700"
-            }`}
+            style={{ display: "flex", alignItems: "center" }}
           >
             <button
               type="button"
               data-testid={`person-tab-${i}`}
               onClick={() => onSelect(i)}
-              className="px-3 py-1.5 rounded-full"
               aria-pressed={i === activeIndex}
+              className={i === activeIndex ? "ds-tag ds-tag--selected" : "ds-tag"}
+              style={{ fontSize: "var(--fs-sm)", textTransform: "none", letterSpacing: "normal" }}
             >
               {person.name}
             </button>
@@ -50,7 +47,18 @@ export default function PeopleList({
                 }
               }}
               aria-label={`Remove ${person.name}`}
-              className="pr-2 text-slate-500 hover:text-red-400 text-xs transition-colors"
+              style={{
+                marginLeft: "var(--sp-1)",
+                padding: "4px 6px",
+                fontSize: "var(--fs-sm)",
+                color: "var(--grey-400)",
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                lineHeight: 1,
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "var(--red)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "var(--grey-400)"; }}
             >
               ×
             </button>

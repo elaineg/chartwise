@@ -141,23 +141,44 @@ export default function PlainEnglishReading({ chart }: PlainEnglishReadingProps)
   return (
     <div
       data-testid="plain-english-reading"
-      className="mb-6 rounded-2xl border border-indigo-900/40 bg-gradient-to-b from-indigo-950/40 to-slate-900/20 p-5"
+      className="ds-panel"
+      style={{ marginBottom: "var(--sp-6)" }}
     >
-      <h3 className="text-sm font-semibold text-indigo-300 uppercase tracking-wide mb-4">
+      <h2 className="ds-eyebrow" style={{ marginBottom: "var(--sp-4)" }}>
         Your chart, in plain English
-      </h3>
-      <div className="flex flex-col gap-4">
-        {readings.map((r) => (
-          <div key={r.title} className="flex gap-3">
-            <div className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-indigo-900/50 border border-indigo-700/40 text-indigo-200 text-base">
+      </h2>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        {readings.map((r, idx) => (
+          <div
+            key={r.title}
+            style={{
+              display: "flex",
+              gap: "var(--sp-3)",
+              padding: idx < readings.length - 1 ? `0 0 var(--sp-4) 0` : 0,
+              borderBottom: idx < readings.length - 1 ? "1px solid var(--grey-200)" : "none",
+              marginBottom: idx < readings.length - 1 ? "var(--sp-4)" : 0,
+            }}
+          >
+            {/* Square glyph swatch */}
+            <div style={{
+              flexShrink: 0,
+              width: "28px",
+              height: "28px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              border: "1px solid var(--grey-200)",
+              fontSize: "1rem",
+              color: "var(--ink)",
+            }}>
               {r.icon}
             </div>
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 mb-1">
-                <span className="text-sm font-semibold text-white">{r.title}</span>
-                <span className="text-xs text-slate-500">{r.subtitle}</span>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: "var(--sp-2)", marginBottom: "var(--sp-1)" }}>
+                <span style={{ fontSize: "var(--fs-body)", fontWeight: "var(--fw-medium)", color: "var(--ink)" }}>{r.title}</span>
+                <span className="ds-label ds-label--secondary">{r.subtitle}</span>
               </div>
-              <p className="text-sm text-slate-300 leading-relaxed">{r.blurb}</p>
+              <p style={{ fontSize: "var(--fs-body)", color: "var(--grey-800)", lineHeight: "var(--lh-body)", margin: 0 }}>{r.blurb}</p>
             </div>
           </div>
         ))}

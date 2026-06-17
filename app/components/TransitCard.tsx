@@ -108,54 +108,61 @@ export default function TransitCard({ natalChart }: TransitCardProps) {
   return (
     <div
       data-testid="transit-card"
-      className="mt-8 p-5 bg-slate-800/30 border border-indigo-900/40 rounded-2xl"
+      className="ds-panel"
+      style={{ marginTop: "var(--sp-8)" }}
     >
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-lg">✦</span>
-        <div>
-          <h2 className="text-base font-semibold text-white">Today's Sky</h2>
-          {todayStr && (
-            <p className="text-xs text-slate-500">{todayStr}</p>
-          )}
-        </div>
+      {/* Header */}
+      <div style={{ marginBottom: "var(--sp-4)" }}>
+        <h2 style={{ fontSize: "var(--fs-h3)", fontWeight: "var(--fw-medium)", color: "var(--ink)", margin: 0 }}>
+          Today&apos;s Sky
+        </h2>
+        {todayStr && (
+          <p style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", margin: "var(--sp-1) 0 0" }}>
+            {todayStr}
+          </p>
+        )}
       </div>
 
       {transits.length === 0 ? (
-        <p className="text-slate-400 text-sm animate-pulse">Computing today's positions…</p>
+        <p style={{ color: "var(--grey-600)", fontSize: "var(--fs-body)" }}>
+          Computing today&apos;s positions…
+        </p>
       ) : (
         <>
           {/* Planet grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 mb-5">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "var(--sp-2)", marginBottom: "var(--sp-6)" }}
+            className="sm:grid-cols-3 md:grid-cols-5"
+          >
             {transits.map((planet) => (
               <div
                 key={planet.key}
-                className={`px-2.5 py-2 rounded-lg border text-sm ${
-                  planet.isRetrograde
-                    ? "bg-amber-900/20 border-amber-700/30"
-                    : "bg-slate-800/50 border-slate-700/30"
-                }`}
+                style={{
+                  padding: "var(--sp-2) var(--sp-3)",
+                  border: planet.isRetrograde ? "1px solid var(--ink)" : "1px solid var(--grey-200)",
+                  background: "var(--paper)",
+                }}
               >
-                <div className="flex items-center gap-1 font-medium text-slate-200">
-                  <span className="text-base leading-none">
+                <div style={{ display: "flex", alignItems: "center", gap: "var(--sp-1)", color: "var(--ink)", fontWeight: "var(--fw-medium)" }}>
+                  <span style={{ fontSize: "1rem", lineHeight: 1 }}>
                     {PLANET_SYMBOLS[planet.key] ?? "●"}
                   </span>
-                  <span className="text-xs">{planet.label}</span>
+                  <span style={{ fontSize: "var(--fs-sm)" }}>{planet.label}</span>
                   {planet.isRetrograde && (
-                    <span className="text-amber-400 text-xs font-bold ml-auto">℞</span>
+                    <span style={{ fontSize: "var(--fs-sm)", fontWeight: "var(--fw-medium)", marginLeft: "auto" }} title="Retrograde">℞</span>
                   )}
                 </div>
-                <div className="text-xs text-indigo-300 mt-0.5">{planet.signLabel}</div>
+                <div style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", marginTop: "2px" }}>{planet.signLabel}</div>
               </div>
             ))}
           </div>
 
           {/* Retrograde summary */}
           {retrograde.length > 0 && (
-            <div className="mb-4 p-3 bg-amber-900/10 border border-amber-700/20 rounded-lg">
-              <p className="text-xs font-semibold text-amber-400 mb-1">
+            <div style={{ marginBottom: "var(--sp-4)", padding: "var(--sp-3)", background: "var(--grey-50)", border: "1px solid var(--grey-200)" }}>
+              <p className="ds-label" style={{ marginBottom: "var(--sp-1)", display: "block" }}>
                 {retrograde.length === 1 ? "1 planet retrograde" : `${retrograde.length} planets retrograde`}
               </p>
-              <p className="text-xs text-slate-400">
+              <p style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", margin: 0 }}>
                 {retrograde.map((p) => p.label).join(", ")}
                 {" "}— retrograde planets turn their energy inward.
               </p>
@@ -164,24 +171,26 @@ export default function TransitCard({ natalChart }: TransitCardProps) {
 
           {/* Notes keyed to this chart */}
           {notes.length > 0 && (
-            <div className="space-y-2">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+            <div>
+              <p className="ds-label ds-label--secondary" style={{ display: "block", marginBottom: "var(--sp-3)" }}>
                 For your chart
               </p>
-              {notes.map(({ planet, note }) => (
-                <div
-                  key={planet.key}
-                  className="flex gap-2 text-sm text-slate-300 leading-relaxed"
-                >
-                  <span className="text-indigo-400 shrink-0 mt-0.5">▸</span>
-                  <p>{note}</p>
-                </div>
-              ))}
+              <div style={{ display: "flex", flexDirection: "column", gap: "var(--sp-2)" }}>
+                {notes.map(({ planet, note }) => (
+                  <div
+                    key={planet.key}
+                    style={{ display: "flex", gap: "var(--sp-2)", fontSize: "var(--fs-body)", color: "var(--ink)", lineHeight: "var(--lh-body)" }}
+                  >
+                    <span style={{ color: "var(--grey-600)", flexShrink: 0, marginTop: "2px" }}>▸</span>
+                    <p style={{ margin: 0 }}>{note}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
           {notes.length === 0 && retrograde.length === 0 && (
-            <p className="text-sm text-slate-400">
+            <p style={{ fontSize: "var(--fs-body)", color: "var(--grey-600)" }}>
               The current sky is relatively calm — no major retrograde patterns or
               strong overlaps with your natal placements today.
             </p>

@@ -122,55 +122,61 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
-      <div className="max-w-7xl mx-auto px-4 py-10">
+    <main style={{ minHeight: "100vh", background: "var(--paper)", color: "var(--ink)" }}>
+      <div style={{ maxWidth: "var(--ds-maxw)", margin: "0 auto", padding: "0 var(--ds-page-x)" }}>
 
         {/* Hero */}
-        <header className="mb-10 text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 leading-tight">
+        <header style={{ paddingTop: "var(--sp-24)", paddingBottom: "var(--sp-8)" }}>
+          <span className="ds-eyebrow">Natal chart · Plain English · No signup</span>
+          <h1 className="ds-display" style={{ marginTop: "var(--sp-2)", marginBottom: "var(--sp-3)" }}>
             Your birth chart, explained in plain English.
           </h1>
-          <p className="text-slate-400 text-base sm:text-lg max-w-xl mx-auto">
+          <p style={{ fontSize: "var(--fs-body)", color: "var(--grey-600)", maxWidth: "480px", margin: 0 }}>
             Free, no signup — type your birth date, time, and place, or load an example.
           </p>
         </header>
 
+        {/* Full-bleed hairline below hero */}
+        <hr className="ds-rule" style={{ margin: "0 0 var(--sp-8) 0" }} />
+
         {/* Main layout: form left, chart right on desktop */}
-        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] xl:grid-cols-[340px_1fr] gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] xl:grid-cols-[340px_1fr]" style={{ gap: "var(--sp-8)" }}>
 
           {/* Left: input panel */}
-          <aside className="space-y-4">
-            <div className="p-5 bg-slate-800/50 rounded-2xl border border-slate-700/50">
+          <aside>
+            <div className="ds-panel" style={{ padding: "var(--sp-6) 0" }}>
 
-              {/* Load Einstein button — prominent, show-don't-tell */}
+              {/* Load Einstein button — primary ink-filled, the one hero CTA */}
               <button
                 type="button"
                 data-testid="load-einstein-btn"
                 onClick={loadEinstein}
                 disabled={isComputing}
-                className="w-full mb-4 py-2.5 bg-violet-700 hover:bg-violet-600 disabled:opacity-50 text-white font-semibold rounded-xl transition-colors text-sm flex items-center justify-center gap-2"
+                className="ds-btn ds-btn--block"
+                style={{ marginBottom: "var(--sp-4)" }}
               >
-                <span aria-hidden="true">✦</span>
                 Load example (Einstein)
               </button>
 
-              <div className="border-t border-slate-700/50 pt-4">
-                <p className="text-xs text-slate-500 mb-3">
-                  Or enter your own birth data:
-                </p>
-                <BirthForm onCompute={computeChart} isComputing={isComputing} />
+              {/* OR divider */}
+              <div style={{ display: "flex", alignItems: "center", gap: "var(--sp-3)", marginBottom: "var(--sp-4)" }}>
+                <hr className="ds-rule" style={{ flex: 1, margin: 0 }} />
+                <span className="ds-label ds-label--secondary">Or enter your own</span>
+                <hr className="ds-rule" style={{ flex: 1, margin: 0 }} />
               </div>
+
+              <BirthForm onCompute={computeChart} isComputing={isComputing} />
             </div>
 
             {/* Compute error */}
             {computeError && (
-              <p role="alert" className="text-sm text-red-400 px-1">
+              <p role="alert" style={{ fontSize: "var(--fs-sm)", color: "var(--red)", marginTop: "var(--sp-3)" }}>
                 {computeError}
               </p>
             )}
 
             {/* Privacy note */}
-            <p className="text-xs text-slate-600 px-1">
+            <p style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", marginTop: "var(--sp-3)" }}>
               Your chart is computed on your device. Saved charts stay in your browser only.
             </p>
           </aside>
@@ -188,9 +194,9 @@ export default function Home() {
             )}
 
             {isComputing && (
-              <div className="flex items-center justify-center py-20">
-                <p className="text-indigo-300 text-lg animate-pulse">
-                  Computing chart…
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "var(--sp-24) 0" }}>
+                <p style={{ color: "var(--grey-600)", fontSize: "var(--fs-body)" }}>
+                  Computing…
                 </p>
               </div>
             )}
@@ -198,13 +204,12 @@ export default function Home() {
             {!isComputing && !chart && (
               <div
                 data-testid="chart-empty-state"
-                className="flex flex-col items-center justify-center py-20 text-center"
+                style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "var(--sp-24) 0", textAlign: "center" }}
               >
-                <div className="text-6xl mb-4 opacity-30" aria-hidden="true">✦</div>
-                <p className="text-slate-500 text-lg mb-2">
+                <p style={{ color: "var(--grey-400)", fontSize: "var(--fs-body)", marginBottom: "var(--sp-2)" }}>
                   Your explained chart will appear here
                 </p>
-                <p className="text-slate-600 text-sm">
+                <p style={{ color: "var(--grey-400)", fontSize: "var(--fs-sm)" }}>
                   Enter your birth data or load the Einstein example
                 </p>
               </div>
