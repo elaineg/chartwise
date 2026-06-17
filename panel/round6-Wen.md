@@ -1,23 +1,48 @@
-# Wen — round 6
+# Wen — Round 6
 
-**1. ADVOCACY: 8/10**
-**2. VALUE: Yes**
-**3. CLARITY: Yes**
+**Advocacy: 9/10 · Value: Yes · Clarity: Yes**
+**Dominant note: Both of my held nits are genuinely fixed. As promised, this is a 9.**
 
-## Prior concerns (round 5) re-checked cold
-- **Same-name city disambiguation** — FIXED and excellent. Typing "Springfield" returned 8 options each tagged with state + country (Springfield, MO / MA / IL / OR / OH / VA / PA / TN), and once picked it echoes "✓ Springfield, MO, United States (37.2153, -93.2982)" with the literal lat/long. As a data person this is exactly what I wanted: no invisible geocode, I can see what was resolved.
-- **Same-sign readings now distinct per planet** — FIXED. Einstein has Mercury AND Venus AND Saturn in Aries. Aries Mercury = "mind moves fast and talks faster… blunt"; Aries Venus = "in love you're direct and impatient… love the chase." Genuinely different copy per planet, and each adds a second sentence keyed to the house (10th-house career mind vs 11th-house community Venus). Not boilerplate. This is the consistency win I'd been waiting for.
+I re-checked my exact two complaints first, by hand, on a real synastry reading
+(Einstein vs Michelle Obama, house-overlay section expanded):
 
-## The degree-in-headline item (my 9→10 ask, 4th round running) — STILL NOT DONE
-- The headline chips still read "☉ Pisces Sun · House 10", "☽ Sagittarius Moon", "Cancer rising" — **no degree**. The degree (Sun 23° Pisces) lives only in the house table. It's the single small thing keeping me off a 9. The table HAS it, the share/save image inherits the degree-less headline. One token per chip and I'd round up.
+- **NIT #1 — caps drift in house-overlay cards: RESOLVED.** I counted programmatically:
+  56 instances of "Nth House" with a capital H, and **0** lowercase "Nth house" anywhere
+  on the page. Header ("Sun in the 8th House") and body ("Your Sun in their 8th House
+  creates intensity…") now match exactly. The 43 mismatches I counted in R5 are gone.
+- **NIT #2 — adjacent verbatim overlay lines: RESOLVED.** The "a harmonious flow…" phrase
+  no longer appears at all (0 occurrences). All 28 overlay body explanations are distinct;
+  `uniq` finds zero adjacent identical lines anywhere on the page. Outer planets
+  (Neptune/Chiron/Lilith/Pluto/Uranus) now each get their own copy.
+- **Aspect tail — generic fallbacks now name specific bodies: RESOLVED enough.** The
+  fallback template ("…the areas of life these bodies govern…") still recurs structurally,
+  but every line is now parameterized with the two actual bodies, so max verbatim full-line
+  repeat = 1 ("Albert Einstein's Uranus trine Michelle Obama's Mercury: Uranus and Mercury
+  flow easily…"). It satisfies my "name the bodies" ask. The repeated skeleton is a mild
+  stylistic monotony, not the lazy/dishonest duplication I objected to.
 
-## Other notes
-- Chart math credible: Pisces Sun (23°), Sagittarius Moon, Cancer ASC, MC Pisces match the canonical Einstein chart; element distribution 4 Fire / 5 Earth / 1 Air / 1 Water on "11 planetary placements" is internally consistent.
-- Cell expand works (aria flips to "tap to hide reading", inline reading renders); single-open accordion.
-- Save-as-image downloaded `albert-einstein-chart.png`; share link created `/chart/...`, unfurled at HTTP 200 with proper OG title/description.
-- Privacy copy is honest and explicit: "computed on your device — nothing is sent anywhere" vs "creating a share link sends this chart's birth info to our server." A skeptic trusts a tool that says exactly when data leaves the device.
-- Zero console/page errors across load, compute, expand, save, and share.
+**Prior praise held:** share works (POST /api/chart-share → 201, clipboard got
+`/chart/<token>`, link resolves 200); honest framing present ("For insight and fun — a
+lens on the dynamic, not a prediction" + "computed on your device" + the share box openly
+says "stores the birth info on our server to make the URL work"); directional named
+aspects with ORB shown (derivation transparency I care about); ordinals correct; big-three
+for both people; integer counts (30 HARMONY · 15 TENSION · 5 CONJUNCTION), no fake %;
+element distribution discloses "Based on 11 placements: Sun, Moon, Mercury…".
+
+**Sanity:** natal chart clean, no clip/double-render. 375px = 0px horizontal overflow,
+single-column stack. No console/page errors anywhere.
+
+**Three questions:**
+- Clarity (Yes): "Type your birth details, get your chart explained in plain English, and
+  optionally compare two people's compatibility — free, no signup." The H1 + "Compare two
+  people / Plain-English compatibility" tile spell it out immediately.
+- Value (Yes): I'd otherwise paste placements into AstroSeek and translate the jargon
+  myself; this names the bodies, shows the orb, and explains it without a wheel. Saves the
+  translation step.
+- Advocacy (9): I'd bring it up to a curious-skeptic friend. Not a 10 only because the
+  fallback aspect sentences share a visible skeleton — polish, not a defect. Both things I
+  said would get me to a 9 are done, so I'm giving the 9 I promised.
 
 ```json
-{"tester": 6, "round": 6, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["Headline chips still omit the degree (Sun 23° Pisces shows as just 'Pisces Sun · House 10') — my 9→10 ask, still open across 4 rounds", "Share/save-image inherit the degree-less headline, so the artifact people see lacks the precise data point"], "priorConcernsAddressed": "all"}
+{"tester": 9, "round": 6, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["generic aspect fallback still reuses one sentence skeleton (now body-named, so distinct lines but visibly templated)"], "priorConcernsAddressed": "all"}
 ```

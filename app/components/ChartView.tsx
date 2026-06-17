@@ -14,6 +14,7 @@ interface ChartViewProps {
   onShare?: () => void;
   shareState?: "idle" | "loading" | "copied" | "error";
   shareUrl?: string;
+  onOpenSynastry?: () => void;
 }
 
 export default function ChartView({
@@ -22,6 +23,7 @@ export default function ChartView({
   onShare,
   shareState = "idle",
   shareUrl,
+  onOpenSynastry,
 }: ChartViewProps) {
   const [showShareCopied, setShowShareCopied] = useState(false);
   const topRef = useRef<HTMLDivElement>(null);
@@ -104,6 +106,49 @@ export default function ChartView({
           </p>
         )}
       </div>
+
+      {/* Compare two people — immediately after the chart summary, high on the page */}
+      {!isSharedView && onOpenSynastry && (
+        <div
+          data-testid="synastry-entry"
+          style={{ marginTop: "var(--sp-4)" }}
+        >
+          <button
+            type="button"
+            data-testid="open-synastry-btn"
+            onClick={onOpenSynastry}
+            style={{
+              padding: "var(--sp-5)",
+              border: "1px solid var(--ink)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "var(--sp-4)",
+              flexWrap: "wrap",
+              width: "100%",
+              background: "var(--paper)",
+              cursor: "pointer",
+              textAlign: "left",
+            }}
+          >
+            <div>
+              <p className="ds-eyebrow" style={{ marginBottom: "var(--sp-1)" }}>Compatibility</p>
+              <p style={{ fontSize: "var(--fs-body)", fontWeight: "var(--fw-medium)", color: "var(--ink)", margin: "0 0 var(--sp-1) 0" }}>
+                Compare two people
+              </p>
+              <p style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", margin: 0 }}>
+                Plain-English compatibility between two charts — free, no signup
+              </p>
+            </div>
+            <span
+              aria-hidden="true"
+              style={{ fontSize: "var(--fs-body)", color: "var(--ink)", fontWeight: "var(--fw-medium)", flexShrink: 0 }}
+            >
+              →
+            </span>
+          </button>
+        </div>
+      )}
 
       {/* Element bar — summary block, above detail on all viewports */}
       <ElementBar

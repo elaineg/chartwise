@@ -50,6 +50,11 @@ export interface ComputedChart {
   elements: { fire: number; earth: number; air: number; water: number };
   /** Labels of every body counted in the element tally, in display order */
   elementBasisLabels: string[];
+  /**
+   * Placidus house cusp ecliptic degrees, index 0 = House 1 cusp (Ascendant),
+   * index 11 = House 12 cusp. Length = 12. Only meaningful when hasBirthTime=true.
+   */
+  houseCusps: number[];
   computedAt: number;
   hasBirthTime: boolean; // false → houses/Asc are not meaningful; suppress in UI
 }
@@ -227,6 +232,12 @@ export function computeChart(birth: BirthData): ComputedChart {
     }
   }
 
+  // Extract Placidus cusp degrees (index 0 = House 1 cusp = Ascendant ecliptic degree)
+  const houseCusps: number[] = horoscope.Houses.map(
+    (h: { ChartPosition: { StartPosition: { Ecliptic: { DecimalDegrees: number } } } }) =>
+      h.ChartPosition.StartPosition.Ecliptic.DecimalDegrees
+  );
+
   return {
     birthData: birth,
     houses,
@@ -244,6 +255,7 @@ export function computeChart(birth: BirthData): ComputedChart {
     nodes,
     elements,
     elementBasisLabels,
+    houseCusps,
     computedAt: Date.now(),
     hasBirthTime: birth.hasBirthTime !== false, // default true if not explicitly set
   };
@@ -310,6 +322,24 @@ export const EINSTEIN_BIRTH: BirthData = {
   latitude: 48.4011,
   longitude: 9.9876,
   placeName: "Ulm, Germany",
+  hasBirthTime: true,
+};
+
+/**
+ * Synastry example partner — Michelle Obama (born 17 Jan 1964, 21:53 CST, Chicago, IL).
+ * AstroDatabank A-rated birth data. Used as Person B in the worked example pair.
+ * Regression anchor: Einstein Moon (Sagittarius, 254.33°) trine Michelle Jupiter (Aries, 12.67°) ≈ 1.67° orb.
+ */
+export const SYNASTRY_PARTNER_BIRTH: BirthData = {
+  name: "Michelle Obama",
+  year: 1964,
+  month: 1,   // January (1-indexed)
+  day: 17,
+  hour: 21,
+  minute: 53,
+  latitude: 41.8781,   // Chicago, IL
+  longitude: -87.6298,
+  placeName: "Chicago, IL",
   hasBirthTime: true,
 };
 

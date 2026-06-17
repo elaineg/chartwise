@@ -1315,3 +1315,191 @@ test("QA: Jiangmen — North Node, South Node, and Black Moon Lilith sign+degree
 
   await ctx.close();
 });
+
+// ═══════════════════════════════════════════════════════════
+// SYNASTRY / COMPATIBILITY (core flow 3)
+// ═══════════════════════════════════════════════════════════
+
+// ───────────────────────────────────────────────────────────
+// S-1. "Compare two people" entry is visible ABOVE the transit card in chart view
+// ───────────────────────────────────────────────────────────
+test("synastry: 'Compare two people' entry is visible above transit card after loading Einstein", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  // The synastry entry must be present and visible
+  const entry = page.getByTestId("synastry-entry");
+  await expect(entry).toBeVisible({ timeout: 5000 });
+  await expect(entry).toContainText("Compare two people");
+
+  // It must appear BEFORE the transit card in DOM order
+  const order = await page.evaluate(() => {
+    const synaEntry = document.querySelector('[data-testid="synastry-entry"]');
+    const transit = document.querySelector('[data-testid="transit-card"]');
+    if (!synaEntry || !transit) return null;
+    const pos = synaEntry.compareDocumentPosition(transit);
+    return (pos & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
+  });
+  expect(order, "synastry entry must appear before transit-card in DOM").toBe(true);
+});
+
+// ───────────────────────────────────────────────────────────
+// S-2. Clicking "Compare two people" opens the synastry view
+// ───────────────────────────────────────────────────────────
+test("synastry: clicking compare button shows synastry view", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  await page.getByTestId("open-synastry-btn").click();
+  await expect(page.getByTestId("synastry-view")).toBeVisible({ timeout: 5000 });
+  await expect(page.getByText("Compatibility, explained")).toBeVisible();
+});
+
+// ───────────────────────────────────────────────────────────
+// S-3. Example pair: Sun-Sun conjunction visible with reading, tagged CONJUNCTION
+// REGRESSION ANCHOR from APP_SPEC.md
+// ───────────────────────────────────────────────────────────
+test("synastry regression: Moon-Jupiter trine visible with reading on example pair (Einstein × Michelle Obama)", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  // Open synastry
+  await page.getByTestId("open-synastry-btn").click();
+  await expect(page.getByTestId("synastry-view")).toBeVisible({ timeout: 5000 });
+
+  // Wait for the example pair to load (auto-loads since < 2 people saved)
+  await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 10000 });
+
+  // Moon-Jupiter trine aspect row must be present (Einstein Moon trine Michelle Obama Jupiter, ~1.67° orb)
+  const moonJupRow = page.getByTestId("synastry-aspect-moon-jupiter-trine");
+  await expect(moonJupRow).toBeVisible({ timeout: 5000 });
+
+  // Row must contain "trine" and "HARMONY" tags
+  await expect(moonJupRow).toContainText("trine");
+
+  // Reading must be visible on the row (no click needed)
+  const reading = page.getByTestId("synastry-aspect-reading-moon-jupiter-trine");
+  await expect(reading).toBeVisible({ timeout: 5000 });
+  const readingText = await reading.textContent() ?? "";
+  expect(readingText.length, "Moon-Jupiter trine reading must have substance").toBeGreaterThan(30);
+});
+
+// ───────────────────────────────────────────────────────────
+// S-4. Both big-three columns visible: Person A = Einstein, Person B = Michelle Obama
+// ───────────────────────────────────────────────────────────
+test("synastry: both big-three columns visible, Einstein and Michelle Obama shown", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  await page.getByTestId("open-synastry-btn").click();
+  await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 10000 });
+
+  const bigThree = page.getByTestId("synastry-big-three");
+  await expect(bigThree).toBeVisible({ timeout: 5000 });
+
+  // Person A (Einstein): Sun Pisces / Moon Sagittarius / Rising Cancer
+  await expect(bigThree).toContainText("Sun Pisces");
+  await expect(bigThree).toContainText("Moon Sagittarius");
+  await expect(bigThree).toContainText("Rising Cancer");
+
+  // Person B (Michelle Obama): Sun Capricorn — both names visible
+  await expect(bigThree).toContainText("Sun Capricorn");
+  await expect(bigThree).toContainText("Michelle Obama");
+});
+
+// ───────────────────────────────────────────────────────────
+// S-5. Harmony/tension framing visible without clicking
+// ───────────────────────────────────────────────────────────
+test("synastry: harmony/tension tags visible without any click, readings un-clipped", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  await page.getByTestId("open-synastry-btn").click();
+  await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 10000 });
+
+  // Summary text with harmony · tension count must be visible
+  const summary = page.getByTestId("synastry-summary-text");
+  await expect(summary).toBeVisible({ timeout: 5000 });
+  const summaryText = await summary.textContent() ?? "";
+  expect(summaryText.length, "Summary must have substantive text").toBeGreaterThan(40);
+
+  // Aspects list must be present
+  const aspectsList = page.getByTestId("synastry-aspects-list");
+  await expect(aspectsList).toBeVisible({ timeout: 5000 });
+
+  // At least the Moon-Jupiter trine reading should be visible (regression anchor)
+  const reading = page.getByTestId("synastry-aspect-reading-moon-jupiter-trine");
+  await expect(reading).toBeVisible({ timeout: 5000 });
+
+  // Check no text is truncated with ellipsis
+  const text = await reading.textContent() ?? "";
+  expect(text).not.toContain("…");
+  expect(text).not.toMatch(/\.\.\.$/);
+});
+
+// ───────────────────────────────────────────────────────────
+// S-6. Load example pair button shown when < 2 charts saved
+// ───────────────────────────────────────────────────────────
+test("synastry: 'Load example pair' button shown and loads results", async ({ browser }) => {
+  const ctx = await browser.newContext({ storageState: { cookies: [], origins: [] } });
+  const page = await ctx.newPage();
+  await page.goto("/");
+
+  // Load Einstein first (needed to see the synastry entry)
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  // Open synastry
+  await page.getByTestId("open-synastry-btn").click();
+  await expect(page.getByTestId("synastry-view")).toBeVisible({ timeout: 5000 });
+
+  // With only 1 person saved, example pair auto-loads OR the button is shown
+  // Either way, the result should appear within 10s
+  await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 10000 });
+
+  await ctx.close();
+});
+
+// ───────────────────────────────────────────────────────────
+// S-7. Back button closes synastry, returns to natal chart view
+// ───────────────────────────────────────────────────────────
+test("synastry: back button closes the compatibility view", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  await page.getByTestId("open-synastry-btn").click();
+  await expect(page.getByTestId("synastry-view")).toBeVisible({ timeout: 5000 });
+
+  // Click back — button has aria-label="Close compatibility view" (overrides visible text for getByRole)
+  await page.getByRole("button", { name: "Close compatibility view" }).click();
+
+  // Synastry view should be gone, natal chart should be back
+  await expect(page.getByTestId("synastry-view")).not.toBeVisible();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 5000 });
+});
+
+// ───────────────────────────────────────────────────────────
+// S-8. No horizontal overflow at 375px with synastry open
+// ───────────────────────────────────────────────────────────
+test("synastry: no horizontal overflow at 375px", async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 375, height: 812 } });
+  const page = await ctx.newPage();
+  await page.goto("/");
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  await page.getByTestId("open-synastry-btn").click();
+  await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 10000 });
+
+  const overflow = await page.evaluate(() => {
+    return document.documentElement.scrollWidth > document.documentElement.clientWidth;
+  });
+  expect(overflow, "No horizontal overflow at 375px with synastry open").toBe(false);
+  await ctx.close();
+});

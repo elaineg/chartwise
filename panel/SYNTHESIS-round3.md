@@ -1,73 +1,105 @@
-# chartwise — Panel SYNTHESIS round 3
+# Chartwise — SYNTHESIS Round 3 (SYNASTRY / "Compare two people" feature)
 
-URL tested: http://localhost:3099 (local production server, no deploy — edge economy).
-Audience-weighted bar: **SHIP = ALL 8 in-audience testers at advocacy ≥ 9 AND Value = Yes AND Clarity = Yes.** The 2 non-fits (Priya, Tomás) are hard skeptics, carried from earlier rounds, and do NOT gate.
+App under test: local `next start` prod server, http://localhost:3099. Round 3 re-tests the
+R2 fixes: (1) de-boilerplate the "Show all N aspects" tail + interpolate body names,
+(2) collapse toggle both ways, (3) Node/overlay ordinals in blurb bodies,
+(4) "Share this comparison" button, (5) Compare entry as a clean clickable card (dead arrow removed).
 
-Round-3 changes tested cold: NEW "Save as image" PNG share card; de-templated daily-transit "Today" copy; per-planet degree-within-sign (e.g. "Sun 23° Pisces"); full-width in-table expanded readings on desktop; OpenGraph/Twitter meta on shared /chart/<token> links.
+Audience classification carried unchanged from Rounds 1–2 (per-profile `astrology_stance` +
+`audienceFit`, not memory):
+- IN-AUDIENCE (GATE — adv>=9 + value-clear): Dana, Jules, Aisha, Sam, Marcus, Wen, Rob, Elena (8).
+- CARRIED NON-GATING (hard-skeptic non-fits, report only): Priya, Tomás.
 
-## Score table (all 10 testers)
+## Per-tester results
 
-| Tester | audienceFit | stance         | R2 adv | R3 adv | Δ    | Value | Clarity | At-bar (≥9)? | retested/carried |
-|--------|-------------|----------------|--------|--------|------|-------|---------|--------------|------------------|
-| Sam    | in-audience | curious        | 9      | 10     | +1   | Yes   | Yes     | **Yes**      | retested |
-| Marcus | in-audience | casual-skeptic | 9      | 9      | 0    | Yes   | Yes     | **Yes**      | retested |
-| Dana   | in-audience | curious        | 9      | 9      | 0    | Yes   | Yes     | **Yes**      | retested |
-| Wen    | in-audience | casual-skeptic | 8      | 9      | +1   | Yes   | Yes     | **Yes**      | retested |
-| Elena  | in-audience | casual-skeptic | 8      | 9      | +1   | Yes   | Yes     | **Yes**      | retested |
-| Jules  | in-audience | curious        | 8      | 8      | 0    | Yes   | Yes     | No           | retested |
-| Rob    | in-audience | casual-skeptic | 8      | 8      | 0    | Yes   | Yes     | No           | retested |
-| Aisha  | in-audience | curious        | 8      | 7      | **-1** ⚠ | Yes | Yes  | No           | retested |
-| Priya  | non-fit     | hard-skeptic   | 3      | 3      | —    | No    | Yes     | No           | carried |
-| Tomás  | non-fit     | hard-skeptic   | 6      | 6      | —    | Yes (for audience) | Yes | No | carried |
+| Tester | In-audience? | Adv | Value | Clarity | Dominant note |
+|--------|--------------|-----|-------|---------|---------------|
+| Dana   | YES (gate)        | 8 | Yes | Partially | All in-feature R2 defects FIXED (tail de-boilerplated 85/88 unique, collapse works, ordinals correct, share works). Held at 8 only by compare being invisible on cold home page (no above-fold entry, no `/compare`). |
+| Jules  | YES (gate)        | 8 | Yes | Partially | Her R2 #1 blocker (no Compare share button) FIXED + verified end-to-end on mobile — link reopens full view in fresh browser. Up 7→8. Held by compare-card undiscoverable on cold landing. |
+| Aisha  | YES (gate)        | 7 | Yes | Yes       | DOWN 8→7. Two R2 copy issues only PARTIALLY fixed: house ordinals still mixed in ONE list ("8th house" vs "Eighth House"), and tail readings still NOT directional ("his Jupiter conj her Venus" == reverse; bodies say "the Saturn person" not names). A designer notices instantly. |
+| Sam    | YES (gate)        | 8 | Yes | Partially | Tail distinct (87/90 unique), collapse works, share works + screenshot-worthy, ordinals+direction read right for him. Held by compare invisible on cold homepage + no one-tap "Person B = my partner". |
+| Marcus | YES (gate)        | 8 | Yes | Yes       | BOTH his R2 blockers FIXED (50 distinct pair-keyed readings; zero raw "N house"; share end-to-end with toast/clipboard). Held by no "for fun not prediction" framing + compare hidden until a chart is computed. |
+| Wen    | YES (gate)        | 5 | Yes | Yes       | DOWN 8→5. Tail "Show all 50" still verbatim-templated (~44 minor aspects repeat identical harmony line); ordinals now inconsistent a NEW way (numeric "6th House" header vs spelled-out "their Sixth House" body for same placement) — the invisible-transform smell that kills her trust. Share works. |
+| Rob    | YES (gate)        | 6 | Yes | Yes       | DOWN 8→6. "Show fewer" FIXED + share + card all good, but house ordinals STILL mixed in one list and aspect BODIES still type-keyed (Jupiter☌Venus blurb verbatim for reversed pair; never uses names). Plus no honest framing. |
+| Elena  | YES (gate)        | 8 | Yes | Yes       | BOTH R2 blockers FIXED (50 unique pair-specific directional readings; ordinals correct; collapse works; share copies link that reopens full view). Held by compare invisible from landing + ~2 screens down on 375px. |
+| Priya  | carried (non-fit) | 3 | No  | Yes       | Category ceiling. R2 ordinal bug fixed, card clean. BUT surfaced a TRUST REGRESSION: share button POSTs FULL birth PII (name, exact date, hour+min, lat/long, place) to `/api/chart-share` server-side while UI still claims "stays in your browser only." Anonymous token, but the privacy claim now contradicts the endpoint. |
+| Tomás  | carried (non-fit) | 4 | No  | Yes       | Category ceiling. BOTH his R2 defects FIXED: dead arrow `<p>` gone (whole card is one `<button>`), counts now have baseline. Share URL uses opaque random ID (no PII in URL). Cosmetic: a few lowercase "house" vs heading "House". |
 
-## Tally
+## In-audience tally at the bar (adv>=9 with value-clear)
 
-- **IN-AUDIENCE at-bar: 5 / 8** (Sam, Marcus, Dana, Wen, Elena — all advocacy ≥9, Value Yes, Clarity Yes). Up from 3/8 in round 2.
-- **R2→R3 movement (in-audience):** Sam 9→10 (+1), Wen 8→9 (+1), Elena 8→9 (+1), Marcus 9→9 (held), Dana 9→9 (held), Jules 8→8 (held), Rob 8→8 (held), **Aisha 8→7 (−1, REGRESSION).**
-- **Clarity remains universal: 10/10 Yes. Value remains 8/8 in-audience Yes** (Priya the only No, a non-fit).
-- The two named round-2 recurring blockers landed and moved testers:
-  - **(a) Save-as-image PNG card** — confirmed working by every retested tester; flipped Sam to 10 and is the named delight for Dana, Jules, Sam, Rob.
-  - **(b) de-templated transit copy** — confirmed genuinely varied by Marcus, Elena, Sam; flipped Elena 8→9 and held Marcus at 9. Mad-lib smell is gone from the transit block.
-  - **Per-planet degrees** flipped Wen 8→9 ("the astrology tool that shows its work").
+In-audience advocacy: Dana 8, Jules 8, Aisha 7, Sam 8, Marcus 8, Wen 5, Rob 6, Elena 8.
+**0 of 8 in-audience testers at adv>=9.** All 8 still report value=Yes.
 
-## Remaining blockers (grouped by cause)
+Carried non-fits (non-gating): Priya 3, Tomás 4.
 
-### ⚠ REGRESSION — Aisha 8 → 7 (craft, single-persona but a drop)
+## Movement vs Round 2
 
-**(R) In-table expanded readings are NOT full-width on desktop — the round-2 fix only half-landed.** Aisha (1440px display) reports the expanded reading opens inline below the chip but wraps into a ~280px ribbon while the right ~40% of the table sits empty. This was a named round-2 item promised as a full-width fix; she counted it half-done and dropped a point. FIXABLE (CSS — expanded cell should span the table width / break out of the column). Note: this is the only regression and is craft, not concept; she keeps Value Yes + Clarity Yes and praised the de-templated readings + share card.
+Split outcome — the fixes that fully landed lifted testers; the partially-landed copy fix
+REGRESSED the craft-strict trio:
+- Jules 7→8 (+1): her sole R2 blocker (no Compare share button) is fixed and verified.
+- Dana 8→8, Sam 8→8, Marcus 8→8, Elena 8→8 (held): every in-feature R2 defect they cited is
+  gone; now held only by compare-discoverability (compare hidden until a natal chart is computed).
+- Aisha 8→7 (−1): house ordinals still mixed in one list + tail readings still non-directional.
+- Rob 8→6 (−2): aspect BODIES still type-keyed (verbatim for reversed pairs, no names) + mixed
+  ordinals; "Show fewer" itself is fixed.
+- Wen 8→5 (−3): "Show all 50" tail still verbatim-templated AND a NEW numeric-vs-spelled-out
+  ordinal inconsistency for the same placement — exactly her data-hygiene tripwire.
+- Priya 3→3, Tomás 4→4 (non-gating, category ceiling).
 
-### FIXABLE — share-card / unfurl polish (gates Jules, Rob; rides Aisha)
+Net: 5 of 8 in-audience at 8, 3 regressed (7/6/5). The de-boilerplate + ordinal fix was applied
+UNEVENLY — it fixed the TOP-6/headers and one Node code path (Dana/Marcus/Elena/Sam see clean
+output) but MISSED the long-tail minor-aspect template and a second house-prose code path
+(Aisha/Wen/Rob still see boilerplate + mixed ordinals in the same view). Discrepancy is real,
+not perception: different testers loaded different example pairs and hit different code paths.
 
-**(c) No og:image on shared /chart/ links — Jules (held at 8).** Round-2 OG complaint only partially fixed: share pages now have og/twitter *title + description* but NO og:image/twitter:image, and twitter:card is "summary" not "summary_large_image", so a pasted link still unfurls text-only with no visual. For a constant-poster this is the 8→9 gate. FIXABLE (add og:image = the share-card PNG + summary_large_image). Jules also wants the Save-as-image button surfaced inside the reading, not only on the saved-chart card.
+## Single dominant blocker
 
-**(d) Share card visual craft — Rob (held at 8).** The card works one-tap but the brand designer reads the navy→purple gradient as flat/template-y, sees dead space in the bottom third, and finds the element bar too data-ish for a glanceable card — "DM-able to a believer, not public-story-worthy." FIXABLE (gradient grain/glow, tighten composition, lighten the data on the card). This is the same export surface as (c)/(a), so a single share-card polish pass addresses (c) image + (d) craft together.
+Two surfaces still block the cohort, plus one new trust defect:
 
-### FIXABLE — minor, non-gating (named by at-bar testers, would push toward 10)
+1. **The "de-boilerplate + ordinal" fix is INCOMPLETE on two code paths** (Aisha, Wen, Rob — 3
+   in-audience, the entire regression). (a) The long-tail MINOR aspects behind "Show all 50" are
+   still verbatim-templated (one harmony line repeats ~44x) and the aspect BODIES are still
+   type-keyed — reversed pairs render byte-identical and the body uses "the Saturn person", never
+   the names, even though headers do. (b) House-overlay PROSE mixes numeric and spelled-out
+   ordinals for the SAME placement in one list ("6th House" header over "their Sixth House" body).
+   The R2 fix touched the top-6 + headers + the Node path; it did NOT reach the minor-aspect tail
+   template or the house-prose path. This is the single highest-leverage fix and is the whole
+   reason three craft-strict testers moved DOWN.
 
-- **Degree in the headline reading — Wen, Marcus.** Headline shows "Pisces Sun · House 10" with no degree; degrees live only in the houses table. Wen wants the degree where the claim is first made. (Both already at-bar.)
-- **Same-sign natal readings still repeat verbatim — Elena.** Transit copy is de-templated, but two same-sign natal placements (e.g. Einstein's Aries Mercury & Aries Venus) still open with an identical sentence — a smaller version of the templating smell. (Elena at-bar; this is her 9→10 item, and overlaps Aisha's broader craft scrutiny.)
-- **Save-as-image discoverability — Sam, Jules.** Button lives in the saved-charts row, not beside the reading; took a beat to find. (Sam at 10 already; non-blocking.)
-- **Place search disambiguation — Marcus.** Many identical "Berlin, United States" rows with no state to disambiguate (geocoder edge, residual from round 2).
+2. **NEW — Share endpoint contradicts the privacy claim** (Priya, non-gating but in-audience-relevant).
+   The new "Share this comparison" button POSTs full birth PII (name, exact date, birth hour+minute,
+   lat/long, place) to `/api/chart-share` and stores it server-side under a token, while the UI still
+   says "Your chart is computed on your device. Saved charts stay in your browser only." The token/URL
+   is anonymous (Tomás confirmed no PII in the URL), so it's not a leak — but the on-device-only CLAIM
+   is now false for shared comparisons. Fix: scope the "stays in your browser only" copy to non-shared
+   charts, OR add one line of consent at the share button ("Sharing uploads this chart to a private
+   link"), OR encode the chart in the URL fragment client-side (no server store). Cheap, and removes a
+   credibility crack a fit-user reviewer would also catch.
 
-### Audience (non-gating)
+Secondary (do NOT block this round, recurring across testers): the polished compare/share feature is
+invisible on the cold home page — it only appears after you compute a natal chart (Dana, Jules, Sam,
+Marcus, Elena, Wen — 6 in-audience). It holds the five steady 8s off 9 just as much as #1 holds the
+regressors. Surfacing the Compare card above the fold (or a `/compare` route) is the lever for the 8s.
+Also recurring: no "for fun, not a prediction" honest-framing line in the synastry output (Marcus, Rob).
 
-- Priya (3) and Tomás (6) carried forward unchanged — hard skeptics who will not advocate for any astrology product regardless of quality. Gap is audience, not defect.
+## VERDICT: ITERATE
 
-## Positives to protect
+0 of 8 in-audience testers at adv>=9 (five at 8, Aisha 7, Rob 6, Wen 5). The feature is trusted and
+all 8 report value=Yes, but the round-2 copy fix landed UNEVENLY — it regressed the three craft-strict
+testers (Aisha/Wen/Rob) by missing the minor-aspect tail template and a second house-prose ordinal
+path, while leaving the five steady 8s held by compare-discoverability.
 
-- Save-as-image PNG card (big-three chips, element bar, plain-English takeaway, "no signup" footer, sensible filename) — confirmed by all 8; the viral trigger now exists.
-- De-templated transit copy with real natal cross-references and today's date — confirmed varied (Marcus, Elena, Sam).
-- Per-planet degrees + retrograde markers everywhere (Sun 23° Pisces, Uranus 1° Virgo℞) — flipped Wen to trust; verified ephemeris against known charts.
-- Plain-English reading still default-surfaced; share link works end-to-end (POST→201, /chart/<token> renders cold for a recipient); zero console errors for every tester; fast on mobile.
+Sub-bar in-audience testers: ALL 8 (Wen 5, Rob 6, Aisha 7; Dana/Jules/Sam/Marcus/Elena at 8).
 
-## Recommendation
+ONE highest-leverage fix: **finish the de-boilerplate + ordinal pass on the two code paths it missed —
+(a) give the long-tail MINOR aspects pair-specific, name-interpolated, directional bodies (reversed
+pairs must differ; bodies use the actual names, not "the Saturn person"), and (b) make ALL house-overlay
+prose use a single consistent ordinal form ("1st/7th/8th House") so the same placement never reads two
+ways in one list.** This reverses the three regressions (Aisha/Wen/Rob, −6 advocacy combined) and is
+the same edit surface as R2. Ride two cheap riders in the same build: surface the Compare card above the
+fold on the home page (lifts the five steady 8s toward 9), and fix the share privacy-copy contradiction
+(scope "stays in your browser only" / add consent line — Priya's trust regression, also a fit-user risk).
 
-**FIX-AND-RETEST.** Not a plateau: at-bar rose 3/8 → 5/8 and three testers gained a point (Sam, Wen, Elena), with both round-2 recurring blockers cleared. Three in-audience testers remain short, all on FIXABLE craft/polish of surfaces we just shipped — none cite the concept.
-
-Highest-leverage fix is a **single share-card / unfurl polish pass** that knocks out two of the three short testers at once:
-- **(c) add og:image (the share-card PNG) + twitter summary_large_image** → unblocks Jules (8→9).
-- **(d) elevate the card's visual craft** (gradient grain/glow, tighter composition, less data) → unblocks Rob (8→9).
-
-Plus the one **regression fix: (R) make the in-table expanded reading truly full-width on desktop** → recovers Aisha (7→back toward 9).
-
-Shipping (c)+(d)+(R) plausibly moves Jules, Rob, and Aisha to ≥9 and reaches the 8/8 in-audience bar. Secondary 9→10 items (headline degrees, last same-sign verbatim line, save-button placement) can ride along but are not bar-gating. Do NOT redeploy per round — fix on localhost and re-test there.
+Non-gating notes (do NOT block ship): Priya (3) and Tomás (4) remain category non-fits at their ceiling.
+Tomás confirms his two R2 defects (dead arrow, baseline-less counts) are fully fixed. Priya's PII-vs-claim
+finding is the one non-fit note that IS in-audience-relevant — fold it into the fix edit.

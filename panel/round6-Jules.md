@@ -1,37 +1,44 @@
-# Jules — round 6
+# Jules — Round 6
 
-**ADVOCACY: 9/10**
-**VALUE: Yes**
-**CLARITY: Yes**
+**Advocacy: 9/10 · Value: Yes · Clarity: Yes**
+**Dominant note: My round-5 residual is fully fixed — every fallback/symmetric aspect now reads distinctly. This is share-worthy.**
 
-## Prior concerns (round 5) — re-checked first
-- **Duplicate place-search rows: FIXED.** Typed "Lisbon" → 8 clean rows, each disambiguated
-  (Lisbon, Portugal / Lisbon, ME / CT / OH / IA / ND, United States) with ZERO exact-duplicate
-  rows. "Springfield" → MO/MA/IL/OR/OH/VA/PA/TN, all distinct. The old undifferentiated
-  "Lisbon, United States" repeats are gone. This was my main gripe and it's genuinely solved.
-- **Per-chart og:image: FIXED & impressive.** The /chart/<id> unfurl renders a real per-chart
-  card showing MY big-three (Cancer Sun H9 · Leo Moon · Scorpio Rising), date, and
-  Lisbon, Portugal. That's exactly the shareable artifact I wanted — I'd post that.
-- **Same-sign readings now distinct per planet: confirmed** — Cancer Sun vs Jupiter/Venus in
-  Cancer all read differently, not copy-pasted.
+## Prior concern re-check (round-5 residual)
+- **Symmetric conjunctions reusing one generic clause → FIXED.** Pulled the full 50-aspect
+  tail. Every reading sentence is now unique (max verbatim repeat = 1x across the whole
+  reading; the round-5 fix claimed 7→2 and beat it). The two "Jupiter conjunct Venus" cards
+  now lead with distinct directional headers — "Einstein's Jupiter ☌ Obama's Venus" vs
+  "Einstein's Venus ☌ Obama's Jupiter" — so they no longer read as one duplicated card.
+- **Generic fallback bodies name the specific two bodies → FIXED.** The "flow easily" /
+  "cooperative link" templates (7x / 4x) each carry a unique body-named prefix AND name the
+  two bodies in the post-colon sentence ("the themes of Neptune and South Node tend to work
+  themselves out"). No two cards are identical.
+- **House-overlay caps + adjacent repeats → FIXED.** 28 overlay cards: 0 all-caps headers
+  (header = Title style, sign = uppercase label, consistent), 0 adjacent verbatim bodies,
+  most-repeated body only 1x. Outer-planet overlays (Uranus/Neptune/Pluto/Chiron/Lilith)
+  now have body-specific copy, not the recycled node clause.
+- **Verdict: priorConcernsAddressed = all.**
 
-## What still holds it back (the 9, not a 10)
-- **og:image:alt is STILL the generic string "Birth chart card"** — my exact round-5 nit, not
-  fixed. The rendered image is per-chart but the alt attribute isn't. Minor/a11y-only, but it's
-  the same line item I flagged.
-- **No one-tap native / X share on mobile.** Sharing is still "Create share link" → copy to
-  clipboard. As a mobile-first poster I want a native share-sheet or an "Share to X" intent
-  button so I'm one tap from posting, not copy→switch app→paste. This is THE thing between 9 and 10
-  for a shareability persona.
-- Unnamed charts unfurl as "My Chart's birth chart" — slightly awkward in a public post; default
-  to the big-three or city when no name is entered.
+## Clarity — Yes
+Header "Your birth chart, explained in plain English." + "NATAL CHART · PLAIN ENGLISH ·
+NO SIGNUP" tells me instantly what it is. The compatibility view's "How two charts get along
+— in plain English, free, no signup" is exactly the pitch I'd say to a friend.
 
-## What's great
-- Mobile 375px experience is clean and fast; example loads instantly, readings are warm plain
-  English, no signup, computed on-device. Save-as-image downloads a tidy `albert-einstein-chart.png`.
-- This is squarely my "ask everyone their big-three" use case — I'd send it to friends and use it
-  repeatedly.
+## Value — Yes
+Today I eyeball Co-Star / screenshot Astro-Seek synastry grids and translate the symbols
+myself for friends. This hands me plain-English directional aspects ("Einstein's Saturn ×
+Obama's Sun"), honest HARMONY/TENSION/CONJUNCTION counts (no fake compatibility %), big-three
+side-by-side, and a share link that reopens the FULL reading on a fresh session with a
+"Create your own chart →" hook. That's a real time save and genuinely postable.
+
+## Advocacy — 9/10
+Share verified: button goes to **COPIED**, clipboard holds a real /chart/ URL, fresh-session
+reopen = 200 with summary + both names + key aspects + house overlay + "not a prediction"
+disclaimer. Mobile 375px: zero horizontal overflow, big-three and aspect cards render clean,
+no clip/overlap/double-render. Not a 10 only because the shared backbone sentence on
+same-aspect pairs (e.g. both Jupiter-Venus conjunctions) is still near-identical after the
+distinguishing header — fine, but a 10 would vary the body too.
 
 ```json
-{"tester": 0, "round": 6, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["No one-tap native/X share button on mobile — still copy-link only", "og:image:alt still generic 'Birth chart card' (round-5 nit not fixed)", "Unnamed charts unfurl as 'My Chart's birth chart'"], "priorConcernsAddressed": "some"}
+{"tester": 6, "round": 6, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["same-aspect pairs share a near-identical body sentence after the distinguishing directional header — minor", "share URL is /chart/<id> not a synastry-specific path; cosmetic only, it reopens the full compatibility reading correctly"], "priorConcernsAddressed": "all"}
 ```

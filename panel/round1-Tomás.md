@@ -1,59 +1,61 @@
-# Round 1 — Tomás (Operations analyst; Excel/Tableau/Jira; HARD astrology skeptic, partner is into it)
+# Tomás — Round 1 (synastry)
 
-Tested cold on a desktop viewport (corporate-laptop equivalent), Edge-like. I do not believe in
-astrology, so I judged this on two things my profile actually cares about: **is the birth/place
-data private**, and **could my partner (a layperson believer) understand the output** — not on
-whether the category appeals to me.
+Operations analyst, hard-skeptic on astrology (partner is into it). Tested cold on
+localhost:3099, desktop (1280) + mobile (375). My job: is data entry private, and could a
+layperson read the output.
 
-## 1) Advocacy: 6/10 — I would actually mention it to my partner, but not unprompted to colleagues
-Honest split. As a product for its audience it's clearly competent, and I'd send the link to my
-partner with "no signup, runs in your browser, try it" — that's a real send. But *I* won't bring
-it up to anyone else, and even for my partner there are two things that knock it below an
-enthusiastic score: (a) the city picker labels are cryptic — I typed "Madrid" and got
-"Madrid, 33, CO", "Madrid, 29, ES", "Madrid, 08, MX"... the bare numbers (region codes?) are
-unexplained, and it silently let me compute against **Madrid, Colombia** when I meant Spain. A
-layperson will pick the wrong one and not notice. (b) The share-link disclosure literally says it
-sends birth info to a server — fine that it's honest and opt-in, but a privacy-cautious person
-reads that and hesitates. Neither is fatal; both keep it off a 9.
+## 1. What I tried / what happened
+Loaded cold. Page does NOT auto-load an example — I had to click "LOAD EXAMPLE (EINSTEIN)"
+(fine, one obvious button). Once a chart was up I found "COMPATIBILITY — Compare two people"
+in ~2s; it sits ABOVE the "Today's Sky" transit card as promised (y=827 vs y=961). Clicked
+it: auto-loaded Einstein × Michelle Obama — two genuinely DISTINCT charts (Pisces/Sag/Cancer
+vs Capricorn/Pisces/Virgo). Sections: Compatibility Summary (big-three side by side),
+Element Distribution per person, a "30 HARMONY · 15 TENSION · 5 CONJUNCTION" badge, Key
+Aspects, House Overlay (each person's planets in the other's houses). Natal chart itself
+renders fully and is rich.
 
-## 2) Value: Yes (for the target user, not for me)
-For its audience this genuinely beats the alternative. My partner currently uses astro-seek /
-Co–Star-type apps; the differentiators here are real: no signup, computed on-device, a clean
-house table with **plain-English labels** ("Self & identity", "Career & reputation", "Money &
-values") instead of pure jargon, expandable per-placement explanations, and a "Today's Sky"
-transits panel with readings like "Moon in Cancer is visiting your natal Sun's sign." That's
-more legible than the wall-of-symbols charts I've seen my partner squint at. Not value *for me*
-— I'd never use it — but the question is whether it saves the target effort, and it does.
+## 2. What worked / what confused or broke
+WORKED (the stuff a skeptic cares about):
+- PRIVACY PASSES MY SNIFF TEST. I typed a name + birth date + "London" and watched the
+  network: ZERO POST/PUT requests, no birth data left the page; only external host was
+  Google Fonts. City lookup uses a built-in offline list (dropdown), not a 3rd-party
+  geocoder. Footer states "Your chart is computed on your device. Saved charts stay in your
+  browser only." That matches reality. As someone wary of pasting personal data, good.
+- HONEST. No fake "87% match" score — it reports raw counts ("30 harmonious aspects to 15
+  tensions"). I respect that; a % match would have killed my trust instantly.
+- Mobile 375px: no horizontal overflow, nothing clipped/doubled, two-column big-three fits.
+- No console/page errors anywhere.
 
-## 3) Clarity: Yes
-Within 30s the H1 "Your birth chart, explained in plain English" + subhead "Free, no signup —
-type your birth date, time, and place, or load an example" told me exactly what it is and what to
-do. The "Load example (Einstein)" button is an obvious zero-risk first click and it populated a
-full chart instantly. The footer line "Your chart is computed on your device. Saved charts stay
-in your browser only." answered my #1 question before I had to dig for it.
+CONFUSING:
+- The Key Aspects list is HUGE — 50+ rows of "SEXTILE · 0.3° ORB / TRINE · 0.4° ORB...". For
+  a layperson (the whole point) this is a wall. No top-N, no "show more". My partner would
+  scroll forever.
+- Language slips out of plain English: "the themes they govern," "karmic direction," "this
+  overlay," "fated and developmental." The aspect blurbs are also near-identical boilerplate
+  (every sextile = same sentence), so it reads templated, not insightful.
+- The summary line "30 harmonious aspects to 15 tensions" is a count with no anchor — is 30
+  a lot? Out of how many? No baseline = a skeptic shrugs.
 
-## Concrete likes
-- Verified privacy: typing a city triggered **zero external network requests** (offline bundled
-  city dataset), and computing a chart sent nothing off-device. As the skeptic-with-fine-print,
-  this is the single biggest trust win.
-- No signup, no email, no paywall — nothing nags you.
-- Plain-English house labels + expandable explanations + element distribution; a non-astrologer
-  can follow it. "Today's Sky" transit blurbs are readable English, not jargon.
-- Share link is **opt-in** and the data-leaves-browser behavior is disclosed in plain language
-  right next to the button. Honest. (My capture showed no external call on share-create either —
-  appears to encode into the URL token; behavior matches the on-device promise.)
-- Clean, no console errors, instant compute.
+BROKE: nothing.
 
-## Concrete defects
-- City picker labels are cryptic ("Madrid, 33, CO") — the numeric code is unexplained and it let
-  me compute against the wrong country silently. A layperson will mis-pick. Spell out the
-  region/country.
-- "Birth time" has an "Unknown" checkbox but no explanation of how much the chart changes without
-  it — a believer partner won't know whether their guess matters (rising sign / houses depend on it).
-- The skeptic in me wants one line of honesty up top that this is for entertainment/interpretation,
-  not science — its absence isn't a bug but it's why I personally stay detached.
-- Category just isn't for me; that caps my own enthusiasm regardless of build quality.
+## 3. Would I use / recommend it?
+Personally no — I think the category is nonsense, so that's a category problem, not the
+app's fault. But judged on its own terms it is the most TRUSTWORTHY astrology page I've seen:
+private, no signup, no manipulative match score. I'd actually point my partner at it BECAUSE
+it doesn't try to con her with a fake compatibility percentage. That's the one honest thing
+that moves my number off the floor.
+
+- ADVOCACY: 4/10  (held back by: I won't advocate the category; and the aspect wall +
+  astro-jargon undercut the "plain English for a layperson" promise)
+- VALUE: No (for me personally — category non-fit; marginal-yes only for my partner)
+- CLARITY: Partially — I understood WHAT it does in 5s; the comparison OUTPUT is not
+  layperson-readable past the big-three (jargon + 50-row aspect dump)
+- DOMINANT COMPLAINT: The Key Aspects section is a 50-row jargon dump — no top-N, identical
+  boilerplate blurbs, terms like "the themes they govern" — so it fails its own "plain
+  English for a non-astrologer" promise.
 
 ```json
-{"tester": 1, "round": 1, "clarity": "Yes", "value": "Yes", "advocacy": 6, "topComplaints": ["City picker labels cryptic ('Madrid, 33, CO') — silently let me compute against wrong country", "No guidance on how much an unknown birth time changes the chart"], "priorConcernsAddressed": "n/a"}
+{"tester": 0, "round": 1, "clarity": "Partially", "value": "No", "advocacy": 4,
+ "topComplaints": ["Key Aspects is a 50+ row jargon dump with no top-N and identical boilerplate blurbs", "Output drifts out of plain English ('themes they govern', 'karmic direction'); harmony/tension counts have no baseline so a skeptic can't judge them"],
+ "priorConcernsAddressed": "n/a"}
 ```

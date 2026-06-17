@@ -1,73 +1,93 @@
-# chartwise — Panel SYNTHESIS round 2
+# Chartwise — SYNTHESIS Round 2 (SYNASTRY / "Compare two people" feature)
 
-URL tested: http://localhost:3099 (local production server, no deploy).
-Audience-weighted bar: **SHIP = ALL 8 in-audience testers at advocacy ≥ 9 AND Value = Yes AND Clarity = Yes.** The 2 non-fits (Priya, Tomás) are hard skeptics, carried from round 1, and do NOT gate.
+App under test: local `next start` prod server. Round 2 re-tests the R1 fix: the aspect-list
+rewrite (top-6 curated, planet-pair-aware, directional + named, honest counts, collapsed tail).
 
-## Score table (all 10 testers)
+Audience classification carried unchanged from Round 1 (per-profile `astrology_stance` +
+`audienceFit`, not memory):
+- IN-AUDIENCE (GATE — adv>=9 + value-clear): Dana, Jules, Aisha, Sam, Marcus, Wen, Rob, Elena (8).
+- CARRIED NON-GATING (hard-skeptic non-fits, report only): Priya, Tomás.
 
-| Tester | audienceFit | stance         | R1 adv | R2 adv | Value | Clarity | At-bar (≥9)? | carried/retested |
-|--------|-------------|----------------|--------|--------|-------|---------|--------------|------------------|
-| Marcus | in-audience | casual-skeptic | 8      | 9      | Yes   | Yes     | **Yes**      | retested |
-| Sam    | in-audience | curious        | 7      | 9      | Yes   | Yes     | **Yes**      | retested |
-| Dana   | in-audience | curious        | 7      | 9      | Yes   | Yes     | **Yes**      | retested |
-| Jules  | in-audience | curious        | 8      | 8      | Yes   | Yes     | No           | retested |
-| Aisha  | in-audience | curious        | 7      | 8      | Yes   | Yes     | No           | retested |
-| Wen    | in-audience | casual-skeptic | 6      | 8      | Yes   | Yes     | No           | retested |
-| Elena  | in-audience | casual-skeptic | 6      | 8      | Yes   | Yes     | No           | retested |
-| Rob    | in-audience | casual-skeptic | 6      | 8      | **Yes (flipped from No)** | Yes | No | retested |
-| Priya  | non-fit     | hard-skeptic   | 3      | 3      | No    | Yes     | No           | carried |
-| Tomás  | non-fit     | hard-skeptic   | 6      | 6      | Yes (for audience) | Yes | No | carried |
+## Per-tester results
 
-## Tally
+| Tester | In-audience? | Adv | Value | Clarity | Dominant note |
+|--------|--------------|-----|-------|---------|---------------|
+| Dana   | YES (gate)        | 8 | Yes | Partially | R1 fixes landed; held back by compare buried behind computing a chart first + long-tail boilerplate behind "Show all 50" |
+| Jules  | YES (gate)        | 7 | Yes | Yes       | No share/copy button on the Compare page (her core use case) + Show-all reverts to by-type boilerplate (trine line 13x) + body still "your/their" + "1 house" |
+| Aisha  | YES (gate)        | 8 | Yes | Yes       | Top-6 rebuild is recommend-worthy; held off 9 by mixed house ordinals ("1 house"/"Eighth House"/"house of 8") + recycled square boilerplate in hidden tail |
+| Sam    | YES (gate)        | 8 | Yes | Partially | Content fix is real + screenshot-worthy; held off 9 by buried compare entry + no single labeled "set Person B = my partner" action |
+| Marcus | YES (gate)        | 8 | Yes | Yes       | "same Sun sign" bug FIXED; held off 9 by Show-all duplicate boilerplate + Node "1 house" raw cardinal |
+| Wen    | YES (gate)        | 8 | Yes | Yes       | Directionality blocker FIXED + verified by name; held off 9 by boilerplate tail + "1st House"/"1 house" ordinal inconsistency + undiscoverable compare |
+| Rob    | YES (gate)        | 8 | Yes | Yes       | Wallpaper problem solved; held off 9 by aspect blurb BODY still type-templated + inconsistent house ordinals + no "Show fewer" |
+| Elena  | YES (gate)        | 8 | Yes | Yes       | Right aspects now lead; held off 9 by Show-all naked boilerplate + compare entry buried below natal result |
+| Priya  | carried (non-fit) | 3 | No  | Yes       | Category ceiling (pseudoscience); craft genuinely better; residual "in their 1 house" ordinal miss + compare hidden cold |
+| Tomás  | carried (non-fit) | 4 | No  | Partially | Category ceiling; NEW UX trap: dead "Compare two people →" arrow `<p>` next to real button + counts have no baseline |
 
-- **IN-AUDIENCE at-bar: 3 / 8** (Marcus, Sam, Dana — all advocacy 9, Value Yes, Clarity Yes).
-- **Every in-audience tester rose or held — nobody dropped:**
-  - Marcus 8 → 9 (+1)
-  - Sam 7 → 9 (+2)
-  - Dana 7 → 9 (+2)
-  - Jules 8 → 8 (held)
-  - Aisha 7 → 8 (+1)
-  - Wen 6 → 8 (+2)
-  - Elena 6 → 8 (+2)
-  - Rob 6 → 8 (+2)
-- **Rob's Value flipped No → Yes** — the round-1 in-audience Value blocker is cleared; in-audience Value is now 8/8 Yes.
-- **Clarity remains universal: 10/10 Yes.**
-- The five in-audience testers below the bar sit at exactly **8** — a tight cluster one point short, all citing the same one or two polish gaps below, none citing the concept.
-- Non-fits unchanged (Priya 3, Tomás 6), as expected; they do not gate.
+## In-audience tally at the bar (adv>=9 with value-clear)
 
-## Remaining blockers (grouped by cause, ranked by # testers)
+In-audience advocacy: Dana 8, Jules 7, Aisha 8, Sam 8, Marcus 8, Wen 8, Rob 8, Elena 8.
+**0 of 8 in-audience testers at adv>=9.** Seven are at 8 (one tick below the bar); Jules is at 7.
+All 8 in-audience now report value=Yes (Sam moved Marginal→Yes; Rob Marginal→Yes).
 
-### FIXABLE — dominant (these gate the 8-cluster)
+Carried non-fits (non-gating): Priya 3, Tomás 4.
 
-**(a) No one-tap shareable image/card — RECURRING, 4 testers (Dana, Jules, Rob, Sam).** Astrology sharing is visual; share is currently a URL/link only, so testers still manually screenshot the big-three / plain-English section to drop into a chat. Sam, Rob, Dana explicitly name a "screenshot-ready" / "save image card" as the thing standing between an 8 and a 9 — the shareable moment exists (big-three chips) but can't be exported in one tap.
+## Movement vs Round 1
 
-**(b) Repetitive / template-y "FOR YOUR CHART" daily-transit copy — RECURRING, 4 testers (Marcus, Elena, Sam, Jules).** The transit lines reuse one sentence frame: "X is currently in Y, the same sign as your natal Z… activating the same area of your chart right now," repeated 3–4 times verbatim. Capitalization/dates are now clean, but the identical skeleton still reads as a mad-lib. Marcus, Elena, Sam each call this their single reason for not being at a 9; Jules lists it third.
+The R1 aspect-list rewrite worked — every in-audience tester moved UP or held at their R1 top:
+- Elena 6→8 (+2): "the right aspects now lead, Chiron/Node banished to the tail."
+- Rob 6→8 (+2): wallpaper problem "genuinely solved"; value Marginal→Yes.
+- Sam 6→8 (+2): content fix "decisive"; value Marginal→Yes.
+- Dana 7→8 (+1), Wen 7→8 (+1): R1 blockers (generic blurbs / silent directionality) fixed.
+- Jules 6→7 (+1): top-6 right + directional, but her share-button complaint is STILL unfixed.
+- Aisha 8→8, Marcus 8→8 (held): same number, "more deserved" — R1 blockers (wall / "same Sun
+  sign" bug) gone; now held only by craft nits.
+- Priya 3→3, Tomás 4→4 (non-gating, category ceiling unchanged).
 
-### FIXABLE — single-persona (real but not recurring)
+No tester moved down. The feature is now broadly trusted: directional + fully-named aspects,
+honest counts (no fake %), collapsed tail, clean at 375px, zero console errors, client-side data.
 
-- **OpenGraph/Twitter card on shared /chart/ links — Jules only.** Posting a /chart/ link yields a bare URL + generic title, no preview image. For a constant-poster this is the difference between "I'll share" and "this spreads." (Related to (a) but a distinct fix: page meta tags, not an export button.)
-- **Per-planet degrees/longitudes — Wen only.** Sign + house now show and are internally consistent, but no degrees, so a data-hygiene user can't reconcile the ephemeris math and takes it "partly on faith." Lightweight, not a bar-blocker on its own.
-- **In-table expanded-cell sliver + verbatim same-sign boilerplate — Aisha only.** Table pill-expansions still render into a cramped ~50–120px column (the full-width fix only landed on the new top section, not the table), and identical reading text repeats verbatim across same-sign placements (e.g. "Precise and helpful…" under Virgo Rising / Mercury / Venus). Both craft/polish; the top section makes the table-sliver largely moot for her.
+## Single dominant blocker
 
-### Audience (non-gating)
+No single defect blocks all 8, but TWO recurring craft issues each hold ~6 in-audience testers
+one tick below 9, and they are the same edit surface:
 
-- Priya (3) and Tomás (6) will not advocate for an astrology product regardless of quality — their gap is audience, not defect. Their craft feedback was already folded into the round-1 geocoder fix.
+1. **Long-tail boilerplate behind "Show all 50"** (Aisha, Dana, Jules, Marcus, Wen, Elena, Rob —
+   7 in-audience). The top-6 are specific, but the expanded tail reverts to by-aspect-TYPE
+   templates: the same trine line renders 13x, square 10x, sextile 9x; reciprocal pairs
+   (Jupiter☌Venus vs Venus☌Jupiter) render byte-identical. The wall was hidden behind a toggle,
+   not removed.
+2. **House-overlay ordinal inconsistency** (Aisha, Jules, Marcus, Priya, Rob, Wen — 6 in-audience
+   + Priya). The North Node / Node synastry blurb bodies still emit BARE cardinals — "in their 1
+   house", "your 5 house", "house of 8" — directly under headers that correctly read "1st House".
+   The R1 ordinal fix missed this one template/code path. This is the cheapest, most-cited fix.
 
-## Positives to protect (all round-1 fixes verified landed)
+Precise fix (one builder edit closes most of the gap):
+- **(a) De-boilerplate the long tail**: give the post-top-6 aspects planet-pair-aware copy (or at
+  minimum vary by the actual bodies so reciprocal pairs differ), AND add a "Show fewer / Show top
+  aspects only" re-collapse (Jules, Rob, Marcus noted no way back). Wen confirms the toggle text
+  already flips on expand for the top section — extend the same to the tail.
+- **(b) Fix the Node ordinal path**: interpolate the ordinal ("1st/5th/8th House") in the North
+  Node / house-overlay blurb BODIES, not just the headers. Single template, ~6 testers cite it.
+- **(c) Cheap rider that lifts Jules off 7**: add a share/copy-link button to the Compare page
+  (natal already has one; compare — the shareable artifact — has none; Jules' explicit blocker).
 
-- **Plain-English reading surfaced by default** — "YOUR CHART, IN PLAIN ENGLISH" now sits above the houses table with per-placement prose; confirmed by Marcus, Sam, Dana, Rob, Aisha, Jules, Elena. This is the differentiator and the most-screenshotted moment; do not re-bury it.
-- **Geocoder rebuilt** — famous-city-first ranking, readable country names (not region codes), "City, Country" format, aliases. Confirmed by Marcus (Austin/Paris/London), Elena (San Francisco/London, "San Francisco, USA" now returns), Wen (Tokyo/Taipei), Dana, Rob. (Residual: Jules saw 4 undifferentiated "Austin, United States" rows w/ no state + "NYC" alias miss — minor edge, not a blocker.)
-- **Auto-scroll after compute** — drops the user straight onto the chart (scrollY ~955) on mobile and desktop; confirmed Dana, Sam, Elena, Jules.
-- **No empty placements** — every ▾ expands to a real sentence; Wen re-checked Jupiter + the House-11 Neptune/Pluto/Chiron stack, all distinct, no empties.
-- **Share loop works end-to-end** — "Create share link" produces a real /chart/ URL, Copy flips to "Copied!", the link renders the same chart cold for a friend (Sam, Marcus).
-- **Zero console errors** across cold load, example, own-chart, and share for every tester; fast.
+## VERDICT: ITERATE
 
-## Recommendation
+0 of 8 in-audience testers at adv>=9 (seven at 8, Jules at 7). The feature works, is trusted, and
+every in-audience tester now reports value=Yes — but craft polish keeps the whole cohort one tick
+short. Sub-bar in-audience testers: ALL 8 (Jules at 7; Dana/Aisha/Sam/Marcus/Wen/Rob/Elena at 8).
 
-**FIX-AND-RETEST.** We are NOT at a plateau or stall: round 1 → round 2 every in-audience tester rose or held, 3 reached the bar, and the round-1 Value blocker (Rob) cleared. There is clear, concrete headroom.
+ONE highest-leverage fix: **de-boilerplate the "Show all 50" tail (planet-pair-aware copy +
+"Show fewer" re-collapse) AND interpolate the ordinal in the Node house-overlay blurb bodies.**
+These two ride in one builder edit, are named by 6-7 of the 8 in-audience testers, and are the
+last thing standing between the seven 8s and a 9. Add the Compare-page share button to also lift
+Jules (7) — it's her sole blocker and the only fix unique to her.
 
-The five in-audience testers stuck at exactly 8 are gated by the two recurring fixable items — **(a) the missing one-tap share-as-image card** and **(b) the template-y transit copy** — and nothing about the concept.
-
-**Single highest-leverage fix:** the **one-tap shareable image/card (a)** unblocks the most testers. It is the named 8→9 gate for Sam, Dana and Rob, and helps Jules; it is also the deepest lever because it converts the existing screenshot-clean big-three / plain-English moment into the viral trigger the product is built around. **(b) the transit-copy rewrite** is the close second and the only thing Marcus and Elena still cite — varying the sentence frame so the 3–4 "FOR YOUR CHART" lines aren't an identical skeleton would move Marcus, Elena, Sam, Jules.
-
-Shipping both (a) and (b) plausibly moves all five remaining 8s to 9 and reaches the 8/8 in-audience bar. Secondary single-persona items (OG meta for Jules, degrees for Wen, table-sliver/boilerplate for Aisha) can ride along but are not bar-gating on their own.
+Non-gating notes (do NOT block ship): Priya (3) and Tomás (4) are category non-fits at their
+ceiling — PARK, not iterate. BUT Tomás surfaced one real, in-audience-relevant defect worth
+folding into the fix edit: the **"Compare two people →" arrow heading is a dead `<p>`** next to
+the actual button — a one-affordance cleanup (make the arrow text the button, or drop the arrow)
+that prevents the "feature looks broken" bounce he hit. The compare-discoverability complaint
+(compare hidden until you compute a natal chart — Dana, Sam, Wen, Elena, Priya) is a real
+in-audience clarity drag worth surfacing the Compare entry above the fold, but it is secondary to
+the two craft fixes above.

@@ -10,3 +10,7 @@ body {
   color: var(--ink);
   font-family: var(--ds-font);
 }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

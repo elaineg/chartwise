@@ -1,30 +1,49 @@
-# Rob — round 5
+# Rob — Round 5
 
-**Persona:** Rob, freelance brand/visual designer. Desktop, color-calibrated monitor. Casual-curious-skeptic; skims fast, price-sensitive, judges everything against what he could mock up himself; bounces on dense reference manuals.
+Freelance brand/visual designer. Desktop, color-calibrated monitor. Casual-curious skeptic.
+Tested cold at http://localhost:3099, desktop 1280px + mobile 375px.
 
-## 1. ADVOCACY: 9
-## 2. VALUE: Yes
-## 3. CLARITY: Yes
+## Prior concerns re-checked (my two blockers from R4)
 
-## Did my round-4 concerns get addressed?
-- **Inline desktop expand (round-4 BLOCKER — couldn't get it to fire):** FIXED. Clicking the "Cancer" sign cell in House 1 now expands an inline plain-English line ("Cancer rising gives you a warm, receptive, and protective presence... others feel nurtured around you"). It fires cleanly. priorConcern: addressed.
-- **Per-chart visual variation on save cards:** PARTIAL/NOT really. The downloaded card (`saved-card.png`) is genuinely well-designed — name, Sun/Moon/Rising chips with planet glyphs, element tally (Fire/Earth/Air/Water), a pull-quote, partial wheel motif, "no signup" footer. But a skeptic's card and a believer's card still share the same wheel motif/layout; variation is only in the text/element bar, not the visual identity. Same as I flagged.
-- **The dense 12-house dropdown grid:** NOT addressed. It's still an always-visible reference table sitting mid-page between the readable hero cards and the transits. I asked to hide it behind an "Advanced / full table" toggle so the glanceable reading stays the hero — that didn't happen. This is the single thing still pulling me off a 10.
+**(1) Reversed-pair aspect bodies — FIXED.** Used "Compare two people" (Einstein × Michelle
+Obama), expanded the full tail: 50 aspects, every body paragraph now NAMES the two actual
+people with directional phrasing. "The X person" wording is gone. Spot-checked the reversed
+Moon/Uranus pair — they read DIFFERENTLY and correctly swap who does what:
+ - "Einstein's Uranus's unpredictability can feel emotionally destabilizing to Obama's Moon"
+ - "Obama's Uranus's unpredictability can feel emotionally destabilizing to Einstein's Moon"
+Ran a duplicate scan across all 52 named paragraphs: ZERO exact duplicates; only 1
+name-stripped near-template out of 50, and even that one names different people. Genuinely
+resolved. (Designer nitpick: the two Jupiter↔Venus conjunctions share identical body wording
+— defensible since conjunction is symmetric/non-directional, but my eye still caught the echo.)
 
-## What changed since r4 — did it land?
-- **Per-chart share unfurl:** YES, landed strong. `/chart/<token>` og:title = "Albert Einstein's birth chart, explained", og:description names him, and og:image (`og.png`, 1200x630) renders HIS name + date/place + actual big three (Pisces Sun H10, Sagittarius Moon, Cancer Rising) — not generic. As a designer this is a real viral hook; I'd actually paste this link.
-- **Distinct per-placement headlines:** YES. My own chart (Leo Sun H12 / Scorpio Moon H3 / Leo rising) reads totally differently from Einstein's — no verbatim repeats, each opens planet-specific ("Your light burns quietly — inner development, solitude..."). Fun, not boilerplate.
-- **Wider desktop layout / accent visibility:** YES, modestly. The result area uses more width; the save card's zodiac accent is visible. Not a wow, but no regression.
+**(2) "For fun, not science" framing — FIXED.** Found it on the compatibility view, right under
+the summary: "For insight and fun — a lens on the dynamic, not a prediction." That lands for me.
+As a non-believer I can now share this with a client without feeling like I'm endorsing fortune-
+telling. One line, exactly the permission I wanted.
 
-## Regression check (I scored a 9 — watching for slips)
-No regression. Cold open is instantly legible (headline "Your birth chart, explained in plain English" + "Free, no signup"). Zero console errors. Save-as-image downloads a real PNG. One minor quirk a designer notices: city autocomplete surfaced "San Francisco, Argentina" above the US one — slightly sloppy, but I picked the right entry and it worked.
+Other R4 fixes confirmed: ordinals correct (23°30', 14°20'), share button works (CREATE SHARE
+LINK → COPY LINK, link generated; copy verified visually, clipboard read blocked in test env),
+card placement clean. No regressions.
 
-## What I'd tell a friend
-"Free no-signup site that turns your birthday into a plain-English personality read and a share card that actually looks designed. Even as a non-believer it's a fun 2-minute thing." Value vs my alternative: I'd otherwise just eyeball a generic astro site or mock something in Figma — this is faster and the share card is better than I'd bother making. So: Yes on value.
+## Three questions
 
-## What keeps it from a 10
-The mid-page 12-house dropdown grid still reads as a dense reference manual and breaks the "glanceable and fun" spell — hide it behind an Advanced/full-table toggle. Secondary: every save card looks the same regardless of placements (no per-chart visual identity). Fix the house-table toggle and I'm at 10.
+**Clarity — Yes.** "Your birth chart, explained in plain English." + "NATAL CHART · PLAIN
+ENGLISH · NO SIGNUP" tells me in 5 seconds what it is and that it's free. The compatibility card
+("Compare two people — plain-English compatibility between two charts") is equally legible.
+
+**Value — Marginal (up from No).** Today I do nothing — I'd half-listen at a party. The compare
+feature is the thing that nudges this past pure toy: I could actually plug in a client and a
+collaborator for a laugh, and the named, directional readings make it feel bespoke rather than a
+horoscope generator. That's a reason to open it more than once. But it's still entertainment, not
+a tool in my workflow — I won't reach for it weekly. So: a genuinely better toy, not yet utility.
+
+**Advocacy — 8/10.** Both blockers that capped me at 7 are honestly fixed, the framing line gives
+a skeptic cover to share it, and the named compare readings are the most shareable thing here. I'd
+bring it up unprompted to friends who are into astrology ("type in you and your ex, it's free").
+Held under 9 only because for ME it's still entertainment with no repeat-need, and the symmetric
+conjunctions repeat a sentence verbatim across reversed cards. Mobile 375px: no overflow, no
+clipping, zero console errors on either view.
 
 ```json
-{"tester": 0, "round": 5, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["12-house dropdown grid is still an always-visible dense reference table mid-page — should hide behind an Advanced/full-table toggle so the glanceable reading stays the hero", "save cards share one wheel motif — no per-chart visual variation (skeptic's card == believer's card)"], "priorConcernsAddressed": "some"}
+{"tester": 4, "round": 5, "clarity": "Yes", "value": "Marginal", "advocacy": 8, "topComplaints": ["symmetric conjunctions (Jupiter/Venus) repeat identical body wording across reversed cards", "for a non-believer it's a better toy, not weekly utility — no repeat-need in my workflow"], "priorConcernsAddressed": "all"}
 ```

@@ -1,23 +1,47 @@
-# Dana — round 6
+# Dana — Round 6
 
-**1. ADVOCACY: 9/10**
-**2. VALUE: Yes**
-**3. CLARITY: Yes**
+**Advocacy: 9/10 · Value: Yes · Clarity: Yes**
 
-## Prior concerns re-checked (cold)
-- **#1 Place search disambiguates same-name cities — FIXED.** Typed "Springfield": got MO, MA, IL, OR, OH, VA, PA, TN — each with state code, no dupes. "Paris" → Paris France / Paris TX / Paris Canada / Paris TN / Paris KY. This is exactly what I wanted; I can now confidently pull a coworker's chart without picking the wrong city.
-- **#2 Per-chart save-card art now distinct — FIXED for the SHARE card.** The unfurl/OG card renders the person's name, birth date+place, and their specific Sun/Moon/Rising (Einstein: Pisces Sun H10, Sagittarius Moon, Cancer Rising). OG meta + image URL carry a per-chart hash, so two charts won't unfurl identically. This is the screenshottable thing.
-- **The original 9→10 nit — Save-as-image still downloads with NO on-page preview. NOT addressed.** On my phone, tapping "Save as image" drops `albert-einstein-chart.png` straight into Downloads — no preview, no "here's your card, looks good?" step. Still mildly clunky on mobile.
+**Dominant note:** My only residual from round 5 — the generic fallback aspect sentences on
+the outer-planet/node/Lilith tail repeating verbatim 7× — is genuinely FIXED. I expanded the
+full "show all 50 aspects" tail and measured ZERO raw verbatim repeats (81/81 distinct prose
+lines). The fallback template still recurs structurally, but every instance now names the
+specific two bodies ("the themes of Neptune and Mercury…", "Uranus and Mercury…", "Chiron and
+Mercury…"), so it no longer reads as a copy-paste bug. That moves me toward 10.
 
-## Other notes
-- Mobile 375px: full value lands in one scroll — headline "Your birth chart, explained in plain English", "Free, no signup", "Load example (Einstein)" all above the fold. Zero console/page errors throughout.
-- Plain-English readings are genuinely distinct per planet (Sun=identity, Moon=restraint/home, Mercury=fast mind, Venus=nurture) — not copy-paste. My own Cancer-Sun chart read accurately and differently from Einstein's Pisces Sun.
-- Transit "Today's Sky" shows live date (Jun 16 2026), all 10 bodies, retrograde flag, AND a personalized "FOR YOUR CHART" line. Nice recurring hook.
-- Expand-a-cell works (content opens on tap).
+### Prior concern re-check
+- Verbatim fallback repeat (7× → claimed ≤2): **FIXED.** Measured 0 verbatim repeats. Bodies
+  named in every post-colon sentence.
+- House-overlay header == body capitalization: **FIXED.** Header "North Node in the 1st House"
+  matches body "Your North Node…"; sign labels uppercase consistently across all 14 cards.
+- Adjacent overlay placements repeating (Uranus 4th vs Pluto 4th): **FIXED.** Distinct readings,
+  0 verbatim overlay repeats, 0 adjacent repeats.
 
-## Why 9 not 10
-Share card + city search are now exactly what a screenshot-to-the-team-channel marketer wants. The one thing still keeping it off a 10: **no in-app preview of the saved image on phone** — I tap Save and just have to trust what landed in Downloads. Show me the card before/after I save (the OG endpoint already renders a beautiful 1200x630 — surface THAT in-app as the save) and I'd hit 10 and screenshot it unprompted.
+### What works
+Discoverability "Compare two people" card present. Synastry shows directional named aspects
+(Einstein's Sun ⚹ Obama's Sun), orbs (0.2°–7.9°), glyphs, ordinals (1st/4th/8th House),
+arcminutes + retrograde (Uranus ℞) on natal. Honest framing line "a lens on the dynamic, not
+a prediction" present. Share works with a loading state → copy button (clipboard read blocked
+in test env; copy verified visually). Big-three (Sun/Moon/Ascendant) on natal. NO fake
+percentages (0 % signs). Zero console errors on every flow. No horizontal overflow at 375px
+on natal OR synastry (scrollWidth 375). No double-renders (2× ELEMENT DISTRIBUTION = two people,
+correct). This is exactly the clean free explainer I'd screenshot for the team channel.
+
+### What's still rough (the −1)
+- The outer-body fallback prose ("the areas of life these bodies govern support each other
+  naturally") still has an audibly repeated RHYTHM down the tail — named bodies fix the bug but
+  a scanning reader notices the cadence. Real per-aspect copy on Uranus/Neptune/Pluto/node
+  combos would be the last 10% of polish.
+- Symmetric conjunctions render the same pair twice with identical prose (Einstein's Jupiter ☌
+  Obama's Venus, then Venus ☌ Jupiter). Astrologically defensible, but feels duplicated.
+
+### Would I use & recommend it
+Yes — unprompted, to friends who follow astrology and to my team channel as "free, no-signup,
+actually-readable chart explainer." Today I screenshot from random astro sites with ads and
+paywalled compatibility reports; this is cleaner and free. Holds at 9 because the tail prose is
+template-flavored, not unique — a true 10 needs original outer-planet aspect copy.
 
 ```json
-{"tester": 1, "round": 6, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["Save-as-image still downloads with no on-page preview on mobile — must trust what landed in Downloads", "The polished per-chart OG card (1200x630) is only used for share unfurls, not surfaced as the in-app save preview"], "priorConcernsAddressed": "some"}
+{"tester": 4, "round": 6, "clarity": "Yes", "value": "Yes",
+ "advocacy": 9, "topComplaints": ["outer-body fallback prose still template-rhythmic down the aspect tail (bodies named, but cadence repeats)", "symmetric conjunctions show the same pair twice with identical sentence"], "priorConcernsAddressed": "all"}
 ```

@@ -1,50 +1,24 @@
 # Wen — Round 4
 
-Marketing data analyst, desktop two-monitor, casual-skeptic who needs to see the math.
+## Prior R3 concerns — re-checked first
+- **Verbatim "Show all 50" tail (was ~44 identical lines):** FIXED. Expanded full tail = 135 distinct long lines out of 138; worst-case verbatim repeat is now **2x**, and only **3 lines** repeat at all. Two of those are symmetric reversed pairs (Einstein's Jupiter☌Obama's Venus 3.8° vs Einstein's Venus☌Obama's Jupiter 4.3°) — different headers + orbs, same astrologically-symmetric blurb, which is defensible. The third is two planets in the same partner house sharing the generic house-overlay line. No "the X person" placeholders anywhere (count: 0); real names used throughout.
+- **Ordinal inconsistency (numeric "6th House" header vs spelled-out "Sixth" body):** FIXED. Grepped for every spelled-out ordinal — ZERO hits. Every header AND body uses the same numeric form: "Mercury in the 6th House" / "Your Mercury in their 6th House"; "Sun in the 8th House" / "their 8th House". The invisible-transform smell is gone.
 
-## Prior concern (R3 9→10): degree in the HEADLINE reading where the claim is first made
-NOT addressed. The plain-English reading still says "Pisces Sun · House 10" / "Sagittarius
-Moon · House 6" with NO degree. Degrees (Sun 23° Pisces, Moon 14° Sagittarius) still live
-ONLY in the placements table. The one thing I asked for is the one thing that didn't move.
+## 1. Clarity — YES
+"Type a birth date/time/place (or load Einstein), get your chart explained in plain English with no jargon — and compare two people for compatibility, free, no signup." The COMPATIBILITY "Compare two people / Plain-English compatibility between two charts" card sits as the FIRST block right under the chart's big-three chips (c: confirmed). Clean monochrome, nothing confusing.
 
-## R4 change-checks
-- Full-width expanded in-table reading (DESKTOP): WORKS and verified. Clicking the Pisces
-  cell in House 10 opens a row with colspan="4"; I measured its width = 555px = exact table
-  width. Reading is coherent ("Pisces on the tenth means career is in service... reputation
-  built on compassion"). No regression: all 11 degrees, retrograde (Uranus 1° Virgo℞), ASC:
-  Cancer / MC: Pisces cusps, North/South Node all still render correctly.
-- Share /chart/<token> unfurl: PARTIAL. summary_large_image card + og tags exist, but
-  og:image is a STATIC generic logo (og-default.png), the SAME for every chart — not a
-  preview of MY chart. And it resolved to the prod URL which 404s (test-env: localhost
-  page hard-codes the prod asset path; can't fully judge the live deploy from here, flagging
-  not failing). Title defaults to the awkward "My Chart's birth chart, explained" when name
-  is blank.
-- Save-as-image card (elevated): WORKS, and it's the real win. Downloaded a clean 1.3MB PNG
-  with name/date/place, the big-three, element distribution (Fire4/Earth5/Air1/Water1), and
-  branding. THIS is the shareable artifact, far more than the link unfurl.
+## 2. Value — YES (for the entertainment use case)
+Today I'd skim a free site like astro-seek and bounce off the wheel/jargon. This actually tells me what a placement MEANS in sentences, with the orb and aspect type shown (e.g. "SEXTILE · 3.6° ORB") so I can see HOW it was derived — that transparency is what wins me over as a data-skeptic. Big-three honest framing intact; element distribution sums correctly (5/4/1/1 across 11 placements); Einstein Sun 23°30' Pisces / Moon Sagittarius / Cancer rising match cited values. Math looks credible.
 
-## Math credibility (I scrutinized)
-Holds. Einstein: Sun 23° Pisces, Moon 14° Sag, Cancer rising — matches published ephemeris.
-My own chart (1990-07-15, Singapore 08:30): Sun 22° Cancer, early-90s outer placements (Pluto
-Scorpio, Uranus/Neptune/Saturn Capricorn) all correct. Element counts sum to the 11 bodies
-shown. Place search returned "Singapore, Singapore" cleanly. Zero console errors throughout.
+## 3. Advocacy — 8/10  (UP from 5 in R3)
+The two trust-killers that tanked my R3 score are both genuinely resolved, verified by hand, not taken on faith. Share link works end-to-end: POSTs /api/chart-share (201), button shows "Creating link…", writes a real /chart/<id> URL to clipboard, and the opened link renders both names + full reading. Privacy wording is HONEST and upfront: "Creating a link stores the birth info on our server to make the URL work" — exactly the disclosure I want. 375px: zero overflow, no clip/overlap, no console errors anywhere.
+Held back from 9: (1) header/body capitalization drift — "8th House" in headers but "8th house" lowercase in body; trivial but I notice; (2) the share button has a ~1.5–2.5s silent gap before "Creating link…" appears with no spinner on first click — felt like a dead button until I waited. (3) generic same-house overlay line still duplicates when two planets share a house.
 
-## ANSWERS
-1. **Advocacy: 9** (unchanged from 9). The tool that shows its work, still solid; nothing
-   regressed and the expanded reading is a genuine polish. But my exact 9→10 ask (degree in
-   the headline reading) was not done, and the new share-unfurl is a generic logo not a chart
-   preview — so I have no new reason to bump it.
-2. **Value: Yes.** Today I'd half-skim a free astro-seek wheel and not understand it. This
-   gives me plain English AND the degrees to verify against ephemeris in one screen.
-3. **Clarity: Yes.** "Your birth chart, explained in plain English" + "Free, no signup" nails
-   it in under 10 seconds.
-
-Remaining blocker to a 10: put the degree in the headline reading line itself ("Pisces Sun
-23° · House 10"), so the credibility hook lands where I first read the claim — not buried in
-the table. Secondary: make the shared-link unfurl image the actual per-chart card (you
-already generate that PNG for Save-as-image), and fix the "My Chart's birth chart" default.
+VALUE: yes
+CLARITY: Yes
+Dominant note: both R3 regressions fixed and proven by direct inspection (2x max repeat vs ~44; one numeric ordinal form everywhere). Score recovers from 5 to 8 — past my R2 baseline of 8 because the share + privacy honesty is now solid.
+Movement: +3 vs R3 (5 → 8).
 
 ```json
-{"tester": 4, "round": 4, "clarity": "Yes", "value": "Yes",
- "advocacy": 9, "topComplaints": ["degree still absent from headline reading line (my R3 9->10 ask, not done)", "share unfurl uses a generic static logo, not a per-chart preview image; 'My Chart's birth chart' default title is awkward"], "priorConcernsAddressed": "none"}
+{"tester": 1, "round": 4, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["header/body ordinal capitalization drift (8th House vs 8th house)", "share button silent 1.5-2.5s with no spinner before 'Creating link…' appears", "generic same-house overlay line still repeats when two planets share one house"], "priorConcernsAddressed": "all"}
 ```

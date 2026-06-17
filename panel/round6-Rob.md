@@ -1,29 +1,48 @@
-# Rob — round 6
+# Rob — Round 6
 
-**Persona:** Rob, freelance brand/visual designer. Casual-curious-skeptic about astrology. Skims fast, compares to what he'd do himself, low patience for dense data.
+Freelance brand/visual designer. Desktop 1280px + mobile 375px, color-calibrated monitor.
+Casual-curious skeptic. Tested cold at http://localhost:3099.
 
-## Answers
-1. **ADVOCACY: 9/10**
-2. **VALUE: Yes**
-3. **CLARITY: Yes**
+**ADVOCACY: 8/10 · VALUE: Marginal · CLARITY: Yes**
+**Dominant note:** My exact R5 hold-back — the symmetric Jupiter↔Venus conjunctions — still
+reads a VERBATIM-identical body sentence both directions. Not fixed. Still an 8.
 
-## Place-search ranking — FIXED (confirmed cold)
-My round-5 complaint is resolved. Tested live:
-- `San Francisco` → **"San Francisco, CA, United States" ranks #1**, above "San Francisco, Argentina" (exact bug I flagged — now correct).
-- `Berlin` → "Berlin, Germany" #1, then state-disambiguated US Berlins ("Berlin, NH/NJ/WI..."). No duplicate rows.
-- `Springfield` → clean state labels (MO, MA, IL, OR...), no dupes. Disambiguation works.
+## R5 concern re-check
+**(1) Symmetric-conjunction body dup — NOT FIXED (my specific hold-back).** Expanded the full
+51-aspect tail (Einstein × Obama). A name-stripped scan: only ONE post-colon sentence repeats
+verbatim with names attached — and it's exactly the pair I flagged:
+ - "Einstein's Jupiter — Obama's Venus: Jupiter conjunct Venus: affection and optimism meet at a single point…"
+ - "Einstein's Venus — Obama's Jupiter: Jupiter conjunct Venus: affection and optimism meet at a single point…"
+Identical sentence, only the name-prefix differs. The fix claim "max verbatim repeat 7→2" is
+technically met, but the 2 that remain ARE my echo. Defensible (conjunction is symmetric), but
+my designer eye still catches it adjacent on screen.
+**(1b) Generic fallback feel — partial.** Distinct body NAMES, yes. But the underlying template
+recurs after name-stripping: "…flow easily between you — the areas of life these bodies govern
+support each other naturally…" 7×, "…cooperative link…" 4×. Outer-planet/node aspects all share
+one boilerplate with swapped planet names. To a fast skimmer that's the reference-manual texture.
+**House overlay — FIXED/clean.** Header caps == body caps, no adjacent verbatim repeats; each
+overlay reads distinctly with correct directional "Your/Their" framing.
 
-## Prior concerns — all checked
-- **Ranking/disambiguation:** FIXED (above).
-- **Same-sign readings distinct per planet:** FIXED — Einstein's Pisces Sun reads differently from his other placements; my Leo Sun / Scorpio Moon / Libra Rising gave a fully distinct, well-written reading. Copy is fun and legible for a skeptic ("your mind moves fast and talks faster... delivers them bluntly"), not manual-speak.
-- **Per-chart save-card art:** PARTIAL. Data differs (name, big-three chips with per-planet color accents, element counts), but it's one fixed frame and the decorative wheel art is identical on every card. The one-line card caption was the SAME on both ("Sun in House 11 — career and legacy are central") despite Einstein being House 10 — that line isn't actually per-chart. Still my one open nit.
+## Prior praise held
+Directional named aspects: yes. Honest line "For insight and fun — a lens on the dynamic, not a
+prediction": present, still my permission-to-share. Ordinals/arcminutes (23°30', 7°24', 14°20'):
+correct. No fake %: confirmed (no `\d%` anywhere). Big-three boxed on natal + compare. Share:
+WORKS — POST /api/chart-share → real /chart/<id> URL, writes to clipboard, link reopens the full
+"SHARED COMPATIBILITY" reading. (My first click hit the section *header* "Share this comparison";
+the actual button is below it — env/test artifact on my side, NOT an app bug.)
 
-## Notes
-- The 12-house grid (HOUSE/SIGN/PLANETS/NODES) is STILL always-visible and dense — but it now sits BELOW the plain-English reading + a nice colored element-distribution bar, so a skimmer like me gets the payoff first and the manual is optional scroll. Acceptable; I'd still personally collapse it behind a toggle.
-- Big-three (Sun/Moon/Rising) front and center — exactly what an idle-curious non-believer wants.
-- Save-as-image works (downloaded clean 1200-ish px PNG card, designer-acceptable). Share link works end-to-end (201 from /api/chart-share, real URL to clipboard, page unfurls with per-chart OG title/description/image). Zero console errors anywhere.
-- Holds the 9, not a 10: the save card's decorative wheel + generic caption don't reflect the individual chart's geometry — as a designer that's the difference between "shareable" and "I'd post it unprompted."
+## Three questions
+**Clarity — Yes.** "Your birth chart, explained in plain English" + "NATAL CHART · PLAIN ENGLISH
+· NO SIGNUP" — 5 seconds and I know what it is, that it's free, no login. Compare card equally legible.
+**Value — Marginal.** Today I do nothing (half-listen at a party). Compare is the hook — I'd plug a
+client + collaborator in for a laugh. Named readings feel bespoke, not horoscope-generator. But it's
+entertainment, not a weekly tool; no repeat-need in my workflow. A genuinely good toy, not utility.
+**Advocacy — 8/10.** Craft is real and shareable; I'd bring it up unprompted to astro friends ("type
+in you and your ex, free"). Held under 9 because (a) the one verbatim conjunction echo I named last
+round is still there, and (b) the soft value/category ceiling — for a non-believer it stays a toy.
+If that one symmetric sentence had been differentiated I'd have gone 9 and let the ceiling be the ceiling.
+Mobile 375px: zero overflow, no clipping/double-render on natal OR compare; zero console errors. Date correct.
 
 ```json
-{"tester": 6, "round": 6, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["save-card art/caption not truly per-chart (same decorative wheel + identical 'career and legacy' line across different charts)", "12-house grid still always-visible dense table; would prefer a collapse/Advanced toggle"], "priorConcernsAddressed": "some"}
+{"tester": 4, "round": 6, "clarity": "Yes", "value": "Marginal", "advocacy": 8, "topComplaints": ["symmetric Jupiter/Venus conjunctions STILL repeat one identical post-colon body sentence across reversed cards", "generic fallback template recurs 7x/4x after name-stripping — reads like manual filler to a fast skimmer; plus entertainment not weekly utility"], "priorConcernsAddressed": "some"}
 ```

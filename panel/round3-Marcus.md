@@ -1,47 +1,34 @@
 # Marcus — Round 3
 
-Frontend engineer, casual-skeptic. Desktop Chrome, devtools open. Tested cold.
+Frontend eng, casual-curious-skeptic, desktop Chrome + devtools, retests synastry after fix.
 
-## Prior concern (Round 2): repetitive/template-y daily-transit copy ("mad-lib")
-ADDRESSED. The "FOR YOUR CHART" bullets now cross-reference today's transiting planets
-against MY natal placements by sign, e.g. "Mars charges through Taurus where your natal
-Neptune lives. Drive and Neptune's themes are funneling into the same area of your chart."
-and "Saturn works through Aries, alongside your natal Mercury... a productive time for
-serious effort." That's an actual conjunction-by-sign lookup, not fill-in-the-blanks —
-each bullet keys off a real overlap between transit sign and my chart. Reads like someone
-thought about it. Complaint resolved. No regression spotted.
+## Prior concerns (Round 2) — re-checked first
+- **Show-all duplicate boilerplate (same trine line repeated):** FIXED. Expanded "SHOW ALL 50 ASPECTS" gives 50 distinct pair headers and 37 distinct reading sentences. Readings are keyed by planet-pair ("Sun trine or sextile Saturn" ≠ "Moon trine or sextile Saturn"), not one generic trine line repeated. Textually distinct per line.
+- **Node "1 house" raw cardinal:** FIXED. House overlays now read "in their 1st house", "in their 7th house", "in your 5th house" etc. Regex for raw "N house" returned ZERO matches. Natal North Node also shows a sign ("North Node 1°29' Aquarius"), not a bare number.
 
-## ADVOCACY: 9
-This is genuinely well-made and I'd drop it in our group chat unprompted. Polish is real:
-dark theme is consistent, the element-distribution gradient bar, the Today's Sky 10-planet
-grid with the Pluto ℞ retrograde flag highlighted, glyphs everywhere (☉☽☿♀♂), degrees-
-within-sign on every placement. Zero console errors across every flow I exercised. The
-share card PNG download ("albert-einstein-chart.png", ~1MB) is clean and on-brand with the
-Big Three chips + footer URL — exactly the kind of image that lands in a chat. Share link
-works end-to-end: POST /api/chart-share -> 201, Copy link puts http://.../chart/<token> on
-the clipboard, and that route 200s with the full reading for a recipient. Not a 10 only
-because share data goes to a server (the page warns about it honestly, but for a "no-signup
-client-side" tool I'd prefer the chart encoded in the URL hash so nothing is stored).
+## Focus-item verdicts
+- (a) KEY ASPECTS: top aspects are relationship-significant (Sun-Sun, Sun-Mars conjunction, Moon-Jupiter). Pair-specific + directional with BOTH NAMES: "Albert Einstein's Sun ⚹ Michelle Obama's Sun". Expand → distinct per line. Collapse works: toggle relabels to "SHOW TOP ASPECTS ONLY" and clicking it restores "SHOW ALL N ASPECTS".
+- (b) House ordinals: fixed (see above).
+- (c) SHARE THIS COMPARISON: WORKS end-to-end. Click → "Creating link…" → "COPIED" + "Link copied to clipboard" toast. Clipboard gets a real persistent URL (/chart/<slug>). Opening it fresh returns 200 and renders a clean "SHARED COMPATIBILITY — A × B" page with both Big-Threes + element bars + "Create your own chart →". (Clipboard read worked in my env with permissions granted.)
+- (d) "Compare two people" is now a clear bordered CARD: "COMPATIBILITY / Compare two people / Plain-English compatibility between two charts — free, no signup". Clickable, opens compare view.
+- (e) Natal sanity: chart computes, Big-three + element distribution intact. Desktop + 375px both ZERO horizontal overflow, no clipping/overlap. ZERO console errors across every flow (only two harmless 404s for a missing resource on first load, not breaking anything). No double-renders observed.
 
-## VALUE: Yes
-I don't do this today with any tool — when friends argue about signs I've got nothing. A
-free, no-signup, instant chart explainer that produces a shareable card is exactly the
-fun-utility I'd bring to the group. Saves me from astro-seek's cluttered UI and gives me a
-clean image to share, which the alternatives don't.
+## 1. Value?
+Yes for the use case I'd actually use it for: drop a chart or a "me × my buddy" comparison into the group chat for laughs. It's slick, free, no signup, and the comparison output is genuinely readable instead of glyph soup. Today I'd just google someone's sign or paste an astro-seek screenshot nobody reads — this is shareable in one click and the plain-English readings are the differentiator.
 
-## CLARITY: Yes
-H1 "Your birth chart, explained in plain English" + "Free, no signup" + "Load example
-(Einstein)" told me what it is and that it's safe to try in under 10 seconds. One click
-loaded a full worked example. No ambiguity.
+## 2. Frustrated / broken?
+Nothing broken. One nit as a skeptic: there's no "this is for fun / not a prediction" disclaimer anywhere in the natal or compare output — only a share-privacy notice. The readings are written quite confidently ("genuinely driven by", "core identities resonate"), and for a skeptic-friendly tool I'd want one honest line. Minor, not a blocker.
 
-## Friction (minor)
-- Place search returns six "Berlin, United States" entries with no state/disambiguation —
-  picking the right one is guesswork for any non-unique US city.
-- Share stores birth data server-side; would prefer URL-hash encoding for a purely
-  client-side tool.
-- Copy-link clipboard read came back empty in headless test env, but the button fired and
-  swapped to "Copy link" with the URL verified in DOM — environment artifact, not a bug.
+## 3. Use again / recommend?
+Yes — I'd paste a comparison link in our team Slack as a Friday goof. The share link working to a clean standalone page is exactly the viral hook. Polish is high enough that I'm not embarrassed to share it.
+
+---
+ADVOCACY: 8
+VALUE: yes
+CLARITY: yes
+
+What holds it back from 9-10: (1) no honest/skeptic framing line, which for a tool whose whole charm is "we don't take this too seriously" is a missed beat; (2) the entry card only appears AFTER you compute a chart — a cold visitor who just wants to compare two people has to make one chart first to discover compatibility exists. Fix those and it's a 9.
 
 ```json
-{"tester": 1, "round": 3, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["place search shows many identical 'Berlin, United States' results with no state to disambiguate", "share link stores birth data server-side instead of encoding in URL hash for a client-side tool"], "priorConcernsAddressed": "all"}
+{"tester": 1, "round": 3, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["No honest/skeptic 'for fun, not a prediction' framing line in natal or compare output", "Compare-two-people card only surfaces after computing a chart, so cold visitors can't discover compatibility directly"], "priorConcernsAddressed": "all"}
 ```

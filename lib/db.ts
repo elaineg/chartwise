@@ -17,6 +17,21 @@
 import { createClient, type Client } from "@libsql/client";
 import type { BirthData } from "./chartCompute";
 
+/** Stored payload for a single natal chart share */
+export interface SingleChartPayload {
+  type: "natal";
+  birth: BirthData;
+}
+
+/** Stored payload for a synastry (two-person) share */
+export interface SynastryPayload {
+  type: "synastry";
+  a: BirthData;
+  b: BirthData;
+}
+
+export type SharePayload = SingleChartPayload | SynastryPayload;
+
 let _client: Client | null = null;
 let _initialized = false;
 
@@ -60,16 +75,30 @@ export async function saveChart(birth: BirthData): Promise<string> {
   const db = await getDb();
   const token = generateToken();
   const now = Date.now();
+  // Store as typed payload for forward compat
+  const payload: SingleChartPayload = { type: "natal", birth };
   await db.execute({
     sql: "INSERT INTO charts (token, birth_data, created_at) VALUES (?, ?, ?)",
-    args: [token, JSON.stringify(birth), now],
+    args: [token, JSON.stringify(payload), now],
   });
   return token;
 }
 
-export async function getChartByToken(
+export async function saveSynastry(a: BirthData, b: BirthData): Promise<string> {
+  const db = await getDb();
+  const token = generateToken();
+  const now = Date.now();
+  const payload: SynastryPayload = { type: "synastry", a, b };
+  await db.execute({
+    sql: "INSERT INTO charts (token, birth_data, created_at) VALUES (?, ?, ?)",
+    args: [token, JSON.stringify(payload), now],
+  });
+  return token;
+}
+
+export async function getSharePayload(
   token: string
-): Promise<BirthData | null> {
+): Promise<SharePayload | null> {
   const db = await getDb();
   const result = await db.execute({
     sql: "SELECT birth_data FROM charts WHERE token = ?",
@@ -77,8 +106,23 @@ export async function getChartByToken(
   });
   if (result.rows.length === 0) return null;
   try {
-    return JSON.parse(result.rows[0].birth_data as string) as BirthData;
+    const raw = JSON.parse(result.rows[0].birth_data as string);
+    // Support legacy rows that stored bare BirthData (no `type` field)
+    if (raw && typeof raw === "object" && !raw.type && raw.year) {
+      return { type: "natal", birth: raw as BirthData };
+    }
+    return raw as SharePayload;
   } catch {
     return null;
   }
+}
+
+/** @deprecated Use getSharePayload; kept for existing shared natal links */
+export async function getChartByToken(
+  token: string
+): Promise<BirthData | null> {
+  const payload = await getSharePayload(token);
+  if (!payload) return null;
+  if (payload.type === "natal") return payload.birth;
+  return null;
 }

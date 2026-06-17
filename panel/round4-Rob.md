@@ -1,50 +1,23 @@
 # Rob — Round 4
 
-Freelance brand/visual designer, desktop, color-calibrated monitor. Casual-curious-skeptic.
-Tested cold: loaded Einstein example, read the plain-English reading, ran my own chart
-(Chicago resolved fine), and generated the Save-as-image card to judge as a designer.
+Re-checked my exact R3 gripes:
+- (b) House ordinals — FIXED. Every overlay row, header AND body, uses one numeric form ("1st/4th/5th/7th/8th/9th/10th/11th House"). No mixed-ordinal list anywhere. Good.
+- (a) Aspect tail names — HALF-FIXED. Headers now use real names ("Albert Einstein's Jupiter conjunct Michelle Obama's Venus" vs the reversed "...Venus conjunct ...Jupiter"). But the INTERPRETATION BODY is STILL type-keyed and VERBATIM identical for reversed pairs: both Jupiter/Venus rows print "Jupiter conjunct Venus: affection and optimism meet at a single point..." word-for-word; both Moon/Uranus rows print the same "the Uranus person's unpredictability...". The body never says which person is which. So two consecutive rows still read as a copy-paste duplicate — exactly what I flagged in R3. The header rename papered over it; the blurb didn't change.
+- (e) Honest framing — NOT done as I asked. There's no "for fun / not science / conversation-starter" line anywhere in natal OR synastry. The only honest disclosure is the PRIVACY one ("Creating a link stores the birth info on our server"), which is good but is a different ask. A skeptic still gets zero permission-to-not-believe.
 
-## Round-3 blocker re-check (my gate)
-My one blocker was the share card reading flat/template-y: dead bottom third, navy→purple
-gradient with no craft, an element bar too data-ish for a glanceable card. Re-checked the
-new card (1600x840, downloads as `albert-einstein-chart.png`):
-- Gradient: FIXED. No longer a flat fill — there's a soft radial glow top-right and depth.
-  Reads as designed, not a CSS default.
-- Dead space: FIXED. A faint concentric zodiac-wheel ring now fills the old empty
-  bottom-right corner. Subtle, on-brand, not gimmicky.
-- Element bar: FIXED. Now four compact tinted chips (Fire 4 / Earth 5 / Air 1 / Water 1),
-  not a data readout. Glanceable.
-- New highlight box ("Sun in House 10 — career and legacy are central to this life.") with a
-  left accent rule gives it an editorial pull-quote feel. Branded footer + "chartwise"
-  wordmark. This is a real craft jump. Priors addressed: ALL.
+New checks:
+- (c) Compatibility card is the FIRST block right under the chart's big-three summary — clear, well-placed. Good.
+- (d) Share — WORKS. Real button POSTs /api/chart-share (201), label flips to "COPIED / Link copied to clipboard", clipboard holds http://localhost:3099/chart/<id>, and opening it loads "Albert Einstein × Michelle Obama" cleanly. (My first click missed and hit the section heading — env, not a bug.)
+- Natal big-three pills present & sane. 375px: no overflow (scrollW==clientW==375), no clip/overlap/double-render, no console errors. Desktop clean too.
 
-## 1. Advocacy: 9
-Up from 8. The card elevation landed — it's now something I'd actually post, not just DM.
-The composition is tight, the big-three boxes + chips + pull-quote read as one designed
-object. As a non-believer I find it fun and legible, and zero console errors anywhere.
+CLARITY: Yes. "Type two birthdays, get a plain-English read on how two people get along (and your own chart), free, no login." The "Compatibility, explained / in plain English" header and big-three pills carry it in under 30s.
 
-## 2. Value: Yes
-Today I'd half-heartedly screenshot astro-seek's cluttered chart or skip it. This gives me a
-clean, brandable, plain-English card in one tap, free, no signup. It saves the cropping/
-relayout I'd otherwise do in Figma to make any astro output presentable.
+VALUE: No. I don't do this today — I'd never open a spreadsheet for compatibility. It's a fun toy, but the duplicate-looking aspect bodies make it feel padded, and there's nothing here I'd reach for twice. Not solving a real recurring task for me.
 
-## 3. Clarity: Yes
-"Your birth chart, explained in plain English" + "Free, no signup" told me what and who in
-under 10 seconds. Big-three pills and the labeled readings ("Core identity", "Emotional
-world") keep it from feeling like a reference manual.
+ADVOCACY: 7. Movement: +1 vs my R3 6. Honest 7, not a polite one: the house-ordinal mess and the share flow that bugged me are genuinely fixed, and the card placement is right. Held below 8 by two unaddressed items I named last round — the reversed-pair aspect blurbs are STILL verbatim-identical and type-keyed (no names in the body), and the skeptic framing I asked for isn't there. Fix the blurb interpolation so reversed pairs differ and name the people, add one "for fun, not science" line, and I'm at 8-9.
 
-## What still keeps me off a 10
-- The 12-house table (the big dropdown grid: "Cancer ▾", "Sun 23° Pisces ▾", etc.) is still
-  the dense-reference-manual zone I bounce from. It's below the nice readings, so it's
-  skippable, but it's the one screen that looks data-ish — I'd hide it behind an
-  "Advanced / full table" toggle so the glanceable part stays the hero.
-- Minor: clicking a planet row didn't visibly expand an inline reading for me on desktop;
-  not sure the "full-width expanded reading" fired, so I can't credit that fix.
-- The card is gorgeous but every card shares the same wheel motif/layout — a believer
-  posting their own will look identical to mine. A touch more per-chart visual variation
-  (e.g. element-weighted color) would push it to unprompted-share territory.
+Dominant note: header got the names, the paragraph didn't — reversed pairs still print identical type-keyed text and read like a dupe.
 
 ```json
-{"tester": 4, "round": 4, "clarity": "Yes", "value": "Yes",
- "advocacy": 9, "topComplaints": ["12-house dropdown table still reads as a dense reference manual; hide behind an Advanced toggle", "all share cards share one wheel motif/layout — little per-chart visual differentiation"], "priorConcernsAddressed": "all"}
+{"tester": 0, "round": 4, "clarity": "Yes", "value": "No", "advocacy": 7, "topComplaints": ["Reversed-pair aspect blurbs still verbatim-identical & type-keyed (no names in body) — reads like a copy-paste dupe", "No skeptic/entertainment framing ('for fun, not science') anywhere, my R3 ask"], "priorConcernsAddressed": "some"}
 ```

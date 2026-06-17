@@ -1,75 +1,120 @@
-# chartwise — Panel SYNTHESIS round 6
+# Chartwise — SYNTHESIS Round 6 (SYNASTRY long-tail body + overlay-caps fix re-test)
 
-URL tested: http://localhost:3099 (local production server, no deploy — edge economy).
-Audience-weighted bar: **SHIP = ALL 8 in-audience testers at advocacy ≥ 9 AND Value = Yes AND Clarity = Yes.** The 2 non-fits (Priya, Tomás) are hard skeptics, carried forward, and do NOT gate.
+App under test: local `next start` prod server, http://localhost:3099. Round 6 re-tests the
+round-5 fix to the shared SYNASTRY output: (1) generic FALLBACK aspect bodies now name the
+SPECIFIC two bodies in the post-colon sentence (claimed max verbatim repeat 7→2), and (2)
+synastry HOUSE-OVERLAY capitalization unified (claimed 43→0 mismatches, header == body) +
+outer-planet overlay readings added so adjacent placements don't repeat (adjacent dupes→0).
 
-Round-6 changes tested cold: (1) place/city search now disambiguates same-name cities with a state/region ("Austin, TX" vs "Austin, MN"; "Berlin, Germany" ranked above the US Berlins; "San Francisco, CA" above the Argentina city) and removes duplicate-looking rows — targeted Marcus/Rob/Jules; (2) plain-English readings now genuinely distinct per planet even for two planets in the SAME sign (sign quality expressed through each planet's own domain) — targeted Elena.
+All 10 personas re-tested COLD on desktop + 375px, expanding the full ~50-aspect tail and the
+house-overlay section. Because this is a shared-output change, all 8 in-audience testers were
+re-confirmed, not just the two prior holdouts.
 
-## Score table (all 10 testers)
+Audience classification carried unchanged from Rounds 1–5:
+- IN-AUDIENCE (GATE — adv>=9 + value-clear): Dana, Jules, Aisha, Sam, Marcus, Wen, Rob, Elena (8).
+- CARRIED NON-GATING (hard-skeptic non-fits, report only): Priya, Tomás.
 
-| Tester | audienceFit | stance         | R5 adv | R6 adv | Δ      | Value | Clarity | At-bar (≥9)? | retested/carried |
-|--------|-------------|----------------|--------|--------|--------|-------|---------|--------------|------------------|
-| Sam    | in-audience | curious        | 10     | 10     | 0      | Yes   | Yes     | **Yes**      | retested |
-| Marcus | in-audience | casual-skeptic | 8      | 9      | **+1** | Yes   | Yes     | **Yes**      | retested |
-| Elena  | in-audience | casual-skeptic | 8      | 9      | **+1** | Yes   | Yes     | **Yes**      | retested |
-| Rob    | in-audience | casual-skeptic | 9      | 9      | 0      | Yes   | Yes     | **Yes**      | retested |
-| Aisha  | in-audience | curious        | 9      | 9      | 0      | Yes   | Yes     | **Yes**      | retested |
-| Dana   | in-audience | curious        | 9      | 9      | 0      | Yes   | Yes     | **Yes**      | retested |
-| Jules  | in-audience | curious        | 9      | 9      | 0      | Yes   | Yes     | **Yes**      | retested |
-| Wen    | in-audience | casual-skeptic | 9      | 8      | **−1 ⚠** | Yes | Yes     | No           | retested |
-| Priya  | non-fit     | hard-skeptic   | 3      | 3      | —      | No    | Yes     | No           | carried |
-| Tomás  | non-fit     | hard-skeptic   | 6      | 6      | —      | Yes (for audience) | Yes | No | carried |
+## Per-tester results
 
-## Tally
+| Tester | In-audience? | Adv | Value | Clarity | Dominant note |
+|--------|--------------|-----|-------|---------|---------------|
+| Dana   | YES (gate)        | 9  | Yes      | Yes | Her R5 residual FIXED: verbatim fallback repeats 7→0, 81/81 prose lines distinct (each names the specific two bodies). Overlay header==body across all 14 cards; adjacent placements distinct. All prior praise held; 375px clean. Off 10 only by the outer-body fallback prose sharing a *rhythm* + symmetric conjunctions rendering identical prose twice. |
+| Jules  | YES (gate)        | 9  | Yes      | Yes | R5 residual FIXED: every reading sentence unique (measured max verbatim repeat = 1, beat the 7→2 claim); symmetric conjunctions told apart by directional headers + body-specific post-colon. Overlay 28 cards, 0 caps mismatch, 0 adjacent dupes. Share→COPIED round-trips full reading on fresh session. Off 10 only by same-aspect pairs sharing a near-identical body sentence after the distinguishing header. |
+| Aisha  | YES (gate)        | 9  | Yes      | Yes | Both her R5 craft residuals FIXED: long-tail aspects all unique (each names specific bodies), doubled-possessive gone, "Nth House"/"Nth house" casing flip resolved (0 lowercase). 375px clean. Off 10 by ONE new craft blemish: North/South Node bodies render "...Nodal's sense of purpose" (3×) — should read "North Node's". |
+| Sam    | YES (gate)        | 10 | Yes      | Yes | HOLDS 10, no regression. His ~6 weak tail aspects FIXED: all 16 template-pattern blurbs now name both people AND both bodies (0/16 generic). Measured max verbatim repeat = 1. Overlay caps consistent, 0 adjacent dupes, outer-planet overlays specific. Share→clean /chart/<id> round-trips on 375px. The screenshottable group-chat artifact he wanted. |
+| Marcus | YES (gate)        | 9  | Yes      | Yes | FLAT (9→9). The aspect de-dup + overlay-caps fixes he was asked to verify are SOLID (0 byte-identical bodies, reversed directional, caps consistent). HELD at 9 by his SAME R5 residual — the OPTIONAL rider that wasn't done: a cold visitor still cannot discover synastry; the "Compare two people" card only appears AFTER a chart is computed. CSS sharp, 375px clean. |
+| Wen    | YES (gate)        | 9  | Yes      | Yes | +1 (8→9). CROSSES BAR. BOTH her exact nits RESOLVED: caps drift gone (56 capitalized "Nth House", 0 lowercase — the 43 R5 mismatches eliminated), adjacent verbatim overlay lines gone ("a harmonious flow…" 0×, all 28 overlay bodies distinct, outer planets each got own copy). Gave the 9 she promised. Off 10 only by the fallback template still being structurally parameterized (polish). |
+| Rob    | YES (gate)        | 8  | Marginal | Yes | FLAT (8→8). His EXACT R5 hold-back NOT fixed: the symmetric Jupiter↔Venus conjunction pair still reads a VERBATIM-identical post-colon sentence both directions ("Jupiter conjunct Venus: affection and optimism meet at a single point…"), naming neither person — only the name-prefix differs. The "7→2" claim is technically met but the 2 remaining ARE his flagged echo. Plus soft category/value ceiling (good toy, not weekly utility). |
+| Elena  | YES (gate)        | 9  | Yes      | Yes | FLAT (9→9). Her R5 residual NEARLY fully fixed: post-colon byte-identical dupes 13→effectively 1. Off 10 by exactly the SAME one symmetric pair Rob flags — Einstein's Jupiter☌Obama's Venus vs the reverse both read "Jupiter conjunct Venus: affection and optimism meet…" naming neither person. "Kill that last dupe and it's a 10." Overlay caps consistent, 0 adjacent dupes, share round-trips, 375px clean. |
+| Priya  | carried (non-fit) | 6  | No       | Yes | +1 (5→6). Her concrete asks landed: fallback templates now name specific planets (max verbatim repeat 7→2, lone 2× is a legit reciprocal pair); overlay caps unified. Privacy re-verified clean (load = Google Fonts only; compute/expand = 0 off-host; share = single disclosed same-origin POST; no signup). Cap is pure category. Minor: stray "Please fill out this field" tooltip lingers on left form after Load Example. |
+| Tomás  | carried (non-fit) | 7  | No       | Yes | +1 (6→7). His "Nth house" stragglers FIXED (0 lowercase, 56 capitalized, Node/Lilith/Chiron blurbs now match headers). No fake %; 375px clean; layperson-legible. Still capped by category + his OTHER standing ask STILL missing: no data-retention/deletion line ("won't tell someone to paste a partner's birth data when the site won't say how long it's kept"). |
 
-- **IN-AUDIENCE at-bar: 7 / 8** (Sam, Marcus, Elena, Rob, Aisha, Dana, Jules). One short: Wen at 8.
-- Round-by-round at-bar: R2 3/8 → R3 5/8 → R4 4/8 → R5 6/8 → **R6 7/8** (new high-water mark).
-- **R5→R6 movement (in-audience):** Marcus 8→9 (+1, RECOVERED — his place-search regression is fixed), Elena 8→9 (+1, RECOVERED — de-template now substantive), Sam 10→10 (held), Rob 9→9 (held), Aisha 9→9 (held), Dana 9→9 (held), Jules 9→9 (held), **Wen 9→8 (−1 REGRESSION).**
-- **Clarity remains universal: 10/10 Yes. Value remains 8/8 in-audience Yes** (Priya the only No, a non-fit).
-- **Both round-6 target fixes LANDED and were independently verified:**
-  - **(1) Place-search disambiguation** — VERIFIED by all 8 retested testers. Marcus: every row now carries state/region, ranking sane (Berlin/Germany first, Austin/TX first), identical-"X, United States" duplicates gone — his regression item RESOLVED. Rob: confirmed the exact "San Francisco, CA above the Argentina city" ranking bug is fixed. Jules: "Lisbon" → 8 disambiguated rows, no duplicates. Sam/Wen/Dana/Aisha: "Springfield" → 8 state-tagged rows, zero dupes. The 3-tester-corroborated round-5 defect is CLOSED.
-  - **(2) Per-planet distinct same-sign readings** — VERIFIED by Elena (compared Einstein's Aries Mercury/Venus and her own Cancer Sun/Cancer Mars full sentences word-for-word: now genuinely distinct, lookup-table tell gone — her exact blocker RESOLVED), Wen (Einstein's Aries Mercury/Venus/Saturn each distinct, keyed to planet + house), Aisha (3 Leo placements read differently — "now feels authored"), Sam (3 Taurus + 2 Pisces all distinct). The round-5 incompletely-executed de-template is now substantive.
+## In-audience tally at the bar (adv>=9 with value-clear)
 
-## Remaining blocker (the single miss)
+In-audience advocacy: Dana 9, Jules 9, Aisha 9, Sam 10, Marcus 9, Wen 9, Rob 8, Elena 9.
+**7 of 8 in-audience testers at adv>=9** (Dana, Jules, Aisha, Sam, Marcus, Wen, Elena) — all value=Yes.
+Sole sub-bar: Rob 8 (value Marginal).
 
-### ⚠ Wen 9→8 — degree omitted from the headline/chip summary line (her 4-rounds-running 9→10 ask, now weighted as her gate)
+Carried non-fits (non-gating): Priya 6, Tomás 7.
 
-The headline big-three chips read "☉ Pisces Sun · House 10" with NO degree; the degree (e.g. 23°) appears only in the houses table, and the share/save-image inherit the degree-less headline. Wen (data-hygiene analyst) has named this as a 9→10 polish item for FOUR rounds; this round she weights it as the reason she rounds DOWN to 8 rather than up to 9. FIXABLE and trivial: add the degree token to each big-three chip (one token per chip) — she stated explicitly "one token per chip and I'd round up." This is craft/copy, not concept; she holds Value=Yes + Clarity=Yes and credits both round-6 fixes.
+## Movement vs Round 5
 
-Note: this is the SAME long-standing item, now re-weighted as blocking by the one tester for whom precise numeric provenance is a professional value. It is a true −1 from her round-5 score in the table, but NOT a new craft class and NOT a concept doubt — it is the most precisely-specified, lowest-effort fix in the entire panel history.
+The round-5 long-tail/overlay fix landed cleanly and is the dominant story; every tester held or
+moved up, ZERO regressions.
+- **Wen 8→9 (+1): CROSSES BAR.** Her two named nits (overlay caps drift 43→0, adjacent verbatim
+  overlay lines 7×→0) are both verified fixed at source — exactly the fix she said would earn the 9.
+- **Priya 5→6, Tomás 6→7 (+1 each):** non-gating; their concrete craft/caps asks landed (Tomás's
+  "Nth house" stragglers eliminated, Priya's fallback templates body-named). Category caps the rest.
+- **Dana 9, Jules 9, Aisha 9, Elena 9 (FLAT at 9):** their R5 residual (generic/symmetric/post-colon
+  body repetition) is largely fixed — measured max verbatim repeat dropped from 7–13 down to 1–2.
+  Each is now held off 10 by a SINGLE residual: the same lone symmetric Jupiter☌Venus conjunction
+  reading word-for-word both directions (Elena, and the same item Rob names), the outer-body fallback
+  sharing a rhythm (Dana/Jules), or one new "Nodal's" grammar slip (Aisha).
+- **Sam 10 (HOLDS):** no regression; his last weak-tail nit fixed.
+- **Marcus 9 (FLAT):** the in-scope fixes he verified are solid; held by the OPTIONAL rider
+  (cold-visitor compare CTA) that was deliberately deferred — not a defect in the shipped fix.
+- **Rob 8→8 (FLAT):** the ONE sub-bar in-audience tester. His exact R5 hold-back — the symmetric
+  conjunction sentence reading verbatim both directions — survived the fix (the "7→2" reduction left
+  precisely his flagged pair intact). He'd have gone to 9 had it been differentiated.
 
-## Craft-ceiling nits (non-gating, named by at-bar testers — push toward 10, NOT blocking)
+Net: 6-of-8 at the bar in R5 → **7-of-8 in R6**, plus the standing 10 (Sam), zero regressions.
+The fix did what it was predicted to for FIVE of the six testers who named the body-repetition
+cluster (Wen crossed, Aisha/Dana/Jules/Elena confirmed the bulk fixed) — but it left ONE specific
+symmetric-conjunction sentence undeduplicated, which is now the single thing pinning Rob under the bar
+AND the residual on Elena's (and Rob's, and partially Dana's) path to 10.
 
-- **Per-chart save-card art / caption — Rob, Dana.** Decorative wheel identical on every downloadable PNG; Rob saw the one-line caption literally identical ("Sun in House 11 — career and legacy are central") across two different charts. (Both at-bar; 9→10. The OG unfurl IS per-chart and verified; this is the downloadable PNG only.)
-- **Save-as-image on-page preview — Dana.** Phone still fires a direct download with no preview; the OG card endpoint already renders the exact art and could be surfaced in-app. (Dana at-bar; 9→10.)
-- **NODES column dead-air — Aisha.** South/North Node are now proper pills, but 10 of 12 table rows are a lone em-dash, so the column reads ~85% empty on a wide display. Also: place-search dropdown overflows the form card's bottom edge over the disclaimer. (Aisha at-bar; 9→10.)
-- **og:image:alt still generic "Birth chart card" + no one-tap native/X share on mobile — Jules.** (Jules at-bar; 9→10; a11y-only alt + shareability convenience.)
-- **House-grid cells expand to "—" rather than a sentence — Marcus.** Rich copy lives only in the top reading block. (Marcus at-bar; 9→10.)
-- **Personalized transit line — Elena, Dana.** Dana saw a "FOR YOUR CHART" transit line (strong recurring hook); Elena wants the loop fully closed with "today's Moon is sitting on your Sun"-style personalization. (Both at-bar; 9→10 recurrence deepener.)
+## Single dominant blocker (the one sub-bar in-audience tester)
 
-## Audience (non-gating)
+The lone sub-bar tester (Rob 8) is held by ONE concrete, named, single-edit defect plus a soft,
+out-of-scope category factor:
 
-- Priya (3) and Tomás (6) carried forward unchanged — hard skeptics who will not advocate for any astrology product. Gap is audience, not defect.
+**The symmetric CONJUNCTION post-colon body sentence is still verbatim-identical both directions.**
+For a conjunction (an undirected aspect) between two bodies, e.g. Person A's Jupiter ☌ Person B's
+Venus and the reverse A's Venus ☌ B's Jupiter, the post-colon body reads the SAME byte-identical
+sentence ("Jupiter conjunct Venus: affection and optimism meet at a single point — a genuinely warm,
+expansive overlay…"), naming NEITHER person. The round-5 fix parameterized the generic FALLBACK
+bodies by body-name but did not give the symmetric/conjunction body sentence per-direction (or
+per-person) variation, so this one pair survived. This is named verbatim by THREE testers — it is
+Rob's sole remaining copy hold-back AND Elena's exact "kill that last dupe and it's a 10" item AND
+inside Dana's "symmetric conjunctions render identical prose twice" note. It is one edit surface:
+make the symmetric/conjunction post-colon body name the two specific people/bodies (the same
+treatment already applied to the non-symmetric fallbacks) so the reversed pair reads distinctly.
 
-## Plateau / oscillation watch
+Rob also carries a soft VALUE ceiling (entertainment, not weekly workflow) — but he is at value
+Marginal and adv 8; he explicitly says differentiating that one sentence would take him to 9 and let
+the category ceiling be the ceiling. So the blocker is craft, not audience-fit.
 
-- At-bar by round: R2 3/8 → R3 5/8 → R4 4/8 → R5 6/8 → **R6 7/8**. The count is still RISING (+1, new high). BUT this round shows the oscillation signature the directive warned about: the two targeted misses (Marcus, Elena) both recovered cleanly, AND a previously-passing tester (Wen) dropped one notch — testers trading places near the ceiling rather than converging cleanly to 8/8.
-- HOWEVER, Wen's drop is NOT an escalating new craft nit and NOT a different/novel complaint: it is her OWN 4-round-running, single, precisely-named, trivially-fixable item (degree token on the chip), which she explicitly says is the one thing between 8 and 9. This is distinguishable from "escalating craft-nitpicking at a quality ceiling" — it is one concrete defect with a one-line fix and an explicit tester commitment to round up once fixed. There is clear upward momentum (both targeted fixes landed and verified; no concept doubt; no new craft class). This is the 7/8 + one-clearly-fixable-named-defect + momentum case the directive carves out for a final FIX-AND-RETEST.
+Cheap riders that would lift the FLAT-at-9 testers to 10 (not gates): the same conjunction-body
+de-dup also closes Elena's and part of Dana's/Jules's path to 10; Aisha's lone new "Nodal's →
+North Node's" grammar slip (3×); Marcus's optional cold-visitor compare CTA.
 
-## Positives to protect
+Non-gating notes (do NOT block ship): Priya (6) and Tomás (7) remain category non-fits at their
+ceiling; both confirm privacy honesty holds (network-verified). Tomás's data-retention/deletion line
+and Priya's stray "Please fill out this field" tooltip after Load Example are optional polish.
 
-- Place-search disambiguation + ranking — verified by all 8 testers, the 3-tester round-5 defect is closed.
-- Per-planet distinct same-sign readings — verified word-for-word by Elena/Wen/Aisha/Sam; "now feels authored."
-- Per-chart dynamic /opengraph-image — re-verified per-chart, distinct per token (Jules' 59KB live PNG, Dana's Einstein-specific card, Sam's 1200×630 render). The viral share mechanic works.
-- Zero console/page errors for every tester; fast cold load (~4s) to full reading; clean 375px mobile, no horizontal overflow; share link end-to-end (201 token, /chart/<id> cold-loads 200, unfurls). Chart math credible (Einstein canonical; lat/long echoed honestly).
+## VERDICT: ITERATE
 
-## Recommendation
+7 of 8 in-audience testers at adv>=9 (Dana 9, Jules 9, Aisha 9, Sam 10, Marcus 9, Wen 9, Elena 9);
+one sub-bar (Rob 8). Strong movement vs R5 (6→7 at bar, Wen crossed, zero regressions). Wen's two
+exact nits were fixed at source exactly as predicted, so she crossed cleanly.
 
-**FIX-AND-RETEST (final, single fix).** At-bar rose 6/8 → 7/8 (new high) and BOTH round-6 target fixes landed and were verified, recovering Marcus and Elena. Exactly ONE in-audience tester (Wen) is short, on ONE precisely-named, trivially-fixable defect she has flagged for four rounds and has explicitly committed to round up on once fixed.
+This is NOT a PARK: the sole sub-bar in-audience tester is gated by ONE concrete, named copy defect on
+a single edit surface — the symmetric-conjunction post-colon body reading verbatim both directions —
+not by category ceiling or audience fit. It is the SAME defect that pins Elena (and partly Dana/Jules)
+off a 10, so it is unusually high-leverage: three named callouts, one fix.
 
-Single fix:
-- **Add the degree token to each big-three headline/summary chip** (e.g. "☉ Pisces Sun 23° · House 10"), and carry it through to the share/save-image headline. The degree already exists in the houses-table data — this is surfacing it on the chip, ~one token per chip. Recovers **Wen (8→9)** and reaches the **8/8 in-audience bar**.
+Sub-bar in-audience tester: Rob (8).
 
-This is NOT the PARK case: there is upward momentum, no concept doubt, no new craft class, and the single miss is the lowest-effort, most-specified fix in panel history with a stated tester commitment. Ship the secondary 9→10 craft items (per-chart save-card art/caption, on-page save preview, NODES column, og:image:alt, native share, personalized transit line) only if convenient — they are NOT bar-gating; do not grind them.
+ONE highest-leverage fix: **de-duplicate the symmetric / conjunction post-colon body sentence —
+make it name the two specific people/bodies (the same per-pair parameterization already applied to
+the non-symmetric fallback bodies in the R5 fix), so a conjunction's reversed pair reads distinctly
+instead of repeating one byte-identical sentence both directions.** This is the last residual for
+Rob (8→9, clearing the bar to 8/8) and simultaneously the only thing between Elena and a 10 and a
+piece of Dana's/Jules's path to 10.
 
-DEPLOY GATE (carried forward): when finally shipping, confirm the prod deploy serves the per-token /opengraph-image route on Vercel (the absolute og:image URL 404s on localhost — a prod-URL artifact, must work post-deploy or unfurls break). Do NOT redeploy per round — fix on localhost and re-test there.
+Optional cheap riders (not gates): fix Aisha's "Nodal's → North Node's" grammar slip (3×); surface
+Marcus's cold-visitor "Compare two people" CTA on the landing view.
+
+Non-gating notes (do NOT block ship): Priya (6) and Tomás (7) remain category non-fits at their
+ceiling; both confirm privacy honesty holds (network-verified). Tomás's data-retention/deletion line
+and Priya's stray-tooltip nit are optional polish.

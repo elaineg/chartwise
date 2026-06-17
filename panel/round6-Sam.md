@@ -1,23 +1,43 @@
-# Sam — round 6
+# Sam — Round 6
 
-**Persona:** PM, mobile-first between meetings, curious about astrology, screenshots clean explanations into chats, won't debug.
+**Advocacy: 10/10 · Value: Yes · Clarity: Yes**
 
-## Prior concerns (round 5 was a 10 — nothing to fix; this round = confirm no regression on the 2 changes)
-- **Change 1 — place search disambiguation:** FIXED/IMPROVED. Typed "Springfield" → 8 distinct rows each tagged with state (MO, MA, IL, OR, OH, VA, PA, TN), zero duplicate rows. "London" → London ENG/UK vs London Canada vs London OH/KY/AR + East London ZA. Last round I'd have second-guessed which "Springfield"; now I just tap the right one. Big win on a phone.
-- **Change 2 — same-sign readings distinct per planet:** FIXED. Built a chart with 3 Taurus placements (Sun/Moon/Mercury) + 2 Pisces (Venus/Mars). All 5 readings are distinct and planet-appropriate (Taurus Sun = "sense of self," Taurus Moon = "emotionally," Taurus Mercury = "thinking is deliberate"). No repeated boilerplate.
+Dominant note: the round-5 fix landed cleanly and OVER-delivered. My only round-5 nit was ~6
+formulaic tail aspects. They're fixed, plus the verbatim-repeat problem is gone entirely.
+Nothing regressed. I hold my 10.
 
-## Answers
-1. **ADVOCACY: 10** — Still bring-it-up-unprompted. Nothing regressed; the two changes made the parts I share even better.
-2. **VALUE: Yes** — Today I'd Google "Einstein birth chart" or fight astro-seek's clunky form. This is one mobile screen, no signup, plain-English, and the share card is built for me.
-3. **CLARITY: Yes** — "Your birth chart, explained in plain English" + "Free, no signup" + Load example (Einstein) tells me exactly what it is in 5 seconds.
+## Re-check of MY round-5 concerns
+- **~6 weak tail aspects now name specific bodies:** FIXED. All 16 template-pattern tail
+  blurbs (the "flow easily between you" / "cooperative link" / "recurring friction" /
+  "polarity tension" family) now name BOTH people and both bodies — 0 of 16 left generic.
+  e.g. "Albert Einstein's North Node sextile Michelle Obama's Lilith: North Node and Lilith
+  form a cooperative link…" Byte-distinct AND readably specific.
+- **Verbatim repeat 7→2 claimed; I measured MAX = 1** across all 51 expanded aspect blurbs.
+  Better than the fix promised. Zero "the other/one person" generic phrasings remain.
 
-## Notes
-- Cold open at 375px: clean, zero console errors, no horizontal overflow. Load-example → big-three chips + full plain-English reading instantly.
-- Share flow: "Create share link" → 201 token → link in field + "Copy link" button; shared page loads (200) with full chart; per-chart OG unfurl is correct ("Albert Einstein's birth chart, explained") and the OG image (1200×630 PNG) renders a clean share card with the big-three chips and "free · instant · no signup." This is THE feature for me — drops straight into Slack/iMessage looking great.
-- Houses 1–12 breakdown, Element Distribution, and a "Today's Sky" transit panel all present and readable on mobile; degrees show on every placement (e.g. "Sun 23° Pisces").
-- Save-as-image button present and clicks (no file download captured in the headless test env — env artifact, not an app bug; verified button is wired and the OG/card rendering pipeline works).
-- One nit (not a complaint, not new): clipboard read returned empty in my test env — verified visually the "Copy link" button exists and the URL is in the field; treating as a test-env artifact.
+## Synastry (Einstein × Michelle Obama, all 50 expanded)
+- 30 harmony · 15 tension · 5 conjunction. Directional named aspects with glyphs + exact orb
+  ("SEXTILE · 3.6° ORB"). Reversed direction reads correctly (Uranus↔Moon both ways distinct).
+- **House overlay:** 28 cards, all headers consistent caps, sign line caps == header style,
+  0 adjacent verbatim repeats, max body repeat = 1. The 6 outer-planet overlays (Uranus/
+  Neptune/Pluto) now have specific readings both directions — no generic fallback.
+
+## Prior praise still holding
+- Big-three for both people, honest "for insight and fun — a lens on the dynamic, not a
+  prediction," NO fake % match score, ordinals + arcminutes + retrograde on natal.
+- **Share:** button flips to "Copied", clipboard holds a clean `/chart/<id>` link (no query
+  cruft). Opened it on a FRESH 375px session → full comparison reopens, both names, 0 errors.
+- Discoverability "Compare two people" card surfaces after computing a chart.
+
+## Device
+- Desktop + 375px both clean. No horizontal overflow, no element wider than viewport, no
+  clip/truncation/overlap/double-render. Shared-comparison page header "Einstein × Obama"
+  with big-three is a perfect screenshot-into-a-group-chat artifact — exactly what I'd send.
+
+This is the most forwardable thing in the panel. I'd paste my partner-vs-me comparison into
+a chat unprompted. The fiddly-mobile-entry quit risk doesn't apply — examples + saved charts
+let me compare without retyping a birth time on my phone.
 
 ```json
-{"tester": 8, "round": 6, "clarity": "Yes", "value": "Yes", "advocacy": 10, "topComplaints": [], "priorConcernsAddressed": "all"}
+{"tester": 4, "round": 6, "clarity": "Yes", "value": "Yes", "advocacy": 10, "topComplaints": ["The 16 template-family tail aspects are now body-specific and byte-distinct but still share one prose skeleton — varied wording would make them more screenshot-quotable, a polish item not a defect"], "priorConcernsAddressed": "all"}
 ```

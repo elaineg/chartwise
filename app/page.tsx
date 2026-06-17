@@ -6,6 +6,7 @@ import { EINSTEIN_BIRTH } from "../lib/chartCompute";
 import BirthForm from "./components/BirthForm";
 import ChartView from "./components/ChartView";
 import PeopleList from "./components/PeopleList";
+import SynastryView from "./components/SynastryView";
 
 const STORAGE_KEY = "chartwise:people";
 
@@ -21,6 +22,7 @@ export default function Home() {
   const [shareState, setShareState] = useState<ShareState>("idle");
   const [shareUrl, setShareUrl] = useState<string>("");
   const [hydrated, setHydrated] = useState(false);
+  const [showSynastry, setShowSynastry] = useState(false);
 
   // Load saved people from localStorage after hydration (SSR-safe)
   useEffect(() => {
@@ -215,12 +217,20 @@ export default function Home() {
               </div>
             )}
 
-            {!isComputing && chart && (
+            {!isComputing && chart && !showSynastry && (
               <ChartView
                 chart={chart}
                 onShare={handleShare}
                 shareState={shareState}
                 shareUrl={shareUrl}
+                onOpenSynastry={() => setShowSynastry(true)}
+              />
+            )}
+
+            {!isComputing && showSynastry && (
+              <SynastryView
+                people={people}
+                onClose={() => setShowSynastry(false)}
               />
             )}
           </section>

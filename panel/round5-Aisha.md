@@ -1,40 +1,48 @@
-# Aisha — round 5
+# Aisha — Round 5
 
-**1. ADVOCACY: 9**
-**2. VALUE: Yes**
-**3. CLARITY: Yes**
+Product designer, desktop + 375px mobile. Judges craft hard. Astrology-curious.
 
-Persona: product designer, judges craft hard, 1440px desktop, curious-about-astrology.
+## Prior concerns (R4 held me at adv=8) — re-checked first
+1. **"the Sun/Moon/Saturn person" phrasing — FIXED.** Expanded the full 50-aspect tail and
+   grepped: ZERO occurrences of "the X person". Every aspect names BOTH actual people
+   ("Albert Einstein's Mars is energized by Michelle Obama's Sun's identity"). Einstein
+   mentioned 103×, Obama 102× across readings — balanced, both genuinely named.
+2. **Reversed/symmetric pairs read DIFFERENTLY — FIXED.** Uranus–Moon both directions:
+   "Einstein's Uranus … destabilizing to Obama's Moon" vs "Obama's Uranus … to Einstein's
+   Moon" — directional in the BODY now, not just headers. No byte-identical full lines
+   (`uniq -d` empty across 100 named lines; 87 unique body texts).
+   This was my exact blocker and it's resolved at the source. → crosses to 9.
 
-## Prior round-4 concerns — addressed?
-1. **Narrow ~620px centered lane / big empty margins (8→9 blocker):** FIXED. On a true 1440px
-   viewport the reading column now runs left≈468 to right≈1344 (≈876px content) and the houses
-   table + element bar stretch to the same right edge. The form is a tidy left rail; the result
-   uses the screen. The narrow lane is genuinely gone — this is the fix I asked for.
-2. **Save-card zodiac accent too faint:** ADDRESSED. The wheel/constellation motif is now clearly
-   present in the card's bottom-right. Not invisible anymore.
+## Clarity — Yes
+"Type your birth date/place, get your chart explained in plain English — no signup — and
+you can compare two people's compatibility." Eyebrow "NATAL CHART · PLAIN ENGLISH · NO
+SIGNUP" + H1 nail it in <10s. The "Compatibility — Compare two people" card is clearly
+labeled. For computer-workers who like astrology, instantly legible.
 
-Verdict on prior concerns: **all** addressed.
+## Value — Yes
+Today I read my chart on Co–Star / Astro-Seek's wheel and squint at jargon. This is
+explanation-first, table-not-wheel, and the synastry readings are named + directional —
+genuinely more readable than what I use. Saves real effort over decoding a glyph wheel.
 
-## Fresh read
-- **Copy tone:** considered and warm without being woo. Headlines now feel distinct — Mercury and
-  Venus are both Aries but the second sentence reframes by house ("career-oriented… professional
-  path" vs "friends and causes… community"), so it no longer reads as copy-paste. Good.
-- **Save card:** a designed artifact — name, glyph pill cards (Sun/Moon/Rising), element chips with
-  colored dots, an accent-bordered takeaway line, "no signup" + branding footer. Shareable as-is.
-- **Share unfurl:** per-chart confirmed — og:title/twitter:title carry "Albert Einstein's birth
-  chart," og:image points at a per-chart /opengraph-image route. (Local image 404s only because the
-  URL is hardcoded to chartwise.vercel.app — environment/absolute-URL artifact, not a regression;
-  meta wiring is correct.)
-- **Empty states:** house table empty cells use clean em-dashes; expand cells work.
+## Advocacy — 9/10
+The craft is considered: clean typographic hierarchy, generous rhythm, glyph aspect headers
+(✶ ☌ △) with ORB/type metadata in small caps, two-column Person A/B that survives 375px,
+zero horizontal overflow on either view, share button transitions cleanly to "COPIED"
+(clipboard verified: real /chart/<token> URL; no jank — resolved sub-120ms locally).
+Honest-framing line reads well and considered, set apart with spacing, not preachy:
+"For insight and fun — a lens on the dynamic, not a prediction."
+Held off 10 by small craft nits, not bugs: (a) ~16 of 50 minor aspects (nodes/Chiron/Lilith
+outer contacts) fall back to 4 generic templates ("a harmonious flow between these two
+energies", "an easy cooperative link") — headers are uniquely named but the body prose
+repeats on the long tail. (b) Doubled possessive "Michelle Obama's Sun's identity" /
+"Mars's presence" reads slightly clunky. (c) "11th House" vs "11th house" casing flips in
+overlay copy. All cosmetic.
 
-## Why 9, not 10
-The zodiac accent is visible now but reads as a *bleed* off the corner rather than an intentionally
-anchored element, and it's still low-ish contrast on the dark gradient — one more pass (anchor it,
-nudge opacity/stroke up) makes the card feel fully resolved. The houses table, while correctly wide,
-leaves the rightmost NODES third mostly empty em-dashes, so the wide layout has some dead air on the
-right. Both are polish, not blockers — I'd recommend this to friends now and bring it up unprompted.
+## Sanity checks
+Natal layout, element bars, Today's Sky, houses overlay all clean. Ordinals single-form
+(1st/3rd/11th — no doubling). Mobile: no clip/truncation/overlap/double-render. The "Please
+fill out this field" tooltip is the empty form above the result — benign browser artifact.
 
 ```json
-{"tester": 1, "round": 5, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["save-card zodiac accent reads as a corner-bleed, not an anchored element; bump contrast/anchor it", "wide houses table leaves the rightmost NODES column mostly empty em-dashes = dead air on the right"], "priorConcernsAddressed": "all"}
+{"tester": 0, "round": 5, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["~16/50 minor aspects reuse 4 generic body templates (headers named, prose repeats on long tail)", "doubled possessive 'Sun's identity'/'Mars's presence' clunky; 'House' vs 'house' casing flips"], "priorConcernsAddressed": "all"}
 ```

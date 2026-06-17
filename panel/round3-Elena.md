@@ -1,49 +1,29 @@
 # Elena — Round 3
 
-ADVOCACY: 9
-VALUE: Yes
-CLARITY: Yes
+Engineering manager, 30-sec patience, half on phone between meetings. Casual-skeptic, astrology = light Slack fun.
 
-## Prior concern (round 2): the "Today" transit lines were repetitive mad-lib templates
-FIXED. This was my single reason for not being at a 9. In round 2 the transit block reused
-one identical frame ("X is currently in Y, the same sign as your natal Z…") 3-4 times in a
-row. Re-checked it cold on two different charts. Now every line has its own verb and image:
-- Einstein: "Mars charges through Taurus…", "Saturn works through Aries…", "Neptune drifts
-  through Aries…", "Pluto turns retrograde — its energy pulls inward".
-- My chart: "Sun moves through Gemini… amplify each other", "Moon passes through Cancer…
-  running on the same frequency right now", "Mercury transits Cancer… especially intertwined
-  this week", "Venus glides through Leo… share the same sky overhead", "Jupiter expands
-  through Cancer… pointing in the same direction", "Uranus rattles through Gemini… expect
-  the unexpected".
-That reads like a human wrote it, not a loop. It's the kind of line I'd actually screenshot
-into our team Slack. The "Today's Sky" header is correctly dated (Tuesday, June 16, 2026),
-which sells the daily-comeback hook — it genuinely feels different each day. Hook now works.
+## Prior concerns (Round 2) — re-checked first
+- **"Show-all naked boilerplate"** — FIXED. Expanded list = 50 aspects, 48/50 readings unique. Each hidden aspect now has a planet-pair-specific, directional reading with both names (e.g. "Chiron trine South Node:…", "North Node sextile Lilith:…"). Only the very deepest minor aspects share a phrasing template, but all are labeled with the specific pair — not naked.
+- **"Compare entry buried below natal result"** — FIXED (desktop). It's now a clear bordered CARD ("COMPATIBILITY / Compare two people / →") sitting right after big-three + elements, ABOVE Today's Sky. On desktop it's in view ~794px down. On mobile it's ~1694px down (2 screens, because everything stacks) but still a distinct card above Today's Sky — minor nit, not buried.
 
-## CLARITY — Yes
-Headline "Your birth chart, explained in plain English" + "Free, no signup" tells me exactly
-what it is and that there's no setup tax. I'd tell a friend: "type your birthday, get a
-plain-English personality read plus what today's planets mean for you — no login." The
-"Load example (Einstein)" button let me see the payoff before typing anything. Zero confusion.
+## Re-test focus
+- (a) KEY ASPECTS: top 6 are relationship-significant (Sun-Sun sextile, Mars-Sun conjunction 0.2° orb, Moon-Jupiter trine). Readings pair-specific, directional, BOTH names. Expand 6→50 works; collapse back to 6 works ("SHOW TOP ASPECTS ONLY"). 
+- (b) House overlay ordinals correct: "North Node in the 1st House… in their 1st house". Reads right.
+- (c) Share button: copies a real link (`/chart/<id>`); loading it fresh shows full "Einstein × Obama / Compatibility, explained" with both big-threes and "Create your own chart →". Works end-to-end, no signup. I'd send this to a coworker. (clipboard verified via test-env read)
+- (d) Compare = clear card now, yes.
+- (e) Big-three chips + "explained in plain English / Free, no signup" framing intact. Natal sanity OK (Einstein Cancer rising, Pisces Sun H10). No console errors, zero horizontal overflow at 375px, no clip/double-render.
 
-## VALUE — Yes
-Today I do nothing structured — someone in Slack pastes an astro-seek chart that's a wall of
-glyphs and degrees nobody can read. This gives me the SAME data (degrees show: "Uranus 1°
-Virgo℞", "Moon 14° Sagittarius", "Mars 26° Capricorn") but with a sentence I can read between
-meetings. That's the saved effort: no decoding. Place search disambiguates well (San Francisco
-gave US / Argentina / Costa Rica / Philippines). "Save as image" downloaded a clean PNG
-(albert-einstein-chart.png) — that's the shareable artifact for our Slock thread.
+## 3 answers
+1. **Value?** Yes. I can glance at my chart and a coworker's, get a plain-English read with both names, and fire a link into Slack — all in well under a minute, no login. Beats screenshotting Co-Star pages.
+2. **Frustrated / broken?** No real breakage. One nit: on phone the compare card is two screens below the natal result, so a phone-first user might miss it exists. Deepest minor aspects reuse phrasing (acceptable).
+3. **Use again / recommend?** Yes, I'd actually drop the share link in our team channel.
 
-## What still holds it back from a 10
-- The personalized read repeats verbatim copy across placements with the same sign (Einstein's
-  Aries Mercury and Aries Venus open with the identical "Bold and direct, you lead with
-  instinct…" sentence). It's a smaller version of the exact templating problem I flagged for
-  transits — fix that next and I'm at a 10.
-- It's still fun-not-essential for me; a 10 means I bring it up unprompted weekly, and I'd
-  only do that the week our team is goofing off in Slack. The daily hook is good enough now
-  that I'd open it on a few spare-30-second mornings, which is the 9.
+ADVOCACY: 8
+VALUE: yes
+CLARITY: yes
 
-No bugs, no console errors, fast on mobile.
+Holding it back from 9-10: the whole compatibility feature is invisible until you compute a natal chart first — there's no "compare two people" entry on the landing page, so a coworker I send to the homepage wouldn't discover it cold. And on phone it's a long scroll to find the card. Fix landing-page discoverability and this is a 9.
 
 ```json
-{"tester": 0, "round": 3, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["natal placement copy repeats verbatim for same-sign planets (e.g. Aries Mercury & Aries Venus share the identical opening sentence) — same templating smell I flagged for transits", "still fun-not-essential; daily hook is good but not yet a weekly unprompted recommend for an EM"], "priorConcernsAddressed": "all"}
+{"tester": 3, "round": 3, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["compatibility feature undiscoverable from landing page — only appears after computing a natal chart", "on 375px phone the compare card is ~2 screens below the natal result"], "priorConcernsAddressed": "all"}
 ```

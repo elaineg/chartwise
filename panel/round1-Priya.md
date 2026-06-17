@@ -1,55 +1,30 @@
-# Round 1 — Priya (Senior backend engineer; keyboard-first; HARD astrology skeptic)
+# Priya — Round 1 (synastry)
 
-Tested cold at http://localhost:3099. Watched the network tab the whole time.
+Persona: senior backend engineer, hard astrology skeptic, keyboard-first, watches the network tab. Tested cold at localhost:3099, desktop 1280px + mobile 375px.
 
-## 1) Advocacy: 3/10 — would NOT bring it up
-I won't recommend this, and I want to be precise about why: ~2 points of that is the
-category (I think astrology is pseudoscience and would never use this for myself, so I'm
-not a buyer and won't evangelize the genre). The product itself is *competently built* —
-if I separate craft from category, the craft is roughly a 6/10, dragged down by a couple
-of real defects below. I might mention it once to a friend who's *into* astrology as "huh,
-this one's clean and doesn't make you sign up," but I'd never raise it unprompted. A 9-10
-would require me to actually want the output, which I never will.
+## 1. What I tried & what happened
+Loaded cold: clean monochrome form, "NATAL CHART · PLAIN ENGLISH · NO SIGNUP". No auto-chart on cold open — I clicked "LOAD EXAMPLE (EINSTEIN)". Chart rendered. **Found the "Compare two people" card in ~2s** — it's a labeled COMPATIBILITY card with a black "COMPARE TWO PEOPLE" button sitting directly below element-distribution and ABOVE the "Today's Sky" (transit) card. Confirmed ordering programmatically: compare index < transit index. Clicked it → auto-loaded Einstein × Michelle Obama, two distinct charts.
 
-## 2) Value: No (for me) — but credibly useful for its actual audience
-For me, zero — I don't want a natal chart. Judged for its target user it's genuinely
-decent: it turns the usual impenetrable wheel/glyph chart into plain-English sentences
-("Scorpio rising gives you an intense, penetrating, magnetic presence…"), which is a real
-improvement over astro-seek-style raw tables. No signup, no paywall, instant. That's the
-honest value, but it's not mine.
+## 2. What worked / what was confusing or broken
+WORKED (craft is genuinely good):
+- **Trust check passed.** Network tab shows ONE external request total: Google Fonts. Zero birth data leaves the browser. Page even says "computed on your device." As a skeptic, this is the only reason I didn't bounce.
+- **Honest — no fake % match score.** Summary reads "30 HARMONY · 15 TENSION · 5 CONJUNCTION" with a sentence, not a bogus "87% compatible." Good.
+- Big-three Person A/Person B compare is clear; element bars correct. Spot-checked: Einstein Sun Pisces / Cancer rising / Sun H10, Obama (1964) Sun Capricorn — astrologically correct, no silently-wrong values.
+- House-overlay section is house-specific and plainer than the aspects.
+- **375px: no horizontal overflow, no clipping, no double-render, 0 console errors.** Two-column Person A/B fits. Solid responsive build.
 
-## 3) Clarity: Yes
-H1 "Your birth chart, explained in plain English." + "Free, no signup — type your birth
-date, time, and place, or load an example." told me exactly what it is and who it's for in
-under 10 seconds. The "Load example (Einstein)" button is the right zero-friction entry.
-I could explain it to a friend immediately.
+CONFUSING / WEAK:
+- **The aspect list is a 50-row wall of Mad-Libs.** Many pairs get the IDENTICAL generic blurb: "A sextile between these bodies creates an easy cooperative opportunity — the themes they govern support each other naturally" appears ~10x verbatim; "A trine here makes these two themes flow together effortlessly" another ~10x. It never says WHICH themes (what Saturn/Mars actually mean). Marquee pairs (Sun-Saturn, Sun-Mars) DO get specific copy, so the quality is uneven and the long tail reads as filler. For a "plain English" app this is the core letdown — no curation, no "top 5 that matter."
+- Grammar slip: "Your North Node in their 1 house" should be "1st house" (ordinal).
 
-## What I verified as an engineer (network tab)
-- Chart COMPUTE is fully client-side: loading Einstein and computing my own chart fired
-  ZERO API calls — only `GET /`. The "computed on your device, nothing is sent" claim is true.
-- The ONLY server calls are exactly the two it discloses: `GET /api/cities?q=` (geocode
-  autocomplete) and `POST /api/chart-share` (201, returns a token → real `/chart/<token>`
-  share URL). The copy explicitly warns the share link sends birth info to the server. That
-  honesty earns respect from a skeptic — it didn't pretend to be 100% local.
-- Fast: ~1s perceived to render Einstein. Input validation is solid — bad place blocks
-  compute with a clear message rather than computing garbage.
+## 3. Would I use / recommend it?
+No — but as a category non-fit, not because it's broken. I think astrology is pseudoscience; I'd never open this for myself. Judged purely on craft it's above-average: fast, client-side, honest, responsive. The thing that would stop me recommending it even to a believer friend is the repetitive templated aspect copy — it undercuts the "explained in plain English" promise the moment you scroll past the first few aspects.
 
-## Likes
-- Truthful, granular data-handling disclosure; client-side compute confirmed in network tab.
-- "City not found? Enter coordinates manually" escape hatch — good for power users / odd places.
-- Saved-charts chips + localStorage-only persistence, no account.
-- Plain-English placement explanations on expand are actually readable.
-
-## Concrete defects
-- GEOCODER IS BRITTLE: typing "Bangalore" (the common English name) returns `{"results":[]}`;
-  only "Bengaluru" works. Most users type the name they know and will hit a dead end.
-- CRYPTIC SUGGESTION LABELS: dropdown shows "London, 08, CA" / "London, ENG, GB" — raw admin
-  region codes (08, ENG, AR, KY) instead of readable country names. A non-engineer can't tell
-  which "London" is the UK one. Looks like unprocessed geocoder output leaking to the UI.
-- EXPANDED-EXPLANATION LAYOUT BUG: clicking a placement's ▾ renders the explanation as an
-  ultra-narrow one-word-per-line vertical sliver crammed into the table cell — looks broken
-  on a wide desktop. Should break out of the cell or use a popover/wider panel.
+- ADVOCACY: 3/10 (category non-fit; craft alone would be ~6 but the filler aspect copy caps it)
+- VALUE: No (for me — I don't value astrology; the feature itself delivers what it claims minus the copy depth)
+- CLARITY: Yes — within 5s I understood "plain-English compatibility between two charts, free, no signup." Headers "Compatibility, explained" + "How two charts get along" + the Person A/B cards carried it.
+- DOMINANT COMPLAINT: The 50-aspect list repeats a handful of generic per-aspect-type blurbs verbatim — reads as Mad-Libs filler, not explanation.
 
 ```json
-{"tester": 0, "round": 1, "clarity": "Yes", "value": "No", "advocacy": 3, "topComplaints": ["Geocoder misses common city names (Bangalore→empty; only Bengaluru works)", "Place suggestions show cryptic region codes (London, 08, CA / ENG, GB) not readable country names", "Expanded placement explanation renders as a broken one-word-per-line sliver in the table cell"], "priorConcernsAddressed": "n/a"}
+{"tester": "Priya", "round": 1, "clarity": "Yes", "value": "No", "advocacy": 3, "topComplaints": ["50-aspect list repeats identical generic blurbs per aspect-type (Mad-Libs filler), undercutting the 'plain English' promise", "No curation/top-aspects view; overwhelming wall to scroll", "Grammar: 'in their 1 house' should be '1st house'"], "priorConcernsAddressed": "n/a"}
 ```

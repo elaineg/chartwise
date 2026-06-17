@@ -1,25 +1,21 @@
-# Aisha — round 6
+# Aisha — Round 6
 
-**Persona:** Product designer, judges craft hard; curious-about-astrology; desktop 1440px. Prior round 5 = advocacy 9.
+**Advocacy: 9/10 · Value: Yes · Clarity: Yes**
+**Dominant note:** my two residual craft complaints from R5 are genuinely fixed — the long tail no longer collapses, and the casing flip is gone. This is the most considered free astrology tool I've used.
 
-## Prior concerns — re-checked first
-- **Place search disambiguates same-name cities (round-5 fix #1):** FIXED & lovely. "Springfield" returns 8 distinct rows each with state + country (MO, MA, IL, OR, OH, VA, PA, TN — United States). Zero ambiguity; exactly what I asked for.
-- **Same-sign readings distinct per planet (round-5 fix #2):** FIXED, and this is the standout. My own chart has 3 Leo placements and they read genuinely differently — Leo Sun "here to shine, share what's inside you," Leo Mercury "communicate with flair, hold a room," Leo Venus "generous and dramatic, need to be admired." Each is scoped correctly to identity/mind/love. No copy-paste smell. Einstein's Aries Mercury (blunt, fast) vs Aries Venus (impatient in love) confirms it.
-- **NODES column dead-air em-dashes (my 9→10 nit):** PARTIALLY addressed. South Node / North Node are now proper filled pills matching the SIGN/PLANETS treatment, so the column has two real anchored elements instead of pure void. But 10/12 rows are still a lone "—". Honest, but the column is ~85% empty on a wide display.
-- **Zodiac accent corner-bleed (my 9→10 nit):** resolved on the save-card — the wheel is now an anchored arc bottom-right plus a "chartwise" wordmark; reads intentional, not a bleed.
+## Prior concerns re-checked (R5 residuals)
+- **Long-tail minor aspects collapsing to ~4 generic templates → FIXED.** Expanded all 50 aspects (Einstein × Michelle Obama). Every full body sentence is now unique because each names the specific two bodies in BOTH the header phrase and the prose: e.g. "Albert Einstein's Neptune trine Michelle Obama's Mercury: Neptune and Mercury flow easily between you…", "…South Node opposite Mars: a polarity tension between South Node and Mars…". Zero verbatim-identical paragraphs in the tail. The fix landed.
+- **Doubled-possessive clunk → GONE.** No broken `'s's` / double apostrophes anywhere. The remaining `Person's Planet's` phrasing ("Obama's Sun's identity") is intentional directional voice and reads fine.
+- **"Nth House"/"Nth house" casing flip → FIXED.** Zero lowercase "house" in any overlay body; headers and prose both say "1st House", "4th House". Confirmed visually on desktop AND 375px — header caps == body caps.
 
-## Answers
-1. **ADVOCACY: 9/10** — I'd bring this up unprompted to astro-curious friends. The per-planet copy distinctness pushed it over; that was the thing that felt cheap before and now feels authored. Held off 10 only by craft nits below.
-2. **VALUE: Yes** — Today I read astro-seek / Co-Star; both bury me in a wheel or doled-out daily crumbs. This explains every placement in plain English in one screen, free, no signup, with a share-card I'd actually post. Saves real effort over decoding a wheel.
-3. **CLARITY: Yes** — H1 "Your birth chart, explained in plain English" + "Free, no signup" + "Load example (Einstein)" told me what and who within 5 seconds.
+## Three questions
+- **Clarity (Yes):** "It explains your birth chart and your compatibility with someone in plain English — no wheel, no jargon, no signup." Helped: H1 "explained in plain English", the "COMPATIBILITY · Compare two people" card, the honest-framing line "For insight and fun — a lens on the dynamic, not a prediction."
+- **Value (Yes):** Today I screenshot AstroSeek's aspect grid and google each glyph. This reads every one of 50 aspects to me directionally ("Einstein's Saturn provides grounding Obama's Sun can use"), with orbs and harmony/tension labels — and uses raw counts (30 harmony · 15 tension · 5 conjunction), not a fake compatibility %. Saves me the decode step entirely.
+- **Advocacy (9):** I'd bring this up unprompted to astro-curious friends. Share link works end-to-end with a loading state and opens "Shared Compatibility — A × B" plus a "Create your own chart" CTA. Big-three card, ordinals, element-basis line, "computed on your device" privacy note — all considered.
 
-## Craft nits (what holds the 10)
-- NODES column still mostly em-dashes on 1440px; consider collapsing nodes into the PLANETS column (or a single "Nodes: South H2 · North H8" line) so the table doesn't reserve a near-empty fourth column.
-- Place-search dropdown overflows the form card's bottom edge — it bleeds over the "computed on your device" disclaimer and the card's rounded corner peeks through. Clip it to the card or give it an owned surface/shadow.
-- Save-as-image card is genuinely share-worthy: big-three pills, element tags, one-line takeaway, wordmark, "free birth chart, instant, no account" — polished. Filename `albert-einstein-chart.png` is a nice touch.
-- Share link copies clean, resolves 200, and unfurls with proper OG + per-chart opengraph-image + `summary_large_image` — it'll look right pasted in Slack/iMessage.
-- Copy tone throughout is warm, second-person, intelligent, never cringe. The "Today's Sky / For your chart" transit block is a thoughtful extra that earns the scroll.
+## What still holds it back from 10 (one real nit)
+- New wording wrinkle from the body-naming logic: **"Albert Einstein's Nodal's sense of purpose"** (North/South Node aspects). "Nodal's" is ungrammatical — should be "North Node's" or "Nodal axis's". Appears 3× in the Node conjunction/opposition bodies. Minor, but I judge copy hard, so it's the one thing keeping me off a 10.
 
 ```json
-{"tester": 0, "round": 6, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["NODES column still ~85% empty em-dashes on wide display — collapse or merge it", "place-search dropdown overflows/bleeds past the form card's bottom edge and rounded corner"], "priorConcernsAddressed": "some"}
+{"tester": 1, "round": 6, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["'Nodal's' reads ungrammatically in North/South Node aspect bodies (should be 'North Node's'); appears 3x"], "priorConcernsAddressed": "all"}
 ```

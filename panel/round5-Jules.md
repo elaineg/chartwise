@@ -1,36 +1,32 @@
-# Jules — round 5
+# Jules — Round 5
 
-**Persona:** Content/community marketer, mobile-first, posts constantly, judges shareability hard. Tested at 375px mobile viewport, cold.
+Content/community marketer, mobile-first, curious about astrology, allergic to logins. Tested 375px mobile + 1280px desktop, cold.
 
-## Answers
-1. **ADVOCACY: 9**
-2. **VALUE: Yes**
-3. **CLARITY: Yes**
+## My round-4 blocker — checked first
+**Templated reversed-pair body ("the X person" identical both directions) → RESOLVED.**
+Expanded the full SHOW ALL 50 ASPECTS tail (Einstein × Michelle Obama) and audited the bodies programmatically:
+- "the X person" / "the Mars person" phrasing: **0 matches across all 50.** Gone.
+- Byte-identical body paragraphs: **0.**
+- 48/50 bodies name BOTH actual people; 0 name neither.
+- True reversed pair reads DIFFERENTLY now: Einstein's Uranus ☍ Obama's Moon → "Albert Einstein's Uranus's unpredictability can feel destabilizing to Michelle Obama's Moon" vs the reverse "Michelle Obama's Uranus's...to Albert Einstein's Moon." That's exactly what I asked for.
+- One residual nit (not my blocker): symmetric **conjunctions** reuse a generic clause both ways — Einstein's Jupiter ☌ Obama's Venus and Venus ☌ Jupiter share the body "Jupiter conjunct Venus: affection and optimism meet at a single point…". Both still name the two people in the lead-in, and a conjunction is genuinely symmetric, so I can live with it. Minor.
 
-## Re-check of my exact round-4 8→9 gate
-> "Only the og text is personalized; the image is the same for me, my friend, and Einstein. A per-chart image (name · Sun/Moon/Rising) is the actual share-bait and my 8→9 gate."
+## Other focus items
+- Honest-framing line: present and reads well — *"For insight and fun — a lens on the dynamic, not a prediction."* Good tone for sharing, won't get me dragged for "predicting" a friendship.
+- Share button: shows **"CREATING LINK…" disabled** then **"COPIED"**, copies a real `/chart/...` URL. Loading state confirmed.
+- Share link on a FRESH session (no storage): 200, reopens the full comparison — both names, all aspects, framing line, zero console errors.
+- No regressions: compare card ("COMPATIBILITY · Compare two people") is discoverable on mobile right under the saved chart; ordinals correct (9th/11th House, House 10); headers name both people; big-three (Sun/Moon/Rising) intact.
+- Natal sanity: Einstein loads, big-three + houses + elements all render, 0 errors.
+- Mobile + desktop: no clip, truncation, double-render, or overlap. 0 pageerrors anywhere.
 
-**FIXED — and verified directly.** I created two share links and fetched the og/twitter meta + the actual image bytes for each:
-- Einstein token → og:title "Albert Einstein's birth chart…", and `/chart/<token>/opengraph-image` renders a 60KB PNG showing **"Albert Einstein" · 1879-03-14 · Ulm, Germany · Pisces Sun (H10) · Sagittarius Moon · Cancer Rising**.
-- MY token (Jules Rivera) → og:title "Jules Rivera's birth chart…", image renders **"Jules Rivera" · 1991-08-23 · Lisbon, Portugal · Leo Sun (H9) · Aquarius Moon · Sagittarius Rising**.
+## Three questions
 
-The two cards are completely distinct — different name, date, place, and Sun/Moon/Rising chips, with per-sign accent colors (orange Leo vs purple Pisces, blue Aquarius). The footer reads "free · instant · no signup" + chartwise.vercel.app handle. **This is genuine share-bait I would actually post** — drop a link in a Discord/X thread and it unfurls into the person's own big-three card. Gate cleared.
+**Clarity — Yes.** "Your birth chart, explained in plain English. Free, no signup" + the COMPATIBILITY "Compare two people" card tells me instantly: a free no-login chart + compatibility explainer. I'd pitch it to a friend in one line.
 
-## Other round-4 deltas (judged honestly)
-- Plain-English headlines: no longer feel copy-pasted; each placement reads distinct. Good.
-- Wider result area on desktop / more visible save-card accent: minor, didn't block me; mobile already used full width.
+**Value — Yes.** Today I screenshot Co–Star/AstroSeek synastry and rewrite it into something postable, or just eyeball it. This gives me named, directional, plain-English readings AND a no-signup share link that reopens the full thing on anyone's phone — that's a post/story ready to go. Saves me the rewrite.
 
-## Fresh pass (mobile)
-- "Free, no signup" up top = instant clarity, exactly my trigger. Reading is genuinely plain-English, not jargon.
-- Own chart: place autocomplete works, computed Leo/Aquarius/Sagittarius correctly. No console/page errors anywhere. No horizontal scroll.
-
-## What keeps it from a 10
-- The og:image:**alt** is still the generic "Birth chart card" — accessibility/screen-reader and some unfurl previews use alt text; it should say "Jules Rivera's birth chart: Leo Sun, Aquarius Moon, Sagittarius Rising" to match the visual. Small, but it's the last personalization gap.
-- Place search shows 5 identical "Lisbon, United States" rows with no state to disambiguate — minor friction.
-- No one-tap "Share to X/native share sheet" button on mobile — I copy the link, but a Web Share API button would make the loop frictionless and push me to 10.
-
-The per-chart unfurl was the whole ballgame and it landed. Comfortable 9, would bring it up unprompted; held off 10 only by the generic image alt + missing native share button.
+**Advocacy — 9.** My round-4 blocker is genuinely fixed: reversed pairs are directional and name-bound, no "the X person", no identical paragraphs. Share + framing nail the shareability I judge hardest on. Why not 10: the symmetric-conjunction bodies still reuse one generic sentence both directions — it's the last seam where the reading stops feeling individually authored. Tiny, but it's the difference between "great" and "I'd never spot a repeat." Fix that and it's a 10.
 
 ```json
-{"tester": 0, "round": 5, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["og:image:alt still generic 'Birth chart card' instead of per-chart text", "no one-tap native/X share button on mobile", "place search shows undifferentiated duplicate 'Lisbon, United States' rows"], "priorConcernsAddressed": "all"}
+{"tester": 4, "round": 5, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["Symmetric conjunction aspects (e.g. Jupiter conjunct Venus) reuse one generic body sentence in both directions instead of distinguishing whose planet is whose"], "priorConcernsAddressed": "all"}
 ```

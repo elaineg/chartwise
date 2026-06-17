@@ -1,45 +1,30 @@
 # Jules — Round 4
 
-Re-checking my Round-3 blockers first:
-- **og:image on /chart/<token>: FIXED.** I generated a real share link
-  (`/chart/atgwzoSGryH4nsheRYSruRLh`) and curled the page. It now has
-  `og:image` (1200x630, width+height set), `twitter:card=summary_large_image`, AND a
-  personalized title/desc ("Albert Einstein's birth chart, explained — chartwise"). The
-  og-default.png is a real, attractive 1200x630 branded card. Round 3 it was text-only with
-  twitter:card=summary. This is the exact thing that gated me. Hit.
-- **Save-as-image surfaced inside the reading: FIXED.** "⬇ Save as image" now sits at the
-  top-right of the reading card, not buried on a saved-chart card. Desktop expanded rows
-  also span full width now. Both my asks landed.
+Tested cold over HTTP, mobile-first (375px) + desktop. Focus: synastry/compare after fix.
 
-## 1. Advocacy: 8
-Up from R3's 8 only on quality, but I'm holding at 8, not bumping to 9 — and here's the
-honest reason. The unfurl image is GENERIC. Every shared chart unfurls the SAME
-"Your birth chart, explained in plain English" card. The og *title/description* are
-personalized ("Albert Einstein's natal chart: Sun, Moon, Rising…") but the IMAGE — the
-thing that actually stops a thumb in a feed — is identical for me, my friend, and Einstein.
-For a constant-poster, a per-chart image (their name · Sun/Moon/Rising) is the share-bait;
-a generic card reads like a stock template after the second post. That's my 8→9 gate now.
-(Also noted, not blocking: the live meta points to chartwise.vercel.app/og-default.png,
-which 404s right now — fine on localhost since it's pre-deploy and the asset is in the
-build, but the deploy MUST land it or every unfurl breaks.)
+## R3 concern re-check (my sole hold-back at adv 8)
+- **Compatibility card discoverable as FIRST thing after chart summary — FIXED.** On mobile it sits at scrollY ~1415, immediately after the name + Sun/Moon/Rising chips, before Today's Sky (1885). On desktop: name 380 → Compatibility card 557 → Today's Sky 928. It's a real card with "Compare two people / Plain-English compatibility... free, no signup" and an arrow. I'd find it on a cold landing now.
 
-## 2. Value: Yes
-I post about astrology constantly and "find your big three" is a recurring bit. Today I'd
-screenshot astro-seek's cluttered chart or paste a co-star line. This gives me a clean
-mobile reading, plain-English per-placement text, element counts, today's transits, and a
-no-login share link. It genuinely saves me effort and is the first one I'd actually paste
-into a thread.
+## Focus items
+- **(a) Aspect tail ("SHOW ALL 50 ASPECTS"):** distinct & readable. Each row names who owns what: "Albert Einstein's Jupiter ☌ Michelle Obama's Venus" vs the reverse "Einstein's Venus ☌ Obama's Jupiter" — reversed pairs DO differ in the header, real names, not "the X person." Nitpick: the explanation paragraph below reversed pairs is identical templated prose and still says "the Mars person" — distinct labels, generic body. Minor, not blocking.
+- **(b) House overlays:** ordinals consistent in headers AND prose ("1st House", "4th House", "9th House"); both directions present ("MICHELLE OBAMA'S PLANETS IN ALBERT EINSTEIN'S HOUSES" + reverse), real names. Clean.
+- **(d) Share comparison:** works end-to-end. Click → POST /api/chart-share → button flips to "COPIED / Link copied to clipboard", URL http://localhost:3099/chart/<token>. Opened fresh (HTTP 200): full "SHARED COMPATIBILITY — Einstein × Obama", both big-threes, aspects, + "Create your own chart →". Privacy wording honest: "Creating a link stores the birth info on our server to make the URL work."
+- **(e) Big-three + framing intact;** natal sane (Einstein Sun 23°30' Pisces House 10). Interpretations read as tendencies, not hard predictions.
+- No clip/overflow/double-render/overlap at 375px or 1280px; 0 page errors either viewport. (Clipboard read returned empty under headless once — environment artifact; verified the copy visually via "COPIED" label + the URL appearing in the field.)
 
-## 3. Clarity: Yes
-H1 "Your birth chart, explained in plain English" + "Free, no signup" + the Einstein
-example made it legible in under 10 seconds. The big-three card and "plain English" reading
-deliver on the promise.
+## Three questions
+**Clarity — Yes.** "Free no-login app that explains a birth chart in plain English and compares two people's compatibility." "PLAIN ENGLISH · NO SIGNUP" + "Compatibility, explained" nail it instantly.
 
-What still blocks 9+: make the share-link unfurl image PER-CHART (name + Sun/Moon/Rising),
-not one generic card. That single change turns this from "useful tool" into "thing I bring
-up unprompted."
+**Value — Yes.** Today I screenshot Co–Star/astro.com bits into a Notion doc or just eyeball big-threes. This gives me a shareable, plain-English synastry read I can drop into a group chat or a post with one tap, no login, named per person. Saves real effort over my screenshot-and-caption habit.
+
+**Advocacy — 9/10.** Up from 8. The compare card is now where I'd actually see it, the share link reopens the full reading on a fresh phone, and the per-person aspect labels make it genuinely postable. I'd bring this up unprompted in my Discord and post it. Held off a 10 only by the templated reversed-pair prose ("the Mars person" reading the same on both directions) — once that body text uses the actual names like the headers do, it's a 10.
+
+ADVOCACY: 9/10
+VALUE: yes
+CLARITY: Yes
+Dominant note: R3 blocker fully resolved; share + discoverability now both solid on mobile. Only residual is cosmetic templated prose on reversed aspect pairs.
+Movement: +1 (8 → 9)
 
 ```json
-{"tester": 4, "round": 4, "clarity": "Yes", "value": "Yes",
- "advocacy": 8, "topComplaints": ["share-link unfurl uses one GENERIC og:image for every chart — not personalized with the chart's name/Sun-Moon-Rising, which is the actual share-bait for a poster", "og:image points to chartwise.vercel.app/og-default.png which 404s pre-deploy; deploy must serve it or every unfurl breaks"], "priorConcernsAddressed": "all"}
+{"tester": 0, "round": 4, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["reversed aspect pairs show identical templated prose ('the Mars person') despite distinct named headers", "aspect explanation body doesn't substitute the real names the headers already have"], "priorConcernsAddressed": "all"}
 ```

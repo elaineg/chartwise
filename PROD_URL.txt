@@ -1,1 +1,14 @@
 https://chartwise.vercel.app
+
+DEPLOY EVIDENCE — 2026-06-16
+Commit: 7650388f5b4ba605ac7294b208e0939315ec7ebd
+Vercel deployment: chartwise-9hfrprka9-elainegao.vercel.app
+Aliased: https://chartwise.vercel.app
+
+SMOKE TESTS:
+GET  https://chartwise.vercel.app           → 200  (ds-eyebrow, ds-display, ds-panel, bg-paper/ink — SSENSE markers confirmed)
+GET  https://chartwise.vercel.app/api/cities?q=London → 200
+POST https://chartwise.vercel.app/api/chart-share  → 201  (token: fTz9IBFZth7DK7BpeAI3xg2j)
+GET  https://chartwise.vercel.app/chart/fTz9IBFZth7DK7BpeAI3xg2j → 200
+
+SSENSE look confirmed: ds-* classes (ds-eyebrow, ds-display, ds-rule, ds-panel, ds-btn, ds-label, ds-input, ds-field, ds-maxw, ds-page-x), ink/paper colour tokens present in served HTML.

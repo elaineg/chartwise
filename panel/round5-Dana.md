@@ -1,35 +1,35 @@
-# Dana — round 5
+# Dana — Round 5
 
-**Persona:** Demand-gen marketer, ruthless about time, tests on phone, screenshots tools she likes to the team channel. Wants to look up partners'/coworkers' charts and post a clean explainer.
+Demand-gen marketer. MacBook + phone. Curious about astrology, screenshots clean explainers for the team channel. Ruthless about time.
 
-## The three answers
-1. **ADVOCACY: 9**
-2. **VALUE: Yes**
-3. **CLARITY: Yes**
+## Prior concern (R4 blocker) — re-checked first
+**My ONLY thing between 9 and 10 was: reversed mutual aspect pairs printed verbatim-identical body prose (read as copy-paste when screenshotted).**
 
-## Did my round-4 blocker land? YES — verified directly.
-Round 4 my advocacy dropped 9→8 for ONE reason: the shared-link unfurl was a single generic `og-default.png`, identical for every chart, so I'd screenshot the PNG and post the image instead of pasting the link. My explicit ask was "reuse the per-chart card for og:image."
+Verdict: **Mostly fixed, one residual.** I loaded Einstein, opened "Compare two people" (default comparison was Einstein × Michelle Obama), expanded SHOW ALL 50 ASPECTS, and parsed every body.
+- Headers are now name-bound + directional: "Albert Einstein's Sun ⚹ Michelle Obama's Sun".
+- "the X person" phrasing: **GONE** — 0 hits across all 50 bodies.
+- Reversed/symmetric pairs now read DIFFERENTLY where it matters: Einstein's Uranus☍Obama's Moon vs Einstein's Moon□Obama's Uranus correctly swap who's the Uranus and who's the Moon. Names flow into the prose. Good.
+- **Raw byte-identical full bodies: 0.** My exact blocker (two adjacent rows printing the identical paragraph word-for-word) is essentially resolved for the common, identity-bearing aspects.
 
-I created MY chart (Dana Reyes, Cancer Sun H9 / Leo Moon / Scorpio Rising) and fetched `/chart/<token>` and inspected the meta:
-- `og:title` = "Dana Reyes's birth chart, explained — chartwise" (per-chart, not generic)
-- `og:image` = `.../chart/EKXi8.../opengraph-image?...` — a PER-TOKEN dynamic route
-- The rendered PNG (1200×630, 200 OK) shows MY name, my date/place, and labeled Sun/Moon/Rising cards with chartwise branding + "free · instant · no signup". This is genuinely paste-worthy.
+What's STILL there (the residual that holds me back): generic FALLBACK templates reused on the outer-planet/node/Lilith tail. After name-normalizing, "a harmonious flow between these two energies — the areas of life these planets govern support each other naturally" appears **7 times**; "an easy cooperative link…" **4 times**; "a recurring friction between these areas…" **3 times**. Each names the two planets in the prefix, but the trailing sentence is verbatim-repeated. AND one symmetric conjunction still prints identical prose on both rows: Jupiter☌Venus and Venus☌Jupiter both say "Jupiter conjunct Venus: affection and optimism meet at a single point…". If I screenshot the full tail, a sharp eye still sees repetition lower down — just not on the headline aspects.
 
-I created a SECOND chart (Marcus Lee, Tokyo) — different token, different og:title ("Marcus Lee's..."), and the image hash differs (61KB vs 59KB, distinct SHA). So it is provably per-chart, not one shared default. **This is exactly the fix I asked for.** I would now paste the link unprompted into the team channel — the unfurl IS the explainer.
+## 1. What is this?
+**Clarity: Yes.** "Your birth chart, explained in plain English." + eyebrow "NATAL CHART · PLAIN ENGLISH · NO SIGNUP." I'd tell a friend: "Free natal + compatibility chart that explains the aspects in normal English, no login — paste two birthdays and screenshot the breakdown." The compare view header "Compatibility, explained — How two charts get along, in plain English, free, no signup" nails it.
 
-## Other changes, judged honestly
-- Headline repetition: section lead-ins now vary ("At your core…", "Emotionally…", "To others…", "The way your mind works…", "When you act…"). Same-sign placements (Aries Mercury + Aries Venus) still share the sign's core phrase but the house framing differs — acceptable, no longer feels copy-pasted. Fixed enough.
-- Wider desktop result area + more visible zodiac accent on the card: confirmed, reads cleaner.
-- Bonus I noticed: place autocomplete (Austin/Tokyo) and a "Today's Sky" transit block — gives a reason to come back, good for recurrence.
+## 2. Would I use it?
+**Value: Yes.** Today I screenshot from astro apps that either paywall synastry or write it in jargon. This gives me a clean PERSON A / PERSON B card with both big-threes, element bars, a harmony/tension count, and named directional aspects — share-ready as-is. The share link works: button shows "CREATING LINK…" with aria-busy/disabled (loading state confirmed), then copies a working URL — I opened `/chart/<id>` cold and it rendered "SHARED COMPATIBILITY — Albert Einstein × Michelle Obama" with a "Create your own chart →" CTA. That's exactly the team-channel artifact I want.
 
-## Value vs. what I do today
-Today I'd google "what does Cancer rising mean" across 3 tabs or screenshot from astro-seek's cluttered UI. This gives me a clean, named, plain-English read in one compute and a shareable link in one click. Saves real time and is screenshot-worthy. Yes.
+## 3. What's broken / missing?
+- Generic fallback sentences repeat on the long aspect tail (7×/4×/3×) + the one symmetric conjunction dup. Not as bad as R4, but still the thing between me and a 10.
+- Nit: the compare view defaults to a pre-loaded Einstein × Michelle Obama comparison; took me a beat to realize the second person was editable. Fine once you see it.
+- No regressions: compatibility card is first block after the summary on BOTH desktop and 375px mobile; ordinals consistent (1st…11th); names in every header; big-three intact; natal chart sane (11 placements, arcminutes, ℞, Lilith, plain-English blurbs).
+- Mobile 375px: zero horizontal overflow, no clipping/truncation/double-render, 0 console errors. PERSON A/B sit side-by-side cleanly.
 
-## What keeps me from a 10
-- "Save as image" triggers a file download rather than showing the card on-page first — I can't preview before it lands in Downloads, and on phone that's friction. Let me see the card, then download.
-- The two same-Moon charts both said "Leo Moon" with near-identical Moon copy; for sharing two friends' charts side by side the overlap is still noticeable.
-- Recovered to 9. Not 10 because the in-app save-as-image preview is clunkier than the now-excellent link unfurl.
+## Scores
+- **Clarity: Yes** — value landed in one scroll, even on phone.
+- **Value: Yes.**
+- **Advocacy: 9.** Up from R4's 9 in confidence but not yet a 10. The headline blocker is resolved and share/loading/mobile all work — but the reused fallback sentences + Jupiter/Venus symmetric dup on the full tail still read slightly templated when I screenshot everything. Make those distinct (or vary the closing sentence) and this is a 10 I'd drop in the channel unprompted.
 
 ```json
-{"tester": 0, "round": 5, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["Save-as-image downloads with no on-page preview, awkward on phone", "Same-sign placement copy still overlaps noticeably (e.g. shared Leo Moon)"], "priorConcernsAddressed": "all"}
+{"tester": 0, "round": 5, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["Generic fallback aspect sentences repeat verbatim on outer-planet/node/Lilith tail (7x/4x/3x after name-normalize)", "Symmetric Jupiter conjunct Venus pair (Jup-Ven / Ven-Jup) still prints identical non-directional body"], "priorConcernsAddressed": "some"}
 ```

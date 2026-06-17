@@ -1,21 +1,24 @@
 # Sam — Round 3
 
-**Re-checking my exact round-2 complaints (was 9/10):**
-- (a) "No one-tap share-as-image card — still had to manually screenshot" → **FIXED.** There's now a "Save as image" button (⬇) on each chart. One tap downloaded `albert-einstein-chart.png` — and for my own data, `sam-chart.png`. The card is genuinely chat-clean: name + date + place, my big-three chips (Cancer Sun / Pisces Moon / Leo Rising), a Fire/Earth/Air/Water balance bar, a dynamic one-liner ("Strong water energy — identity and emotions run on the same current"), and a "chartwise.vercel.app — no signup, no cost" footer. This is exactly the artifact I'd drop into a group chat. It even doubles as soft marketing for them. This closes my 8→9 gate cleanly.
-- (b) "Daily 'For your chart' transit blurbs repetitive" → **IMPROVED.** The four blurbs now read distinctly (Mars/Taurus charging natal Neptune; Saturn/Aries converging with natal Mercury for "serious effort"; Neptune/Aries blurring imagination; "Pluto turns retrograde — pull inward"). No more three-in-a-row "activating the same area." Not Shakespeare, but no longer copy-paste-y.
+PM, mobile-heavy, shares screenshots constantly, curious-about-astrology. Tested cold on 375px + desktop.
 
-**Bonus I asked about: planets now show DEGREES** — "1° Virgo", "14° Sagittarius", "26° Capricorn", "27° Aquarius" etc. Makes it look legit/precise, which matters for the "look interesting" share.
+## Re-check of my Round 2 complaints
+- **Buried compare entry / no clear clickable card** → FIXED. After I compute (or load) a chart, there's a bordered card: "COMPATIBILITY / Compare two people / Plain-English compatibility between two charts" with an arrow. On both 375px and desktop it reads as a tappable card. Caveat: it does NOT exist on the cold homepage at all — you only see it once a chart exists. For my "open it and immediately get it" instinct that's a half-fix (see Clarity).
+- **No single labeled "set Person B = my partner" action** → PARTIALLY. The compare view opens straight into a fully-worked Einstein × Michelle Obama demo (smart — instant payoff). The shared page has explicit PERSON A / PERSON B "Choose a person…" pickers. But in-app I never saw a labeled "set Person B = my partner" step; to use my real partner I'd have to save both charts first. Good enough to demo, still a touch indirect for my actual use.
 
-**1. ADVOCACY: 10/10.** Both things keeping me at 9 are gone. One-tap save-as-image is the unlock: I can do my chart, my partner's, a couple friends' on my phone between meetings and fire off clean cards in seconds — no manual screenshot crop. I'd bring this up unprompted. No console errors, no fiddliness, nothing to debug.
+## 1. Value?
+YES. This is the first version I'd actually screenshot. The KEY ASPECTS are genuinely relationship-significant (Sun×Sun sextile, Sun conjunct Mars 0.2° orb, Moon trine Jupiter) and the readings are pair-specific AND directional with BOTH names: "Albert Einstein's Sun ⚹ Michelle Obama's Sun… the Mars person is energized by the Sun person's identity." Expanding "SHOW ALL 50 ASPECTS" gave 50 distinct readings — 87 of 90 long lines unique, only 3 honest repeats (same aspect type recurring). NOT the boilerplate I feared. Collapse ("SHOW TOP ASPECTS ONLY") returns cleanly to 6. House overlays read with correct ordinals and direction ("Moon in the 9th House", "their Venus in your Seventh House"). Today I'd send my partner a paragraph from Co-Star/screenshot a paywalled synastry report; this is cleaner, free, no signup, and shareable.
 
-**2. VALUE: Yes.** Today I'd Google "what's a Pisces sun" and paste astro-seek's ugly tables. This gives me a tidy, screenshot-ready card per person in under a minute. The save-image button is the difference between "nice tool" and "thing I actually share," which is the whole point for me.
+## 2. Frustrated / broken?
+Almost nothing broke. The "SHARE THIS COMPARISON" button works: copied http://localhost:3099/chart/… to clipboard, button flipped to "COPIED", and opening that link fresh returns 200 with BOTH names, the big-three, and the aspects — a real shareable page titled "Albert Einstein × Michelle Obama / Create your own chart". That's exactly what I'd drop in a group chat. Zero console errors anywhere. No clip/truncation/double-render/overlap on 375px or 1280px. Minor: a few house-overlay lines for same-house placements share generic wording ("reaches their private, foundational world" appears twice for the two 4th-house planets) — noticeable if you read closely.
 
-**3. CLARITY: Yes.** "Your birth chart, explained in plain English" + "Free, no signup — type your birth date, time, and place, or load an example" tells me what and who within 5 seconds. "Load example (Einstein)" is the obvious first tap and pays off instantly.
+## 3. Use again / recommend?
+Yes, I'd use it and I'd send it to 2-3 friends — it's a great conversation starter and the share link makes it spreadable. Held back from a 9 by: (a) compare is invisible until you make a chart, so a friend I send to the homepage cold won't discover it; (b) pointing Person B at my real partner isn't a one-tap labeled action in-app.
 
-**Mobile entry (my quit-trigger): still frictionless.** Native date/time pickers; typing "Austin" returned 8 ranked suggestions, picked "Austin, United States (30.2672, -97.7431)", computed, and auto-scrolled straight to my reading (scrollY 955), not the top form.
-
-Nitpick, non-blocking: the "Save as image" button sits up in the SAVED CHARTS row rather than next to the big pretty reading section — took me a beat to find it the first time. I'd add a second copy down by the reading.
+ADVOCACY: 8
+VALUE: yes
+CLARITY: partially — chart side is instantly clear ("Your birth chart, explained in plain English"), but compatibility (my reason to share) is hidden on the cold homepage, so a first-time visitor can't tell this also does relationship comparison.
 
 ```json
-{"tester": 0, "round": 3, "clarity": "Yes", "value": "Yes", "advocacy": 10, "topComplaints": ["save-as-image button is only in the saved-charts row, not next to the plain-English reading — took a beat to find"], "priorConcernsAddressed": "all"}
+{"tester": 0, "round": 3, "clarity": "Partially", "value": "Yes", "advocacy": 8, "topComplaints": ["Compare entry only appears AFTER you compute/load a chart — invisible on cold homepage, so the share-worthy compatibility feature isn't discoverable to a first-time visitor", "No one-tap labeled 'set Person B = my partner' in-app; using your own partner needs saving both charts first", "A few same-house overlay readings reuse identical generic wording"], "priorConcernsAddressed": "some"}
 ```

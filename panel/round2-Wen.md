@@ -1,23 +1,55 @@
-# Wen — round 2
+# Wen
 
-Marketing data analyst, casual-curious-skeptic. Re-tested the three things that held me back at advocacy 6.
+Round 2. Marketing data analyst, desktop + a 375px check. Casual-curious astrology skeptic
+who wants to see HOW a number was derived. Round-1 complaint (adv 7): "silent directionality
+loss" — Key Aspects never said whose planet was whose, yet blurbs used directional language.
 
-## Round-1 blockers — fixed?
-1. **Broken/cryptic city geocoder** — FIXED. Typed "Tokyo, Japan" → got "Tokyo, Japan" and "Nishi-Tokyo-shi, Japan" with readable country names (no raw region codes). The "City, Country" format works; "Taipei, Taiwan" resolved and computed my chart. The geocoder is now trustworthy.
-2. **Placements expanding to EMPTY explanations (Jupiter, House-11 stack)** — FIXED. Expanded every ▾ toggle. Jupiter → "Jupiter's home territory — wisdom, travel..."; House-11 stack Neptune/Pluto/Chiron each gave a distinct, coherent sentence; Saturn, Uranus too. No empties found.
-3. **No per-planet sign/degree to reconcile placements** — PARTIALLY fixed. Every planet now shows SIGN + HOUSE both in the headline reading and the house table, and they're internally consistent (Sun "Pisces · House 10" matches the table's House 10). But there are STILL no degrees (`HAS_DEGREE` = false). As a data person I can sanity-check sign placement, not the actual ephemeris math.
+## Prior concern — addressed?
+FIXED, and well. Every Key Aspect card now names both owners in full:
+"Albert Einstein's Mars ☌ Michelle Obama's Sun". I stress-tested the hardest case —
+conjunctions, where the blurb uses role language. The Sun-Mars card reads "the Mars person is
+energized by the Sun person's identity"; header says Einstein=Mars, Obama=Sun, so it's Einstein
+energized by Obama. Traceable BY NAME, direction consistent with wording. That's exactly what I
+asked for. No leftover single-chart "your/their" pronoun confusion — the remaining "your" is the
+couple's "your relationship / each of you", which is correct.
 
-## 1. ADVOCACY: 8/10 (up from 6)
-The reading is genuinely the thing I wanted: it surfaces by default, reads in natural plain English, every placement is explained, and sign+house line up consistently across the headline and the houses table. The "Today's Sky" transit with a "For your chart" cross-reference (e.g. "Mars in Taurus = your natal Neptune") is a nice, legible touch. Held back from 9 by the missing degrees — I can't reconcile the asserted signs against the actual longitudes, so I take the math partly on faith. My July-22 Cancer Sun (right on the cusp) checked out against what I half-remember, which earned trust. Not a 9 because nothing here makes me share it *unprompted* — it's a satisfying one-time "huh, neat," and the no-degree gap keeps the data hygienist in me at arm's length.
+## What's genuinely good
+- Top 6 aspects are now relationship-significant (Sun, Moon, Venus, Mars, Saturn pairs) — no
+  obscure Chiron/Node leading. Tail (Lilith/Node junk) is correctly demoted, not deleted.
+- "Show all 50 aspects" toggle works both ways ("Show top aspects only" on expand). Page is no
+  longer a wall — collapsed by default. 6 → 50 cards on expand, confirmed.
+- Honest framing: "30 HARMONY · 15 TENSION · 5 CONJUNCTION" — raw counts, no fake compatibility %.
+- 375px mobile: zero horizontal overflow, no clip/double-render, no JS console errors. Big-three
+  summary (Person A/B Sun-Moon-Rising) is clear. Natal chart still computes fine.
 
-## 2. VALUE: Yes
-This is exactly what I wanted as a curious skeptic: I finally understand what my rising sign and house placements MEAN without learning to read a wheel. The per-planet "sign + house + what it means" format replaces the cryptic wheels on astro-seek. Real value in one session.
+## What holds it back (data-hygiene nits I can't unsee)
+1. BOILERPLATE TAIL. Top blurbs are specific, but the expanded tail is mostly type-templates:
+   the SAME trine sentence appears 13×, square 10×, sextile 9×, conjunction 4×. Two DISTINCT
+   pairs — Einstein's Jupiter☌Obama's Venus vs Einstein's Venus☌Obama's Jupiter — render
+   byte-identical text. As an analyst that reads as "no specific content here," which undercuts
+   trust in the specific ones.
+2. ORDINAL INCONSISTENCY in House Overlay. Card header says "North Node in the 1st House" but its
+   blurb says "their 1 house"; also "your 5 house" and "house of 8". Other cards correctly say
+   "Sixth/Eighth House". Mixed 1st-vs-1 in the same view is sloppy — easy fix, but it's the kind
+   of inconsistency that makes me doubt the pipeline.
+3. Discoverability: "Compare two people" is invisible until you load/compute a natal chart first.
+   Cold, the homepage gives no hint synastry exists.
 
-## 3. CLARITY: Yes
-H1 "Your birth chart, explained in plain English" + "Free, no signup — type your birth date, time, and place, or load an example" told me what it does and how in well under 30 seconds. The Einstein example let me see the payoff before entering my own data.
+## Answers
+1. First impression: substantially fixed, and I'd actually use this to settle a "are we
+   compatible" curiosity for entertainment. The directionality fix is the difference between a
+   tool I distrust and one I'd poke at. Boilerplate tail + ordinal slop stop a recommend.
+2. ADVOCACY: 8/10. Up from 7. Directionality is explicit and correct — my one blocking issue is
+   gone. Not 9 because the long-tail boilerplate and "1st House"/"1 house" inconsistency are
+   exactly the invisible-transform sloppiness I distrust; clean those and it's a 9.
+3. VALUE: Yes. I'd otherwise paste two charts into astro.com and squint at a wheel I can't read;
+   this names the pairs and explains them in English without me learning glyphs.
+4. CLARITY: Yes. Header "Compatibility, explained — in plain English", named owners on every
+   card, raw harmony/tension counts. I could explain it to a friend in one sentence.
 
-## Round-1 → Round-2 movement: 6 → 8 (+2). All three blockers addressed; only the degree-level math transparency remains.
+Dominant note: my exact round-1 blocker (silent directionality) is genuinely fixed and verified
+by name on the hardest cards. What's left is data-hygiene polish, not a correctness hole.
 
 ```json
-{"tester": 0, "round": 2, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["No per-planet degrees/longitudes — can't reconcile the ephemeris math, only sign placement", "Nothing yet compels an unprompted share; it reads as a satisfying one-time tool"], "priorConcernsAddressed": "all"}
+{"tester": 2, "round": 2, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["Expanded-aspect tail is type-template boilerplate (same trine sentence 13x; reciprocal pairs render identical text)", "House Overlay ordinal inconsistency: header '1st House' but blurb 'their 1 house' / 'house of 8'", "Synastry is undiscoverable until you compute a natal chart first"], "priorConcernsAddressed": "all"}
 ```

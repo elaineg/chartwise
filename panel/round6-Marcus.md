@@ -1,29 +1,26 @@
-# Marcus — round 6
+# Marcus — Round 6
 
-Advocacy 9/10
-Value Yes
-Clarity Yes
+**Advocacy: 9/10 · Value: Yes · Clarity: Yes**
+**Dominant note:** Synastry quality is genuinely impressive and my round-5 fixes all held — but my ONE residual (the cold-visitor compare CTA) is still not done, so I'm holding at 9, not moving to 10.
 
-PRIOR BLOCKER (round 5 city search): RESOLVED. This was my one hard blocker and it's genuinely fixed.
+## Re-check of MY round-5 residual
+- **Cold-visitor "Compare two people" CTA — NOT FIXED.** Did a full-page DOM + text scan on the bare landing (before any chart): zero mention of "compare" or "synastry." Controls cold are only LOAD EXAMPLE, coordinates link, COMPUTE CHART. The COMPATIBILITY card with "Compare two people" still appears ONLY after you compute a chart. A cold visitor literally cannot tell synastry exists — which is the exact thing that would make me paste this in the group chat ("you can compare two charts!"). This was flagged as an optional rider; it wasn't taken.
 
-- City search now disambiguates with state/region on EVERY row, and ranking is sane:
-  "Berlin" -> "Berlin, Germany" first, then "Berlin, NH/NJ/WI/MD/MA/PA, United States" — no
-  more identical "Berlin, United States" rows. "Austin, TX" first, "Paris, France" first,
-  "Springfield, MO/MA/IL/OR…" all state-tagged. My non-techy-friend-picks-wrong-city fear is gone.
-- Same-sign plain-English readings read distinctly per planet: Einstein's Pisces Sun ("identity
-  fluid and deep") vs Sagittarius Moon ("need freedom and forward movement") are clearly different
-  copy, not template fill. My own chart (Leo Sun H9 / Libra Moon H12) read just as distinctly.
-- Share flow is the part that'd actually make me drop it in Slack: "Create share link" returns a
-  real persistent URL (/chart/<id>), and the unfurl is PER-CHART — og:title "Albert Einstein's
-  birth chart, explained" + a dynamic per-chart opengraph-image. Cold-loading the share URL renders
-  the full reading with 0 console errors. That's the bit most free tools fumble.
-- Save-as-image works: downloads a clean PNG (albert-einstein-chart.png). Degrees + retrograde (℞)
-  shown, full house grid, element-distribution bar, and a "Today's Sky" transit panel with a
-  plain-English transit summary. No janky CSS, no layout shift, no hydration errors anywhere.
-- Only thing keeping it off a 10: the house-grid cells expand to a "—" / minimal detail in several
-  rows rather than a sentence, so the rich plain-English copy lives only in the top reading block —
-  the grid feels like the "data" half and is less rewarding to click. Minor, not a blocker.
+## Round-5 fixes I was asked to verify — all good
+- **Aspect de-dup (full 50-aspect tail expanded):** 0 byte-identical body descriptions. Generic/fallback tail bodies all name SPECIFIC distinct bodies (Chiron sextile North Node, South Node trine Lilith, Chiron sextile Chiron, etc.). Reversed pairs are directional with different orbs, e.g. Einstein's Uranus opp Obama's Moon (4.6°) vs Obama's Uranus sq Einstein's Moon (4.8°). Clean.
+- **House overlay caps:** header "MICHELLE OBAMA'S PLANETS IN ALBERT EINSTEIN'S HOUSES" (all caps) consistent; body cards use planet + ordinal house + sign label. Ordinals correct (1st/4th/5th). No adjacent verbatim repeats.
+
+## Prior praise — still holds
+- Honest-framing line "For insight and fun — a lens on the dynamic, not a prediction." sits right above KEY ASPECTS — perfect placement.
+- Directional named aspects, correct ordinals, big-three for both people, element distribution, verdict line "30 HARMONY · 15 TENSION · 5 CONJUNCTION" — no fake percentages.
+- Share works: "SHARE THIS COMPARISON" changes state on click (copy verified visually; clipboard read blocked in test env). Natal share link button present too.
+- No console/page errors anywhere. No horizontal overflow at 375px or 1280px. Natal chart, wheel/placements, houses table all render clean on desktop; mobile synastry stacks without clip/overlap. No janky CSS — the mono SSENSE look is sharp.
+
+## The three questions
+- **Clarity (Yes):** "Your birth chart, explained in plain English. Free, no signup." plus "NATAL CHART · PLAIN ENGLISH · NO SIGNUP" — I'd tell a friend "free no-login app that explains your birth chart (and compares two people) in normal English." The compare part is invisible until you compute, though.
+- **Value (Yes):** Today I'd dump a birthday into a random astro-seek-style site that's cluttered and jargon-heavy, or just not bother. This is faster, readable, and the synastry write-ups are specific and directional, not horoscope mush. For group-chat fun it clears the bar.
+- **Advocacy 9/10:** What holds it back from 10 is unchanged from round 5 — a cold visitor can't discover the single most shareable feature (compare two people). Fix the cold-landing discoverability and this is a 10 I'd post unprompted.
 
 ```json
-{"tester": 1, "round": 6, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["house-grid cell expansion often shows just a dash instead of plain-English detail", "save-as-image button only on the saved-chart card, easy to miss vs the live reading"], "priorConcernsAddressed": "all"}
+{"tester": 0, "round": 6, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["Compare-two-people/synastry CTA still only appears AFTER computing a chart; invisible to a cold visitor — the most shareable feature is undiscoverable on the landing page"], "priorConcernsAddressed": "some"}
 ```

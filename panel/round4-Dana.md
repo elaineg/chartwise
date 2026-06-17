@@ -1,32 +1,25 @@
 # Dana — Round 4
 
-**Persona:** Demand-gen marketer, ruthless about time, screenshots tools she likes to the team channel. Tested cold on desktop (1280) + iPhone 13 (390).
+Demand-gen marketer, astrology-curious, ruthless about one-scroll value. Tested desktop (1280) + mobile (375).
 
-## Prior concerns re-checked (round 3 = advocacy 9)
-- Save-as-image PNG (my named delight): re-verified. Now ELEVATED — downloaded `albert-einstein-chart.png` cleanly. Card has big-three pills w/ icons, element pills (Fire/Earth/Air/Water counts), a highlighted callout ("Sun in House 10 — career and legacy are central to this life."), faint zodiac-wheel accent, "chartwise" branding + branded footer. This is now drop-in-the-Slack-channel quality, not just OK. Improved.
-- No regressions from the table restructure: expanded reading uses `colspan=4`, spans full 555px table width, reads clean. 0 console errors across every interaction (load example, expand, own chart, share, mobile).
+## R3 concern re-check (my blocker was: Compare invisible on cold page)
+- (c) **Compatibility discoverable as FIRST thing after chart summary — FIXED.** Desktop: the boxed "COMPATIBILITY / Compare two people / Plain-English compatibility between two charts — free, no signup →" card sits immediately under the big-three chips, above Element Distribution and Today's Sky. Mobile 375: same — it's the first card right below the summary chips, no clip, no horizontal overflow. This was my whole hold-back and it's genuinely resolved.
+- (a) **Aspect tail readable & names used — mostly fixed.** Zero "the X person" generic phrasing. Headers use real names ("Albert Einstein's Sun ⚹ Michelle Obama's Sun"). BUT reversed mutual pairs still share verbatim body text: "Einstein's Jupiter ☌ Obama's Venus" and "Einstein's Venus ☌ Obama's Jupiter" both print the identical "Jupiter conjunct Venus: affection and optimism..." paragraph (same for a Uranus□Moon pair). Two adjacent identical paragraphs reads like a copy-paste bug to me.
+- (b) **House-overlay ordinals consistent — FIXED.** All numeric ("1st/4th/6th/7th/10th House"), no spelled-out "Sixth House" anywhere. (Minor: headers cap "House", body prose lowercases "house" — purely cosmetic, not the ordinal bug.)
+- (d) **Share comparison works + honest — FIXED.** "SHARE THIS COMPARISON" generates /chart/<id>, copies to clipboard, and that link reopens with BOTH names, 0 errors. Privacy wording is honest: "Creating a link stores the birth info on our server to make the URL work" — distinct from the device-local default note.
+- (e) **Big-three + framing intact.** Natal chips correct (Cancer rising, Sun Pisces H10, Moon Sagittarius); compat summary tallies 30 harmony/15 tension/5 conjunction with names. Tone stays hedged/non-deterministic. Natal chart sane.
 
-## What I tested
-- Load example (Einstein), read plain-English section, expanded placement cells (full-width on desktop — confirmed).
-- My own chart: date 1990-07-15, time 09:30, place "Austin" → autocomplete dropdown, computed full chart (Cancer Sun / Leo Moon / Aries Rising), houses, element bar, Today's Sky transit, personalized "For Your Chart" guidance.
-- Elevated Save-as-image card (rendered + downloaded, inspected the PNG).
-- Create share link → `/chart/G06g9...`; verified the page server-renders the real chart and unfurls with OG + twitter `summary_large_image` (per-chart title/description, 1200x630 image).
-- Mobile: stacked house-card layout (desktop table hidden), tap-to-expand works, ZERO horizontal overflow, reading legible on phone.
+## The three questions
+**Clarity — Yes.** "Compare two people / Plain-English compatibility between two charts — free, no signup" plus the natal H1 tells me instantly what it is and that it's free/no-login. I'd explain it in one line to a friend.
 
-## 1. Advocacy: 8/10 (was 9)
-Honest drop of one. The product is more polished — the share card and mobile both improved — but the changes this round didn't add a NEW reason for me to evangelize; they refined what was already good. Two specific things keep it off a 9–10:
-- **The unfurl preview image is generic, not per-chart.** `og:image` = `og-default.png` for every chart. The TITLE is personalized ("Albert Einstein's birth chart, explained") but the IMAGE everyone sees in the link preview is identical. For a share-driven tool, the killer move is the unfurl showing THAT person's big-three card (which I already loved as a download) — that's what would make me paste links unprompted. Right now I'd rather screenshot the PNG card and post the image directly than share the link.
-- **Place autocomplete is ambiguous:** typing "Austin" returns five identical "Austin, United States" rows with no state/region. Looking up a coworker's chart I can't tell which one is right.
+**Value — Yes.** Today I screenshot Co–Star/TimePassages or skim astro-seek's dense synastry grid for coworkers/partners. This gives me a clean, named, plain-English compatibility readout in one session, free, no signup — exactly the screenshot-for-the-team-channel artifact I'd actually share.
 
-## 2. Value: Yes
-Today I'd use astro-seek or Co-Star, both cluttered or app-only. This gives a clean plain-English reading, no signup, instant, computes on-device, and produces a share card I'd actually post. It saves me real time vs decoding astro-seek's wheel.
+**Advocacy — 9/10.** Up from 8. My one blocker (compare buried) is fixed on both viewports, share works, ordinals consistent, naming fixed. The only thing keeping it off a 10: the duplicated identical prose on reversed mutual aspects — if I screenshot the aspect tail, two back-to-back identical paragraphs make me look like I shared a buggy tool. Fix the reversed-pair wording (acknowledge who's Jupiter vs Venus) and this is a 10 I bring up unprompted.
 
-## 3. Clarity: Yes
-Headline "Your birth chart, explained in plain English" + "Free, no signup" nails it in one glance. I could explain it to a friend in one sentence within 5 seconds.
+Dominant note: discoverability nailed; last seam is verbatim-duplicate reversed-aspect prose.
 
-## What would move me to 10
-Make the link-unfurl preview render the actual person's big-three card (you already generate it for the PNG — reuse it for og:image). Disambiguate place results. Do those and I'm pasting Chartwise links into the team channel unprompted.
+Movement vs R3: 8 → 9.
 
 ```json
-{"tester": 1, "round": 4, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["Link-unfurl preview image is a generic og-default.png, not the per-chart big-three card — so the share link is less compelling than the downloadable PNG", "Place autocomplete returns multiple identical 'Austin, United States' rows with no state/disambiguation"], "priorConcernsAddressed": "all"}
+{"tester": 4, "round": 4, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["Reversed mutual aspect pairs (Jupiter☌Venus vs Venus☌Jupiter) print verbatim-identical interpretation text — reads as a copy-paste bug when screenshotted", "House-overlay header caps 'House' but body prose lowercases 'house' (cosmetic)"], "priorConcernsAddressed": "all"}
 ```

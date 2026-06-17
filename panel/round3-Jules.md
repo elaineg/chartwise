@@ -1,39 +1,53 @@
 # Jules — Round 3
 
-ADVOCACY: 8
-VALUE: Yes
-CLARITY: Yes
+Content/community marketer, mobile-first, shares constantly, allergic to logins. Re-testing
+the Compare/synastry feature after a fix. Tested at 375px mobile + 1280px desktop, cold.
 
-Tested mobile-first (375px), cold, no login. Re-checked my two round-2 complaints first.
+## Prior concern (Round 2): NO share/copy button on Compare page
+FIXED. The Compare view now has a proper "SHARE THIS COMPARISON" block with subtext
+"Creates a link anyone can open to see this compatibility reading — free, no signup," a
+read-only URL field, and a Copy button that flips to "COPIED." It put
+`http://localhost:3099/chart/<id>` on my clipboard (verified; clipboard read worked in test
+env). Opening that link in a FRESH browser (no localStorage, i.e. like a friend) returns
+200 and reopens "SHARED COMPATIBILITY — Albert Einstein × Michelle Obama" with the full
+compatibility reading + a "Create your own chart →" CTA. Works identically on mobile and
+desktop. This is exactly the share flow I needed. THIS IS THE WIN.
 
-PRIOR COMPLAINTS:
-1. "Want a one-tap shareable image card" — FIXED. The new "⬇ Save as image" button downloaded
-   `albert-einstein-chart.png` (1MB), and it's genuinely postable: big-three badges (Pisces Sun /
-   Sagittarius Moon / Cancer Rising), an element bar, a one-line takeaway, and a
-   "chartwise.vercel.app — no signup, no cost" footer. This is exactly the artifact I'd drop in a
-   tweet or story. Real delight.
-2. "Shared /chart/ links unfurled as a bare URL, no preview" — PARTIALLY fixed. The page now has
-   og:title + og:description ("Albert Einstein's birth chart, explained… Free, no signup") and
-   twitter:title/description, so it's no longer a naked URL — good. BUT there is NO og:image /
-   twitter:image at all, and twitter:card is "summary" (small), not "summary_large_image". So when
-   I paste a link it'll unfurl as a tiny text card with no visual. For a mobile marketer the IMAGE
-   is the unfurl. Half a win. (priorConcernsAddressed: some)
+## 1. What worked / value to me
+- (a) KEY ASPECTS are genuinely relationship-significant (Sun–Sun, Sun conjunct Mars,
+  Moon–Jupiter), readings are pair-specific AND directional with BOTH names:
+  "Albert Einstein's Sun ⚹ Michelle Obama's Sun." Expand "Show all 50 aspects" → toggles to
+  "Show top aspects only" and DOES collapse again. 28 of 30 reading prefixes were distinct —
+  no longer a wall of identical boilerplate.
+- (b) House ordinals are CORRECT: "1st House," "7th House," "8th House," "11th House." Zero
+  "in their 1 house" bugs found.
+- (d) "Compare two people" is now a clear bordered, clickable CARD (343×126) with an arrow
+  and "Plain-English compatibility… free, no signup." Pre-loads both people so you land
+  straight in a real reading.
+- Big-three (rising/Sun/Moon chips) + honest "Based on 11 placements" framing intact;
+  "computed on your device, saved charts stay in your browser" privacy note present. No
+  console/page errors anywhere. Shareable, no-login, mobile-clean — squarely my thing.
 
-WHAT WORKS: Cold open is crystal — H1 "Your birth chart, explained in plain English" + "Free, no
-signup" under it = instant yes for me. Load example → rich, well-written plain-English reading with
-real degrees (Sun 23° Pisces, Moon 14° Sagittarius, Mars 26° Capricorn), houses, element split. The
-"Today's Sky" transit block is a nice recurring hook (per-planet signs, "1 planet retrograde — Pluto",
-plus FOR YOUR CHART transit-to-natal notes) — that's the thing I'd reopen weekly. Place autocomplete
-("Berlin, Germany") works on mobile; my own chart computed clean, zero console errors anywhere. Share
-link copies to clipboard and renders fully for a logged-out recipient with a "Create your own chart →"
-CTA — smart growth loop.
+## 2. What frustrated me / felt broken
+- DISCOVERABILITY: the Compare card does NOT exist on the cold home page. You must type or
+  load a chart FIRST, then scroll past the chart to find it. As someone who'd open this
+  specifically to compare two friends' charts, I'd never know the feature exists from the
+  landing page. The headline only sells single natal charts.
+- The shared link is `/chart/<id>` not `/compare/...` — works fine, but the URL doesn't
+  scream "compatibility" when I paste it in a story/DM. Minor.
+- Nitpick: no "not fortune-telling / for reflection" disclaimer surfaced on the compatibility
+  reading itself (device-privacy note is there; reflective-framing line wasn't).
 
-WHY NOT HIGHER (holds at 8, not 9): The share card lives behind the "Save as image" button on the
-SAVED-chart card, not as a prominent one-tap share row in the reading itself — slightly buried. And the
-missing og:image means the link-share path still doesn't carry the visual. Fix twitter:card to
-summary_large_image + add an og:image (render the same PNG card) and I'm a 9-10 who posts it unprompted.
-Copy/share otherwise verified.
+## 3. Would I use / recommend it?
+Yes — I'd use it on friends repeatedly and the share link is screenshot/DM/story-ready. The
+only thing keeping me from raving is that the compare feature is hidden until after you make
+a chart; surface it on the landing page and this jumps a point or two.
+
+ADVOCACY: 8/10
+VALUE: yes
+CLARITY: partially (single-chart purpose is instantly clear; the compatibility feature —
+my main draw — is invisible on first load)
 
 ```json
-{"tester": 1, "round": 3, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["no og:image/twitter:image on share links — link unfurls as small text-only card, no visual; twitter:card is 'summary' not 'summary_large_image'", "Save-as-image lives on the saved-chart card, not a prominent one-tap share row in the reading"], "priorConcernsAddressed": "some"}
+{"tester": 4, "round": 3, "clarity": "Partially", "value": "Yes", "advocacy": 8, "topComplaints": ["Compare/compatibility feature is undiscoverable on the cold home page — only appears after computing a chart", "Shared URL is /chart/<id> not obviously a compatibility link when pasted"], "priorConcernsAddressed": "all"}
 ```

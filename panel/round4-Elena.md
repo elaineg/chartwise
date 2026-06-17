@@ -1,28 +1,25 @@
 # Elena — Round 4
 
-Engineering manager, casual-curious-skeptic, mobile-heavy, 30-second patience. Tested cold on 375px + checked desktop.
+## Re-check of my R3 blocker (compare buried ~2 screens down on 375px)
+RESOLVED. Section order is now: chart summary → **COMPATIBILITY card** → element bar → Today's Sky, on BOTH desktop and 375px. On mobile the page auto-scrolls to scrollY ~1142 (right at the chart summary, top 1175) after compute, and the compare card sits only ~260px below that — well within one screen of where I land, not two screens of manual scrolling. Card reads "Compare two people / Plain-English compatibility between two charts — free, no signup" with an arrow. I'd actually see it now between meetings.
 
-## Prior concerns re-checked (my round-3 9→10 item)
-- **Same-sign natal readings still repeat verbatim — NOT fixed.** In the top "YOUR CHART, IN PLAIN ENGLISH" cards, *Aries Mercury* and *Aries Venus* both open with the IDENTICAL sentence: "Bold and direct, you lead with instinct and act before you overthink. You thrive on being first." They only diverge on the house tail. Same templating smell I flagged. (Note: the in-TABLE sign readings ARE house-aware and distinct — house 1 Cancer "warm, protective presence" vs house 2 Cancer "money feels better saved" — so the fix landed in the table but not in the headline cards.)
+## Focus checks
+(a) **Show-all aspect tail** — Expanded all 50. Each aspect has a real-name directional header with planets/symbol/orb (e.g. "Albert Einstein's Jupiter ☌ Michelle Obama's Venus · 3.8° ORB"). Reversed pairs ARE distinct (different planets, different orbs). NO "the X person" placeholder. Nit: symmetric same-planet pairs (Jupiter↔Venus both directions, Uranus↔Moon both directions) reuse the identical prose blurb back-to-back — headers differ but the paragraph repeats verbatim, which momentarily read like a glitch to me.
+(b) **House-overlay ordinals** — Consistent in headers AND body (1st/3rd/4th/5th/6th/7th/8th/9th/10th/11th all correct; "MICHELLE OBAMA'S PLANETS IN ALBERT EINSTEIN'S HOUSES" + "your X in their Yth house" directional). Clean.
+(c) Compatibility card discoverable as first thing after summary, reachable without 2-screen scroll on 375px — confirmed above.
+(d) **Share** — Clicking "SHARE THIS COMPARISON" copied http://localhost:3099/chart/<id>; opening it in a fresh tab reopened the FULL comparison (both names + HOUSE OVERLAY render). Privacy wording HONEST: "Creating a link stores the birth info on our server to make the URL work" — tells me my data leaves the device. Good.
+(e) Big-three (Cancer rising / Sun Pisces House 10 / Moon Sagittarius) correct; element dist sane (Earth 5/Fire 4/Air 1/Water 1). Framing is non-deterministic ("tend to", "may"), no overclaiming. No horizontal overflow on 375px before or after expand; no double-render/overlap seen.
 
-## Round-4 changes verified
-- **Desktop full-width expanded reading: works, no regression.** Clicked Moon (house 6) — reading renders as a clean full-width panel under the row, chevron flips to up-arrow, two expansions coexist, table realigns fine. Zero console errors across every table interaction. The structure change did NOT break anything.
-- **Share /chart/<token>: page loads (200), renders full chart + reading.** BUT the preview image is a generic static `og-default.png`, not a per-chart image — and it 404s on localhost (likely prod-only, treating as env artifact). For me that's fine; a Slack unfurl with any card is acceptable.
-- **Save-as-image card: visually elevated, present** (top-right of result card). Couldn't capture a download event in headless (canvas/blob — env artifact, not reported as a bug).
+## The 3 questions
+**Clarity** — Yes. "Compare two people / plain-English compatibility, free, no signup." A coworker would get it in 10 seconds. Two examples preload so there's literally zero setup to see value — exactly my speed.
 
-## 1. Advocacy: 8 (was 9)
-Down one. Not because anything broke — the de-templated transit copy ("Mars charges through Taurus where your natal Neptune lives") is still the standout and exactly my hook. The drop is honesty: I went looking at my own placements this round and the FIRST thing I'd show a teammate is the plain-English cards, and two of them are word-for-word identical openers. That's the exact tell that makes a skeptic say "oh, it's just a template" — and it's right at the top, not buried in the table. A 9 needs me to not flinch when I read it cold.
+**Value** — Yes. Today I screenshot mine + a coworker's sign and we joke in Slack; this gives an actual readable side-by-side with a shareable link I can drop in a thread, no signup, in under 30s. It beats my screenshot habit.
 
-## 2. Value: Yes
-My real today is glancing at astro-seek / co-star on my phone between meetings. This is faster, instant, no signup, and the per-placement plain English + "FOR YOUR CHART" transit lines are more legible than astro-seek's wall of glyphs. Saves real time.
+**Advocacy — 9/10.** Up from 8. The R3 placement blocker is genuinely gone — compare is the first thing after the chart on phone now, and share works. Held back from 10 only by the repeated-verbatim-blurb on symmetric pairs, which looks like a copy-paste bug even though it isn't. Fix that and it's a 10 I'd drop in our team Slack unprompted.
 
-## 3. Clarity: Yes
-"Your birth chart, explained in plain English" + "Free, no signup" + Load example — I knew what it was and who it's for in under 10 seconds.
-
-## Remaining blocker to a 10
-De-template the headline plain-English cards the way you already did the table: two placements in the same sign must not open with an identical sentence. Make the planet (Mercury vs Venus) change the opener, not just the house tail. Fix that and I'm back to 9, and a chart where every card reads bespoke gets me to 10.
+Dominant note: blocker resolved; remaining gripe is cosmetic (duplicate prose on symmetric reversed pairs).
+Movement vs R3: 8 → 9 (+1).
 
 ```json
-{"tester": 1, "round": 4, "clarity": "Yes", "value": "Yes",
- "advocacy": 8, "topComplaints": ["Headline plain-English cards still repeat verbatim for same-sign placements (Aries Mercury & Aries Venus share an identical opening sentence) — visible templating smell at the top of the page", "Share og:image is a generic static og-default.png, not a per-chart preview"], "priorConcernsAddressed": "some"}
+{"tester": 0, "round": 4, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["Symmetric same-planet reversed pairs (Jupiter↔Venus, Uranus↔Moon) reuse the identical prose blurb verbatim back-to-back — reads like a copy-paste glitch despite correct distinct headers/orbs", "On mobile the input form still stacks above the chart so after compute I rely on auto-scroll to land near the chart; if auto-scroll ever fails the compare card is ~1.8 screens from page top"], "priorConcernsAddressed": "all"}
 ```

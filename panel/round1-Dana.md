@@ -1,34 +1,31 @@
-# Round 1 — Dana (Demand-gen marketer; MacBook in cafes + phone between meetings)
+# Dana — Round 1 (synastry)
 
-Tested cold on mobile (375px) first, then desktop (1280px). Astrology-curious, knows my big-three, ruthless about time.
+Demand-gen marketer, phone-first, curious-about-astrology, ruthless about time. Tested desktop + 375px mobile, cold.
 
-## 1) Advocacy: 7/10 — would share, but with a caveat
+## 1. What I tried & what happened
+Cold load: clean landing, no auto-example (had to tap "LOAD EXAMPLE (EINSTEIN)" — fine). Once a chart was up, I hunted for compatibility. Found the **"COMPARE TWO PEOPLE"** card sitting right above "Today's Sky" (the transit card) — discovered in ~5 sec, black CTA, hard to miss on both desktop and mobile. Tapped it: instantly loaded **Einstein × Michelle Obama**, two genuinely DISTINCT charts. Then I added my own second person ("Jane Partner", NYC) and re-ran the pair.
 
-I genuinely like this and I'd probably drop the desktop link in our team channel ("free birth chart explainer, no signup"). The desktop view is screenshot-gold: big H1, the big-three pills (Cancer rising / Pisces Sun / Sagittarius Moon) right at the top, and a clean House/Sign/Planets table. That's the clean, free explainer I came for.
+## 2. What worked / what confused or broke
+WORKED:
+- **No fake % match score** — it shows honest counts: "30 HARMONY · 15 TENSION · 5 CONJUNCTION" + one plain sentence. As a marketer I trust this WAY more than a "87% compatible!" gimmick. This is the credibility win.
+- **Real per-pair math**: Einstein×Obama = 30·15·5; Einstein×Jane = 21·20·3. Different inputs → different output, not canned.
+- **Side-by-side big-three** (Sun/Moon/Rising for Person A vs B) stays two clean columns even at 375px — THAT is the screenshot I'd drop in the team channel.
+- House overlay reads both directions ("Where each person's planets fall in the other's chart") in plain English. No horizontal scroll on mobile, zero console/page errors, natal chart fully intact after round-tripping via "← BACK TO CHART".
 
-But it's a 7, not a 9, because I'd share the DESKTOP screenshot, not send a friend to the site on their phone. The thing I do most (look someone up on my phone between meetings) is where it's weakest: after I tap "Load example" or "Compute chart", nothing scrolls — I'm still staring at the empty form and have to manually scroll past it to find the chart. On a phone the whole experience is ~6 screens tall, so value does NOT "land in one scroll." A 9 needs the result to jump to the top on mobile.
+CONFUSED / FRICTION:
+- **Aspect explanations are generic & repetitive.** Every square says verbatim "The square here creates a recurring challenge between these two themes…"; every sextile the same line. It tells me the aspect TYPE but never what Moon vs Uranus actually MEAN for the relationship. I'm curious, not an expert — "Moon □ Uranus" means nothing to me without that.
+- **Computing a new person silently WIPED the example I was reading** — Person A & B both reset to "Choose a person…" and Obama vanished mid-read. Jarring.
+- **Mobile: tapping Compare doesn't scroll me to the comparison** — I land back at the top of the form and have to scroll down to find the result. Phone-first users will think nothing happened.
+- **No Copy/Share/Save-image button anywhere.** I screenshot for my team manually, but a "share this comparison" link is the obvious viral hook and it's missing.
 
-## 2) Value: Yes
+## 3. Would I use / recommend it?
+Yes, I'd actually pull this up to peek at a coworker's or a date's chart, and the honest-counts framing is genuinely refreshing. But the repetitive aspect copy makes the long scroll feel padded, and with no share affordance + the mobile scroll miss, it's a "send the link once" not a "this is a tool" yet.
 
-Today I'd Google someone's sign or paste their birth time into astro-seek/Co-Star, which either dumps a wheel I can't read or wants an app install. This gives me plain English I'd actually screenshot: e.g. Moon in House 6 → "Daily routine and caring for others gives you emotional grounding; when your body is well, you are well." And it nails my exact use case — I entered myself (Dana, Taurus Sun) then a coworker (Scorpio Sun), and both got saved as chips ("SAVED CHARTS: Dana × Coworker Sam ×") that persist on reload. Real geocoding (Austin → Austin, TX, US), a real share link, and a daily-transit "FOR YOUR CHART" section. That's more than my current habit gives me, free, no login.
-
-## 3) Clarity: Yes
-
-Within ~10 seconds I knew exactly what it is: "Your birth chart, explained in plain English" + "Free, no signup — type your birth date, time, and place, or load an example." The Einstein button told me how to try it without typing anything. No jargon wall. Nailed.
-
-## Concrete likes
-- H1 + subhead + "Load example (Einstein)" = instant clarity, zero ramp.
-- Big-three pills surface immediately; plain-English placement copy is the differentiator.
-- Saved-charts chips persist (localStorage) — directly serves my "look up partners + coworkers" need.
-- Real city geocoding with disambiguation (Austin AR/IN/TX/MN), real working /chart/<id> share link.
-- Desktop two-column layout is clean and screenshot-worthy. Zero console errors.
-
-## Concrete defects (MOBILE first)
-- MOBILE: no auto-scroll to the result after "Load example" / "Compute chart" — I land back on the empty form and must scroll ~1.5 screens to even see my chart. This is the #1 thing holding back the phone share.
-- MOBILE: value is ~6 screens tall; the big-three never appears above the fold on a phone the way it does on desktop. Consider showing the big-three card directly under the header on mobile.
-- Place autocomplete is finicky: if you type "Austin" and hit Compute before tapping a suggestion, the field keeps raw text and the dropdown stays open. Only worked cleanly when I explicitly tapped "Austin, TX, US" first. Easy to fumble on a phone.
-- The privacy line about share ("sends this chart's birth info to our server") appears even before I create a link — slightly alarming for a coworker's data; fine once read, but it made me pause.
+- ADVOCACY: **7** — held back by generic aspect copy (no planet meanings), no share button, and the mobile no-scroll-on-open. Fix those and it's a 9.
+- VALUE: **Yes** — beats opening Co–Star/CafeAstrology and decoding glyphs; the honest harmony/tension split is the differentiator.
+- CLARITY: **Yes** — "Compatibility, explained — How two charts get along, in plain English, free, no signup" tells me exactly what it is in one line.
+- DOMINANT COMPLAINT: Aspect explanations are generic and identical per type — they never say what the two PLANETS mean, so a non-expert can't learn anything from the long list.
 
 ```json
-{"tester": 1, "round": 1, "clarity": "Yes", "value": "Yes", "advocacy": 7, "topComplaints": ["Mobile: no auto-scroll to chart after Load example/Compute — land back on empty form", "Mobile: value is ~6 screens tall, big-three never above the fold like on desktop", "Place autocomplete fumbles if you Compute before tapping a suggestion"], "priorConcernsAddressed": "n/a"}
+{"tester": 1, "round": 1, "clarity": "Yes", "value": "Yes", "advocacy": 7, "topComplaints": ["Aspect explanations are generic/repetitive — same sentence per aspect type, never explains what the two planets mean", "Mobile: tapping Compare doesn't scroll to the result; lands at top of form looking like nothing happened", "No share/copy/save-image button — the obvious viral hook is missing; computing a new person silently wipes the pair you were reading"], "priorConcernsAddressed": "n/a"}
 ```
