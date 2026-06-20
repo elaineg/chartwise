@@ -36,7 +36,14 @@ for (const year of YEARS) {
   }
 }
 
-describe(`Big-3 full sweep — ${sweepCases.length} combos (1728 × ${YEARS.length} years)`, {
+// OPT-IN ONLY: this exhaustive 3456-combo solver sweep takes ~75–90 min and would
+// tax every default `npm test`/verify run. It runs only when SWEEP=1 is set
+// (e.g. `SWEEP=1 npm test`); otherwise it is skipped. The fast targeted combos
+// (incl. the Leo/Scorpio/Gemini 1988 regression) live in estimateFromBigThree.test.ts
+// and always run by default. See friction lesson:
+// exhaustive-sweep-proof-belongs-in-an-opt-in-script-not-default-test-path.
+const runSweep = process.env.SWEEP === "1";
+(runSweep ? describe : describe.skip)(`Big-3 full sweep — ${sweepCases.length} combos (1728 × ${YEARS.length} years)`, {
   timeout: 600_000,
 }, () => {
   const deadEnds: string[] = [];
