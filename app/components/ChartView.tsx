@@ -17,6 +17,8 @@ interface ChartViewProps {
   onOpenSynastry?: () => void;
 }
 
+type CopyState = "idle" | "copied" | "blocked";
+
 export default function ChartView({
   chart,
   isSharedView = false,
@@ -25,7 +27,8 @@ export default function ChartView({
   shareUrl,
   onOpenSynastry,
 }: ChartViewProps) {
-  const [showShareCopied, setShowShareCopied] = useState(false);
+  const [copyState, setCopyState] = useState<CopyState>("idle");
+  const copyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to the chart when it first renders (P2)
@@ -35,14 +38,23 @@ export default function ChartView({
     }
   }, [chart.computedAt]);
 
+  // Clear copy confirmation timer on unmount
+  useEffect(() => {
+    return () => {
+      if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
+    };
+  }, []);
+
   async function copyShareUrl() {
     if (!shareUrl) return;
+    if (copyTimerRef.current) clearTimeout(copyTimerRef.current);
     try {
       await navigator.clipboard.writeText(shareUrl);
-      setShowShareCopied(true);
-      setTimeout(() => setShowShareCopied(false), 2000);
+      setCopyState("copied");
+      copyTimerRef.current = setTimeout(() => setCopyState("idle"), 1800);
     } catch {
-      // fallback: select the input
+      setCopyState("blocked");
+      copyTimerRef.current = setTimeout(() => setCopyState("idle"), 3000);
     }
   }
 
@@ -50,6 +62,66 @@ export default function ChartView({
 
   return (
     <div ref={topRef}>
+      {/* ESTIMATED CHART banner — only when the chart was produced by the Big-3 solver.
+          Keyed off chart.isEstimate (compute-time flag), NOT any UI toggle state. */}
+      {chart.isEstimate && (() => {
+        const sunPlanet = chart.planets.find((p) => p.key === "sun");
+        const moonPlanet = chart.planets.find((p) => p.key === "moon");
+        const sunLabel = sunPlanet?.signLabel ?? "";
+        const moonLabel = moonPlanet?.signLabel ?? "";
+        const risingLabel = chart.ascendant.signLabel;
+        return (
+          <div
+            data-testid="estimate-badge"
+            role="status"
+            style={{
+              border: "1px solid var(--grey-200)",
+              padding: "var(--sp-3) var(--sp-4)",
+              marginBottom: "var(--sp-4)",
+              background: "var(--paper)",
+            }}
+          >
+            <span className="ds-label" style={{ display: "block", marginBottom: "var(--sp-2)" }}>
+              Estimated Chart
+            </span>
+            {/* Big-three confirmation strip — reinforces payoff and confirms estimate honored input */}
+            <p
+              data-testid="estimate-big3-strip"
+              style={{
+                fontSize: "var(--fs-micro)",
+                fontWeight: "var(--fw-medium)",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "var(--ink)",
+                margin: "0 0 var(--sp-2) 0",
+                borderTop: "1px solid var(--grey-100)",
+                paddingTop: "var(--sp-2)",
+              }}
+            >
+              Your big three — Sun {sunLabel} · Moon {moonLabel} · Rising {risingLabel}
+            </p>
+            <p style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", margin: "0 0 var(--sp-2) 0", lineHeight: "1.5" }}>
+              Date, time, and place were inferred from your big three — this is an approximation.
+              Enter your full birth date, time, and place for the precise chart.
+            </p>
+            <p
+              data-testid="estimate-methodology"
+              style={{
+                fontSize: "var(--fs-micro)",
+                color: "var(--grey-500)",
+                margin: 0,
+                lineHeight: "1.5",
+                borderTop: "1px solid var(--grey-100)",
+                paddingTop: "var(--sp-2)",
+                letterSpacing: "0.02em",
+              }}
+            >
+              How this works: we searched {birthData.year} for a date and time at a reference location whose chart matches your Sun, Moon, and Rising — then computed the rest from that anchor. Your real birth date, time, and place will differ.
+            </p>
+          </div>
+        );
+      })()}
+
       {/* Profile summary */}
       <div className="ds-card" style={{ marginBottom: "var(--sp-6)" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "var(--sp-2)", marginBottom: "var(--sp-2)" }}>
@@ -200,10 +272,39 @@ export default function ChartView({
                 className="ds-btn"
                 style={{ flexShrink: 0 }}
               >
-                {showShareCopied ? "Copied" : "Copy link"}
+                Copy link
               </button>
             </div>
-          ) : (
+          ) : null}
+          {/* Visible copy confirmation cue — separate from the button label so it survives re-renders */}
+          {shareUrl && copyState === "copied" && (
+            <p
+              data-testid="share-copied-cue"
+              role="status"
+              style={{
+                fontSize: "var(--fs-sm)",
+                color: "var(--ink)",
+                marginTop: "var(--sp-2)",
+                fontWeight: "var(--fw-medium)",
+              }}
+            >
+              ✓ Link copied to clipboard
+            </p>
+          )}
+          {shareUrl && copyState === "blocked" && (
+            <p
+              data-testid="share-copied-cue"
+              role="alert"
+              style={{
+                fontSize: "var(--fs-sm)",
+                color: "var(--red)",
+                marginTop: "var(--sp-2)",
+              }}
+            >
+              Copy blocked — select the link above and press ⌘C / Ctrl+C
+            </p>
+          )}
+          {!shareUrl && (
             <button
               type="button"
               data-testid="share-btn"

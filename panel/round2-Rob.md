@@ -1,28 +1,45 @@
-# Rob
+# Round 2 — Rob (Brand/visual designer, freelance · casual-curious-skeptic · desktop)
 
-Round 2 — Brand/visual designer, freelance. Desktop (color-calibrated), 375px mobile checked. Casual-curious skeptic.
+| tester | round | clarity | value | advocacy | prior concerns |
+|--------|-------|---------|-------|----------|----------------|
+| Rob    | 2     | Yes     | Yes   | 8        | addressed      |
 
-## Did they fix what I complained about?
-Round 1 I gave adv 6, value MARGINAL, and the killer complaint was: ~50 synastry rows reading as WALLPAPER, templated by aspect TYPE not planet pair. Status: **mostly fixed.**
+## Round-1 re-check (my exact complaints)
+- **"Result page too dense — buries the 3 signs a casual user wants."** PARTIALLY→MOSTLY FIXED.
+  The new **"YOUR BIG THREE — SUN LEO · MOON SCORPIO · RISING GEMINI"** strip now sits as the
+  very first line of the result, right under the ESTIMATED CHART badge — above the date/place,
+  above the glyph chips, above the wall of houses. For a fast skimmer that is exactly the payoff
+  I wanted up top. It reads in one glance and in plain words, no glyph decoding required.
+- **BIG 3 dead-end combo (Leo/Scorpio/Gemini, 1988).** FIXED. It produced a valid chart
+  (1988-07-23, Gemini rising, Leo Sun H3, Scorpio Moon). A second arbitrary combo
+  (Aries/Aries/Capricorn 1995) also resolved cleanly. No dead-ends hit.
 
-- **Scannability — FIXED.** Default shows only the **top 6 KEY ASPECTS**, with "SHOW ALL 50 ASPECTS" collapsing the long tail. Confirmed in DOM: 6 ORB rows before toggle, 50 after. The dense reference dump is gone; the page now reads top-down like an editorial layout, not a manual.
-- **Relationship-significant ordering — FIXED.** Top 6 are Sun×Sun, Mars☌Sun, Moon△Jupiter, Mercury×Sun, Saturn×Sun, Moon×Saturn. The obscure Chiron/Node noise got pushed below the fold. Exactly the planets a casual person cares about.
-- **Directional + named — FIXED.** Every row header reads "Albert Einstein's Sun ⚹ Michelle Obama's Sun" — both names, both planets, the glyph, the orb, HARMONY/TENSION tag. Unambiguous who's who.
-- **Honest framing — FIXED.** Header is "30 HARMONY · 15 TENSION · 5 CONJUNCTION" (real counts), not a fake "87% compatible" gauge. Zero "%" anywhere in the rendered text. I respect that.
+## 1. CLARITY — Yes
+"Type your birth date or pick your big three, get your chart explained in plain English, free,
+no signup." The hero line "Your birth chart, explained in plain English" + "NATAL CHART · PLAIN
+ENGLISH · NO SIGNUP" nails it in 5 seconds. The BIG 3 helper text ("Know your Sun, Moon, Rising
+from Co-Star but not your time? Estimate the rest") is a smart, legible on-ramp for my exact crowd.
 
-## Remaining gripes
-- The blurb BODY is still aspect-type templated: row says "Einstein's Sun ⚹ Obama's Sun" but the paragraph opens "Sun trine or sextile Sun:" — generic to the aspect type, not the actual pair direction. Skimmer-fine, but a sharp reader notices the seam, and two SEXTILE rows can feel cousins.
-- House overlay ordinals are inconsistent: "North Node in the 1st House" reads clean, but a few say "your North Node in their 1 house" and one says "their house of 8". Sloppy for a design-conscious eye.
-- No "Show fewer" after expanding — once you hit Show all 50, you're back to the wallpaper with no way to recollapse without reload. Minor.
+## 2. VALUE — Yes
+Today I'd just google "what's my rising sign" or screenshot a friend's Co-Star. This is faster:
+three dropdowns + a year and I get the big three restated plainly plus a readable writeup, no app
+install, no login. The strip alone answers the one thing a casual person actually wants.
 
-## Answers
-1. **First impression / would I use it?** Yes, for the fun-fact use case — I'd absolutely run my chart against a client or a friend and screenshot the top-6 summary. It now looks designed, not dumped. Element-distribution bars per person are genuinely glanceable for a non-believer.
-2. **Advocacy: 8/10.** Up from 6. I'd bring it up to the astrology-curious friends in my circle. Held back from 9 by the templated blurb-body seam and the messy house-overlay ordinals — small craft tells that a designer clocks.
-3. **Value: Yes.** I'd never assemble a clean two-person compatibility readout myself; doing it free, no-signup, in-browser beats the paywalled astro sites my clients use.
-4. **Clarity: Yes.** "Compatibility, explained — How two charts get along, in plain English" plus the top-6 framing told me what it is in seconds.
+## 3. ADVOCACY — 8
+**Up from 6.** The big-three strip directly resolves my round-1 blocker — it's the single change
+that moved me. Why not 9: **below that strip the page is still a long reference manual.** The
+moment you scroll past the big three you hit COMPATIBILITY, ELEMENT DISTRIBUTION, "Today's Sky"
+with 10 glyph rows, an 8-bullet transit list, then the full plain-English writeup AND a 12-row
+house/sign/planet table. The payoff is now up top (great), but the result still doesn't *end*
+where a casual skimmer is done — it keeps unrolling into astrologer-grade density. A "casual vs.
+full" collapse, or just stopping after the plain-English big-three blurbs with the table behind a
+"show full chart" toggle, would earn the 9. As-is I'd recommend it to my astrology-curious friends
+with a "ignore everything below the big three" caveat — and that caveat is what keeps it off a 9.
 
-Dominant note: the wallpaper problem is genuinely solved — collapsing + relationship-first ordering + honest counts turned a reference dump into something a skimmer enjoys. Last 2 points are pure polish: personalize the blurb body and clean the ordinal grammar.
+**Does the strip resolve my density complaint?** Yes for the *first screen* — the 3 signs are no
+longer buried; they lead. It moved me +2 (6→8). The remaining −1 to −2 is the unstoppable scroll
+of dense reference data underneath, which still reads like a manual once you go past the strip.
 
 ```json
-{"tester": 0, "round": 2, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["aspect blurb BODY still templated by aspect-type not the actual planet-pair (row header is specific, paragraph is generic)", "house-overlay ordinals inconsistent ('1st House' vs 'their 1 house' vs 'house of 8')", "no Show-fewer to recollapse after expanding all 50"], "priorConcernsAddressed": "all"}
+{"tester": 10, "round": 2, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["Below the big-three strip the result is still an unending astrologer-grade reference manual (Today's Sky glyph table, 8 transit bullets, 12-row house/sign/planet table) with no casual stopping point or show-full toggle", "Big-three strip is great but the page doesn't END where a skimmer is done"], "priorConcernsAddressed": "all"}
 ```

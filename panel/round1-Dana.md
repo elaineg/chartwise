@@ -1,31 +1,37 @@
-# Dana — Round 1 (synastry)
+# Dana — round 1
 
-Demand-gen marketer, phone-first, curious-about-astrology, ruthless about time. Tested desktop + 375px mobile, cold.
+**CLARITY: Yes.** Eyebrow "NATAL CHART · PLAIN ENGLISH · NO SIGNUP" + the H1
+"Your birth chart, explained in plain English" told me what it is and who it's for
+in under 3 seconds. Value lands in one scroll, even on my 375px phone.
 
-## 1. What I tried & what happened
-Cold load: clean landing, no auto-example (had to tap "LOAD EXAMPLE (EINSTEIN)" — fine). Once a chart was up, I hunted for compatibility. Found the **"COMPARE TWO PEOPLE"** card sitting right above "Today's Sky" (the transit card) — discovered in ~5 sec, black CTA, hard to miss on both desktop and mobile. Tapped it: instantly loaded **Einstein × Michelle Obama**, two genuinely DISTINCT charts. Then I added my own second person ("Jane Partner", NYC) and re-ran the pair.
+**VALUE: Yes.** Today I screenshot Co-Star and squint at AstroSeek's cluttered grids.
+This gives me a clean plain-English chart with zero signup, an element-distribution
+graphic, "Today's Sky," AND compatibility for partners/coworkers — all in one place.
+The BIG 3 mode literally says "e.g. from Co-Star," which is exactly my entry point.
 
-## 2. What worked / what confused or broke
-WORKED:
-- **No fake % match score** — it shows honest counts: "30 HARMONY · 15 TENSION · 5 CONJUNCTION" + one plain sentence. As a marketer I trust this WAY more than a "87% compatible!" gimmick. This is the credibility win.
-- **Real per-pair math**: Einstein×Obama = 30·15·5; Einstein×Jane = 21·20·3. Different inputs → different output, not canned.
-- **Side-by-side big-three** (Sun/Moon/Rising for Person A vs B) stays two clean columns even at 375px — THAT is the screenshot I'd drop in the team channel.
-- House overlay reads both directions ("Where each person's planets fall in the other's chart") in plain English. No horizontal scroll on mobile, zero console/page errors, natal chart fully intact after round-tripping via "← BACK TO CHART".
+**ADVOCACY: 9.** I'd drop this in the team channel unprompted and text it to friends.
+It's free, no signup, fast, and the cards are genuinely screenshot-worthy. Holding it
+back from a 10: I haven't seen a "Save as image / one-tap screenshot card" button —
+I'd be cropping a tall scroll manually for a clean share.
 
-CONFUSED / FRICTION:
-- **Aspect explanations are generic & repetitive.** Every square says verbatim "The square here creates a recurring challenge between these two themes…"; every sextile the same line. It tells me the aspect TYPE but never what Moon vs Uranus actually MEAN for the relationship. I'm curious, not an expert — "Moon □ Uranus" means nothing to me without that.
-- **Computing a new person silently WIPED the example I was reading** — Person A & B both reset to "Choose a person…" and Obama vanished mid-read. Jarring.
-- **Mobile: tapping Compare doesn't scroll me to the comparison** — I land back at the top of the form and have to scroll down to find the result. Phone-first users will think nothing happened.
-- **No Copy/Share/Save-image button anywhere.** I screenshot for my team manually, but a "share this comparison" link is the obvious viral hook and it's missing.
+**BIGGEST BLOCKER:** No dedicated "download/share as image" — the output is share-worthy
+but I have to manually screenshot+crop a long page. A one-tap branded card would make me
+share it constantly. (Minor.)
 
-## 3. Would I use / recommend it?
-Yes, I'd actually pull this up to peek at a coworker's or a date's chart, and the honest-counts framing is genuinely refreshing. But the repetitive aspect copy makes the long scroll feel padded, and with no share affordance + the mobile scroll miss, it's a "send the link once" not a "this is a tool" yet.
-
-- ADVOCACY: **7** — held back by generic aspect copy (no planet meanings), no share button, and the mobile no-scroll-on-open. Fix those and it's a 9.
-- VALUE: **Yes** — beats opening Co–Star/CafeAstrology and decoding glyphs; the honest harmony/tension split is the differentiator.
-- CLARITY: **Yes** — "Compatibility, explained — How two charts get along, in plain English, free, no signup" tells me exactly what it is in one line.
-- DOMINANT COMPLAINT: Aspect explanations are generic and identical per type — they never say what the two PLANETS mean, so a non-expert can't learn anything from the long list.
+## BIG 3 flow notes
+- Discoverable? YES. PRECISE | BIG 3 toggle sits at the top of the input panel, visible
+  above the fold on mobile. Couldn't miss it.
+- Estimate labeled? YES, clearly. Banner: "ESTIMATED CHART — Date, time, and place were
+  inferred from your big three — this is an approximation. Enter your full birth date,
+  time, and place for the precise chart." Card titled "Estimated chart," location marked
+  "(reference)." No way to mistake it for a precise chart.
+- Loading ok? Effectively INSTANT — finished in ~770ms, no spinner needed, never felt
+  broken. (No visible "Estimating…" state appeared; didn't miss it.)
+- Signs honored? YES — picked Sun Cancer / Moon Sagittarius / Rising Leo and the chart
+  showed Leo rising, Sun Cancer · House 12, Moon Sagittarius. All three correct.
+- Bonus: "Create share link" produced a real /chart/<id> URL; saved-charts chip persists
+  locally. Zero console errors across PRECISE + BIG 3 + share.
 
 ```json
-{"tester": 1, "round": 1, "clarity": "Yes", "value": "Yes", "advocacy": 7, "topComplaints": ["Aspect explanations are generic/repetitive — same sentence per aspect type, never explains what the two planets mean", "Mobile: tapping Compare doesn't scroll to the result; lands at top of form looking like nothing happened", "No share/copy/save-image button — the obvious viral hook is missing; computing a new person silently wipes the pair you were reading"], "priorConcernsAddressed": "n/a"}
+{"tester": 0, "round": 1, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["No one-tap 'save/share as image' card — share-worthy output requires manual screenshot+crop of a long page", "No visible loading cue on Estimate (instant here, but could read as no-op if ever slow)"], "priorConcernsAddressed": "n/a"}
 ```

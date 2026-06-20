@@ -1503,3 +1503,512 @@ test("synastry: no horizontal overflow at 375px", async ({ browser }) => {
   expect(overflow, "No horizontal overflow at 375px with synastry open").toBe(false);
   await ctx.close();
 });
+
+// ═══════════════════════════════════════════════════════════
+// BIG-3 ESTIMATE (core flow 4)
+// ═══════════════════════════════════════════════════════════
+
+// ───────────────────────────────────────────────────────────
+// B-1. Toggle exists and is PRECISE by default
+// ───────────────────────────────────────────────────────────
+test("big3: entry-mode-toggle is present, PRECISE is active by default", async ({ page }) => {
+  await page.goto("/");
+  const toggle = page.getByTestId("entry-mode-toggle");
+  await expect(toggle).toBeVisible();
+  // PRECISE button should have aria-selected=true by default
+  const preciseBtn = page.getByTestId("mode-precise");
+  await expect(preciseBtn).toHaveAttribute("aria-selected", "true");
+  // BIG 3 button should have aria-selected=false
+  const big3Btn = page.getByTestId("mode-big3");
+  await expect(big3Btn).toHaveAttribute("aria-selected", "false");
+  // load-einstein-btn is visible in PRECISE mode
+  await expect(page.getByTestId("load-einstein-btn")).toBeVisible();
+});
+
+// ───────────────────────────────────────────────────────────
+// B-2. Switching to BIG 3 shows the form
+// ───────────────────────────────────────────────────────────
+test("big3: switching to BIG 3 mode shows the big3 form", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("mode-big3").click();
+  // big3 form is now visible
+  await expect(page.getByTestId("big3-form")).toBeVisible({ timeout: 3000 });
+  // Three sign selects are present
+  await expect(page.getByTestId("big3-sun")).toBeVisible();
+  await expect(page.getByTestId("big3-moon")).toBeVisible();
+  await expect(page.getByTestId("big3-rising")).toBeVisible();
+  // Year input
+  await expect(page.getByTestId("big3-year")).toBeVisible();
+  // Estimate button
+  await expect(page.getByTestId("big3-estimate-btn")).toBeVisible();
+  // Load-einstein-btn is now hidden
+  await expect(page.getByTestId("load-einstein-btn")).toHaveCount(0);
+});
+
+// ───────────────────────────────────────────────────────────
+// B-3. P0 CORRECTNESS: Aries/Taurus/Gemini/1990 → chart honors all three signs
+// ───────────────────────────────────────────────────────────
+test("big3: Aries/Taurus/Gemini/1990 → chart Sun=Aries, Moon=Taurus, Asc=Gemini (P0 correctness)", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible({ timeout: 3000 });
+
+  // Select Aries for Sun
+  await page.getByTestId("big3-sun").selectOption("aries");
+  // Select Taurus for Moon
+  await page.getByTestId("big3-moon").selectOption("taurus");
+  // Select Gemini for Rising
+  await page.getByTestId("big3-rising").selectOption("gemini");
+  // Enter year 1990
+  await page.getByTestId("big3-year").fill("1990");
+  // Click Estimate
+  await page.getByTestId("big3-estimate-btn").click();
+
+  // Wait for chart to render
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
+
+  // The big-three chips must show the correct signs
+  const chips = page.getByTestId("big-three-chips");
+  await expect(chips).toContainText("Aries");  // Sun
+  await expect(chips).toContainText("Taurus"); // Moon
+  await expect(chips).toContainText("Gemini"); // Rising
+
+  // The ESTIMATED CHART badge must be present
+  await expect(page.getByTestId("estimate-badge")).toBeVisible({ timeout: 5000 });
+});
+
+// ───────────────────────────────────────────────────────────
+// B-4. Estimate badge appears on estimated chart, not on precise chart
+// ───────────────────────────────────────────────────────────
+test("big3: estimate-badge shown for estimated chart, NOT shown for precise Einstein chart", async ({ page }) => {
+  await page.goto("/");
+
+  // Load Einstein (precise) — badge must NOT appear
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+  await expect(page.getByTestId("estimate-badge")).toHaveCount(0);
+
+  // Switch to BIG 3 mode and estimate
+  await page.getByTestId("mode-big3").click();
+  await page.getByTestId("big3-sun").selectOption("aries");
+  await page.getByTestId("big3-moon").selectOption("taurus");
+  await page.getByTestId("big3-rising").selectOption("gemini");
+  await page.getByTestId("big3-year").fill("1990");
+  await page.getByTestId("big3-estimate-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
+
+  // Badge MUST be present for the estimated chart
+  await expect(page.getByTestId("estimate-badge")).toBeVisible({ timeout: 5000 });
+  await expect(page.getByTestId("estimate-badge")).toContainText("ESTIMATED CHART", { ignoreCase: true });
+});
+
+// ───────────────────────────────────────────────────────────
+// B-5. Switching back to PRECISE mode leaves Einstein flow byte-identical
+// ───────────────────────────────────────────────────────────
+test("big3: switching back to PRECISE and loading Einstein still gives Sun Pisces / Moon Sagittarius / Asc Cancer", async ({ page }) => {
+  await page.goto("/");
+
+  // Go to BIG 3 mode first
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible();
+
+  // Switch back to PRECISE
+  await page.getByTestId("mode-precise").click();
+  await expect(page.getByTestId("load-einstein-btn")).toBeVisible({ timeout: 3000 });
+
+  // Load Einstein
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  // Regression: Sun Pisces / Moon Sagittarius / Asc Cancer
+  const chips = page.getByTestId("big-three-chips");
+  await expect(chips).toContainText("Pisces");
+  await expect(chips).toContainText("Sagittarius");
+  await expect(chips).toContainText("Cancer");
+  await expect(chips).toContainText("rising");
+
+  // No estimate badge for a precise chart
+  await expect(page.getByTestId("estimate-badge")).toHaveCount(0);
+});
+
+// ───────────────────────────────────────────────────────────
+// B-6. Validation: empty fields show an error
+// ───────────────────────────────────────────────────────────
+test("big3: submitting empty big3 form shows validation error", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible();
+  // Click estimate without filling anything
+  await page.getByTestId("big3-estimate-btn").click();
+  // Error alert must appear
+  const err = page.getByTestId("big3-error");
+  await expect(err).toBeVisible({ timeout: 3000 });
+  await expect(err).toHaveAttribute("role", "alert");
+  // No chart should have rendered
+  await expect(page.getByTestId("estimate-badge")).toHaveCount(0);
+});
+
+// ───────────────────────────────────────────────────────────
+// B-7. No horizontal overflow at 375px with big3 form open
+// ───────────────────────────────────────────────────────────
+test("big3: no horizontal overflow at 375px with big3 form visible", async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 375, height: 812 } });
+  const page = await ctx.newPage();
+  await page.goto("/");
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible({ timeout: 3000 });
+
+  const overflow = await page.evaluate(() => {
+    return document.documentElement.scrollWidth > document.documentElement.clientWidth;
+  });
+  expect(overflow, "No horizontal overflow at 375px with big3 form open").toBe(false);
+  await ctx.close();
+});
+
+// ═══════════════════════════════════════════════════════════
+// BIG-3 ESTIMATE — VERIFIER-REQUIRED ADDITIONAL COMBINATIONS
+// APP_SPEC.md P0 sweep: all four required combos exercised in the live UI
+// ═══════════════════════════════════════════════════════════
+
+// ───────────────────────────────────────────────────────────
+// B-8. Scorpio/Cancer/Capricorn/2001 — P0 correctness in UI
+// ───────────────────────────────────────────────────────────
+test("big3: Scorpio/Cancer/Capricorn/2001 → chart Sun=Scorpio, Moon=Cancer, Asc=Capricorn (P0)", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible({ timeout: 3000 });
+
+  await page.getByTestId("big3-sun").selectOption("scorpio");
+  await page.getByTestId("big3-moon").selectOption("cancer");
+  await page.getByTestId("big3-rising").selectOption("capricorn");
+  await page.getByTestId("big3-year").fill("2001");
+  await page.getByTestId("big3-estimate-btn").click();
+
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
+
+  const chips = page.getByTestId("big-three-chips");
+  await expect(chips).toContainText("Scorpio");    // Sun
+  await expect(chips).toContainText("Cancer");     // Moon
+  await expect(chips).toContainText("Capricorn");  // Rising
+
+  // Estimate badge must be present
+  await expect(page.getByTestId("estimate-badge")).toBeVisible({ timeout: 5000 });
+});
+
+// ───────────────────────────────────────────────────────────
+// B-9. Leo/Leo/Leo/1975 — triple same-sign P0 correctness in UI
+// ───────────────────────────────────────────────────────────
+test("big3: Leo/Leo/Leo/1975 → chart Sun=Leo, Moon=Leo, Asc=Leo (P0 triple same-sign)", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible({ timeout: 3000 });
+
+  await page.getByTestId("big3-sun").selectOption("leo");
+  await page.getByTestId("big3-moon").selectOption("leo");
+  await page.getByTestId("big3-rising").selectOption("leo");
+  await page.getByTestId("big3-year").fill("1975");
+  await page.getByTestId("big3-estimate-btn").click();
+
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
+
+  // Big-three chips must all show Leo
+  const chips = page.getByTestId("big-three-chips");
+  // Sun, Moon, and Rising all Leo — "Leo" must appear at least 2-3 times
+  const chipsText = await chips.textContent() ?? "";
+  const leoCount = (chipsText.match(/Leo/g) ?? []).length;
+  expect(leoCount, "Leo must appear at least twice in big-three chips (Sun, Moon, Rising all Leo)").toBeGreaterThanOrEqual(2);
+
+  // Estimate badge must be present
+  await expect(page.getByTestId("estimate-badge")).toBeVisible({ timeout: 5000 });
+});
+
+// ───────────────────────────────────────────────────────────
+// B-10. Pisces/Aries/Libra/1988 — P0 correctness in UI
+// ───────────────────────────────────────────────────────────
+test("big3: Pisces/Aries/Libra/1988 → chart Sun=Pisces, Moon=Aries, Asc=Libra (P0)", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible({ timeout: 3000 });
+
+  await page.getByTestId("big3-sun").selectOption("pisces");
+  await page.getByTestId("big3-moon").selectOption("aries");
+  await page.getByTestId("big3-rising").selectOption("libra");
+  await page.getByTestId("big3-year").fill("1988");
+  await page.getByTestId("big3-estimate-btn").click();
+
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
+
+  const chips = page.getByTestId("big-three-chips");
+  await expect(chips).toContainText("Pisces");  // Sun
+  await expect(chips).toContainText("Aries");   // Moon
+  await expect(chips).toContainText("Libra");   // Rising
+
+  // Estimate badge must be present
+  await expect(page.getByTestId("estimate-badge")).toBeVisible({ timeout: 5000 });
+});
+
+// ───────────────────────────────────────────────────────────
+// B-11. Badge persists after toggle back to PRECISE without recomputing
+//
+// APP_SPEC.md: badge is driven by compute-time flag (isEstimate on the chart),
+// NOT by the current toggle state. After producing an estimated chart, toggling
+// back to PRECISE mode WITHOUT pressing "Compute" must leave the estimate badge
+// on the still-displayed chart.
+// ───────────────────────────────────────────────────────────
+test("big3: estimate-badge persists when toggle flipped back to PRECISE without recomputing", async ({ page }) => {
+  await page.goto("/");
+
+  // Step 1: Produce an estimated chart
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible({ timeout: 3000 });
+  await page.getByTestId("big3-sun").selectOption("aries");
+  await page.getByTestId("big3-moon").selectOption("taurus");
+  await page.getByTestId("big3-rising").selectOption("gemini");
+  await page.getByTestId("big3-year").fill("1990");
+  await page.getByTestId("big3-estimate-btn").click();
+
+  // Wait for chart to render and verify badge is present
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
+  await expect(page.getByTestId("estimate-badge")).toBeVisible({ timeout: 5000 });
+
+  // Step 2: Toggle BACK to PRECISE mode WITHOUT recomputing (no button click)
+  await page.getByTestId("mode-precise").click();
+
+  // Step 3: The estimate badge must STILL be present because the displayed chart is still estimated
+  // (the badge is driven by chart.isEstimate, not by toggle state)
+  await expect(page.getByTestId("estimate-badge")).toBeVisible({ timeout: 3000 });
+
+  // The houses table is still showing the estimated chart
+  await expect(page.getByTestId("houses-table")).toBeVisible();
+
+  // The big-three chips still show the estimated signs (Aries/Taurus/Gemini)
+  const chips = page.getByTestId("big-three-chips");
+  await expect(chips).toContainText("Aries");
+  await expect(chips).toContainText("Taurus");
+  await expect(chips).toContainText("Gemini");
+});
+
+// ───────────────────────────────────────────────────────────
+// B-12. Returning-user: estimated chart saved to localStorage, re-opens with badge
+//
+// If an estimated chart is saved (via the people list), a returning user who
+// ── RE-VERIFY-2: Leo/Scorpio/Gemini/1988 UI spot-check with big3 strip ─────────
+// This is the panel-confirmed dead-end combo. After the fix it must:
+//   (a) render a chart (no red error)
+//   (b) show Sun Leo, Moon Scorpio, Ascendant Gemini
+//   (c) show the ESTIMATED CHART badge
+//   (d) show the new "Your big three" strip with those three signs
+// ───────────────────────────────────────────────────────────
+test("RE-VERIFY-2: Leo/Scorpio/Gemini/1988 renders with correct signs + big3 strip", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("domcontentloaded");
+
+  // Switch to BIG 3 mode
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible({ timeout: 5000 });
+
+  // Fill the big3 form: Sun=Leo, Moon=Scorpio, Rising=Gemini, Year=1988
+  await page.getByTestId("big3-sun").selectOption("leo");
+  await page.getByTestId("big3-moon").selectOption("scorpio");
+  await page.getByTestId("big3-rising").selectOption("gemini");
+  await page.getByTestId("big3-year").fill("1988");
+
+  await page.getByTestId("big3-estimate-btn").click();
+
+  // Houses table must render (no error)
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 20000 });
+
+  // ESTIMATED CHART badge must be present
+  await expect(page.getByTestId("estimate-badge")).toBeVisible({ timeout: 5000 });
+
+  // Big-three strip must show all three signs
+  const strip = page.getByTestId("estimate-big3-strip");
+  await expect(strip).toBeVisible({ timeout: 5000 });
+  const stripText = (await strip.textContent()) ?? "";
+  expect(stripText.toLowerCase()).toContain("leo");
+  expect(stripText.toLowerCase()).toContain("scorpio");
+  expect(stripText.toLowerCase()).toContain("gemini");
+
+  // Verify the actual chart honors all three signs via chips
+  const chips = page.getByTestId("big-three-chips");
+  const chipsText = (await chips.textContent()) ?? "";
+  expect(chipsText.toLowerCase()).toContain("leo");
+  expect(chipsText.toLowerCase()).toContain("scorpio");
+  expect(chipsText.toLowerCase()).toContain("gemini");
+});
+
+// ── RE-VERIFY-2: Einstein precise chart must NOT show big3 strip ────────────
+test("RE-VERIFY-2: Einstein precise chart shows NO estimate-badge and NO big3 strip", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("domcontentloaded");
+
+  // Load Einstein example
+  await page.getByRole("button", { name: /einstein/i }).click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  // No estimate badge
+  await expect(page.getByTestId("estimate-badge")).not.toBeVisible();
+
+  // No big3 strip
+  await expect(page.getByTestId("estimate-big3-strip")).not.toBeVisible();
+});
+
+// selects it must still see the estimate badge — the isEstimate flag must survive
+// the localStorage round-trip.
+// ───────────────────────────────────────────────────────────
+test("big3: estimated chart saved in localStorage shows estimate-badge on re-open", async ({ browser }) => {
+  // Seed localStorage with a pre-saved estimated chart profile
+  const estimatedBirth = {
+    name: "Estimated chart",
+    year: 1990,
+    month: 4,   // April (Aries month per solver)
+    day: 10,
+    hour: 6,
+    minute: 15,
+    latitude: 40.7128,
+    longitude: -74.006,
+    placeName: "New York, USA (reference)",
+    hasBirthTime: true,
+    isEstimate: true,   // the flag the solver sets
+  };
+
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  await page.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, estimatedBirth);
+
+  await page.goto("/");
+  // The person should appear in the list
+  await expect(page.getByText("Estimated chart")).toBeVisible({ timeout: 8000 });
+  // Click on the person to load the chart
+  await page.getByText("Estimated chart").click();
+
+  // Houses table should render
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
+
+  // The estimate badge must be visible (isEstimate was persisted in localStorage)
+  await expect(page.getByTestId("estimate-badge")).toBeVisible({ timeout: 5000 });
+
+  await ctx.close();
+});
+
+// ---- RE-VERIFY-3: share-copied-cue and estimate-methodology ----
+
+test("RE-VERIFY-3 FIX 1 success path: Copy link shows visible share-copied-cue with success text", async ({ browser, baseURL }) => {
+  // Create a share link first, then click Copy link and assert the cue appears
+  // Grant clipboard-write permission so the success path is exercised
+  const ctx = await browser.newContext({
+    permissions: ["clipboard-read", "clipboard-write"],
+  });
+  const page = await ctx.newPage();
+  // Override clipboard to a mock that resolves so the test is deterministic
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      value: {
+        writeText: () => Promise.resolve(),
+      },
+      writable: true,
+    });
+  });
+  await page.goto("/");
+
+  // Load Einstein example
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
+
+  // Click Create share link
+  const shareBtn = page.getByTestId("share-btn");
+  await expect(shareBtn).toBeVisible({ timeout: 5000 });
+  await shareBtn.click();
+
+  // Wait for copy-share-link button (token created)
+  const copyBtn = page.getByTestId("copy-share-link");
+  await expect(copyBtn).toBeVisible({ timeout: 10000 });
+
+  // Click Copy link
+  await copyBtn.click();
+
+  // The visible share-copied-cue must appear with success text
+  const cue = page.getByTestId("share-copied-cue");
+  await expect(cue).toBeVisible({ timeout: 3000 });
+  const cueText = await cue.textContent();
+  expect(cueText).toContain("Link copied to clipboard");
+
+  await ctx.close();
+});
+
+test("RE-VERIFY-3 FIX 1 blocked-clipboard path: Copy link shows blocked cue when clipboard is denied", async ({ browser, baseURL }) => {
+  // Override clipboard.writeText to reject before the page loads
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+
+  // Inject clipboard override before navigation
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      value: {
+        writeText: () => Promise.reject(new Error("NotAllowedError")),
+      },
+      writable: true,
+    });
+  });
+
+  await page.goto("/");
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
+
+  // Click Create share link
+  const shareBtn = page.getByTestId("share-btn");
+  await expect(shareBtn).toBeVisible({ timeout: 5000 });
+  await shareBtn.click();
+
+  const copyBtn = page.getByTestId("copy-share-link");
+  await expect(copyBtn).toBeVisible({ timeout: 10000 });
+  await copyBtn.click();
+
+  // The share-copied-cue must appear with the blocked message
+  const cue = page.getByTestId("share-copied-cue");
+  await expect(cue).toBeVisible({ timeout: 3000 });
+  const cueText = await cue.textContent();
+  expect(cueText).toContain("Copy blocked");
+
+  await ctx.close();
+});
+
+test("RE-VERIFY-3 FIX 2: estimate-methodology line visible in estimate badge for Leo/Scorpio/Gemini/1988", async ({ page, baseURL }) => {
+  await page.goto("/");
+
+  // Switch to BIG 3 mode
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible({ timeout: 5000 });
+
+  // Fill Leo/Scorpio/Gemini/1988
+  await page.getByTestId("big3-sun").selectOption("leo");
+  await page.getByTestId("big3-moon").selectOption("scorpio");
+  await page.getByTestId("big3-rising").selectOption("gemini");
+  await page.getByTestId("big3-year").fill("1988");
+  await page.getByTestId("big3-estimate-btn").click();
+
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 20000 });
+
+  // estimate-badge must be visible
+  await expect(page.getByTestId("estimate-badge")).toBeVisible({ timeout: 5000 });
+
+  // estimate-methodology must be visible inside the badge
+  const methodology = page.getByTestId("estimate-methodology");
+  await expect(methodology).toBeVisible({ timeout: 3000 });
+  const text = await methodology.textContent();
+  expect(text).toContain("How this works");
+  expect(text).toContain("1988");
+  expect(text).toContain("Sun, Moon, and Rising");
+});
+
+test("RE-VERIFY-3 FIX 2: Einstein precise chart shows NO estimate-methodology line", async ({ page, baseURL }) => {
+  await page.goto("/");
+  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
+
+  // No estimate-badge and no estimate-methodology for precise chart
+  await expect(page.getByTestId("estimate-badge")).not.toBeVisible();
+  await expect(page.getByTestId("estimate-methodology")).not.toBeVisible();
+});

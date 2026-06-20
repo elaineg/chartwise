@@ -1,19 +1,49 @@
-# Elena
+# Round 2 — Elena (Engineering manager, casual-curious-skeptic, phone half the day)
 
-Engineering manager, 8 reports, no time, casual-curious-skeptic. Laptop + phone, 30-sec patience.
+| Round | Clarity | Value | Advocacy | R1 dead-end bug |
+|-------|---------|-------|----------|-----------------|
+| R2    | Yes     | Yes   | 9        | RESOLVED ✅      |
 
-## Round-1 concerns — re-checked first
-- **"Key" aspects were obscure Chiron/Node, not Sun/Moon/Venus/Mars chemistry** → FIXED. The collapsed top-8 now leads with the real chemistry: Einstein's Sun sextile Obama's Sun, **Einstein's Mars conjunct Obama's Sun (0.2° orb)**, Moon–Jupiter trine, Mercury–Sun, Saturn–Sun, Moon–Saturn. Every Chiron / North Node / South Node / Black Moon Lilith pair is now buried in the "Show all 50" tail. This is exactly what I came for.
-- **Templated by aspect type** → MOSTLY FIXED for what matters. The surfaced top aspects have specific per-pair copy ("Sun conjunct Mars generates strong mutual activation — the Mars person is energized by the Sun person's identity"). The buried tail still falls back to generic type boilerplate ("A trine here makes these two themes flow together effortlessly"), repeated verbatim. As a casual user I only read the top, so I'm fine — but if anyone hits "Show all" the repetition is glaring.
-- **Wall of repetition** → FIXED. Collapsed list is 688px tall (8 aspects); expands to 4984px only on click. First view is scannable, not a wall.
+## Prior concern re-check (my R1 blocker)
+My R1 advocacy-8 blocker was: the BIG 3 solver dead-ended on a hard red
+"COULD NOT FIND A DATE…" for Leo / Scorpio / Gemini, year 1988.
 
-## Verdict
-1. **First impression / real use:** Synastry landed in well under 30 seconds. Header names both people ("most relationship-significant aspects between Albert Einstein and Michelle Obama"), every aspect is directional with both names + glyph + orb, harmony/tension/conjunction tags are color-weighted. Big-three side-by-side (Sun/Moon/Rising per person), house overlays read with ordinals ("North Node in the 1st House"), summary is honest counts ("30 harmony · 15 tension · 5 conjunction") — **no fake % score**, which I respect. I'd absolutely throw a coworker's chart against mine between meetings. Mobile (375px) clean: no overflow (scrollWidth==clientWidth), no clip, no double-render, 0 JS errors. Natal still works.
-2. **ADVOCACY: 8/10.** Up from 6. The right aspects lead, it's fast and honest, mobile-clean. Held back from 9: the "Show all 50" tail is naked boilerplate repetition (same trine/square sentence dozens of times) — the moment a curious user expands it, the magic drops. And entry to Compare is buried below the natal result (I had to load a chart, scroll, then find "Compare two people →"); a skimmer might miss it exists.
-3. **VALUE: Yes.** Today I'd eyeball Co–Star/free synastry sites that gate the read or front a junk %. This gives named, directional, plain-English chemistry free with no signup, in one glance.
-4. **CLARITY: Yes.** "Compatibility, explained — how two charts get along, in plain English, free, no signup" plus the named header told me exactly what it is.
-5. **Dominant note:** The fix nailed the thing I complained about — Sun/Moon/Mars/Venus chemistry now leads, Chiron/Node banished to the tail. Fix the repeated boilerplate behind "Show all" and surface the Compare entry higher and this is a 9.
+I re-ran that EXACT combo on a 390px phone viewport: PRECISE | BIG 3 toggle →
+BIG 3 → Sun=Leo, Moon=Scorpio, Rising=Gemini, year 1988 → ESTIMATE CHART.
+- NO red error. `RED DEAD-END ERROR? false`.
+- It returned a valid chart with the ESTIMATED CHART badge.
+- Chart honors all three: "↑ Gemini rising · ☉ Sun 0°35' Leo · ☽ Moon 13°41' Scorpio".
+- The new strip shows exactly: "YOUR BIG THREE — SUN LEO · MOON SCORPIO · RISING GEMINI".
+Both fixes landed. The thing that knocked a point off in R1 is gone.
+
+## 1. CLARITY — Yes
+"NATAL CHART · PLAIN ENGLISH · NO SIGNUP" + "Your birth chart, explained in
+plain English" + "Free, no signup" tells me what it is and that it costs me
+nothing in under 10 seconds. The PRECISE / BIG 3 split is honest: I rarely know
+my exact birth time, and BIG 3's helper text ("Know your Sun, Moon, and Rising
+e.g. from Co-Star but not your exact birth time? Estimate the rest.") speaks my
+exact situation. I'd tell a friend: "type your sign or birth details, get your
+whole chart explained in normal English, free, no login."
+
+## 2. VALUE — Yes
+Today I just glance at Co-Star between meetings — it tells me my Big 3 but not
+much else, and nags me to add friends. Here I pasted my Big 3 and instantly got
+a full element breakdown + plain-English house readouts, no app install, no
+account, on my phone. The new BIG THREE strip lands well inside my 30-second
+budget — it confirms it used MY signs so I trust the estimate. Zero setup.
+
+## 3. ADVOCACY — 9
+This is now genuinely shareable — I'd drop it in a team Slack as "free, no
+signup, plain English" the next time astrology comes up. It clears my bars:
+instant, zero-setup, phone-friendly.
+
+Single biggest REMAINING blocker (why not 10): the BIG 3 estimate quietly picks
+a reference date/time/place ("1988-07-23 · 01:29 · New York (reference)") and
+the houses/Sun-house depend on it, but there's no nudge that the houses are
+essentially arbitrary in estimate mode. The Big 3 themselves are dead-on now, so
+it's minor — but a one-liner like "houses are illustrative in estimate mode"
+would stop a skeptic like me from over-reading House placements.
 
 ```json
-{"tester": 4, "round": 2, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["Show-all-50 tail is naked boilerplate repetition (same trine/square/conjunction sentence dozens of times)", "Compare entry buried below natal result — easy to miss it exists"], "priorConcernsAddressed": "all"}
+{"tester": 6, "round": 2, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["estimate mode picks a hidden reference date/time/place; houses look authoritative but are arbitrary — no disclaimer that houses are illustrative in BIG 3 mode"], "priorConcernsAddressed": "all"}
 ```

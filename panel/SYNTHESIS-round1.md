@@ -1,70 +1,62 @@
-# Chartwise — SYNTHESIS Round 1 (SYNASTRY / "Compare two people" feature)
+# chartwise — Panel SYNTHESIS, round 1
 
-App under test: http://localhost:3099 (local `next start` prod server). Cold run, full 10-persona panel re-spawned (carry-forward is per-arc, does NOT survive across runs — prior 8/8 does not carry).
+Feature under test: PRECISE | BIG 3 toggle. BIG 3 mode estimates a full chart from Sun/Moon/Rising signs + birth year, with an "ESTIMATED CHART" badge stating date/time/place were inferred.
+Tested LIVE at http://localhost:3000 (prod build). All 10 personas spawned by name, exactly once each.
 
-## Audience classification (audience-weighted bar)
+## Score table
 
-This is a NICHE-CATEGORY astrology app, so we use the same audience-weighted bar as prior chartwise/standupdigest ships.
+| Tester | Fit | Astro stance | Clarity | Value | Advocacy | Biggest blocker |
+|--------|-----|--------------|---------|-------|----------|-----------------|
+| Priya  | non-fit  | hard-skeptic        | Yes | No  | 3  | Category itself — won't advocate for astrology (craft is good) |
+| Tomás  | non-fit  | hard-skeptic        | Yes | No  | 5  | Plain-English prose below the fold; result opens with jargon/glyphs |
+| Marcus | in-aud   | casual-curious-skep | Yes | Yes | 8  | Share/copy confirmation too quiet; result page long/dense |
+| Wen    | in-aud   | casual-curious-skep | Yes | Yes | 8  | No methodology transparency (house system/ephemeris source) |
+| Dana   | in-aud   | curious             | Yes | Yes | 9  | No one-tap save/share-as-image card |
+| Jules  | in-aud   | curious             | Yes | Yes | 8  | No shareable image/social card; share is 2-step server action |
+| Aisha  | in-aud   | curious             | Yes | Yes | 9  | Cold-load toggle + black "LOAD EXAMPLE" form an awkward L-shape |
+| Rob    | in-aud   | casual-curious-skep | Yes | Yes | 6  | Result page too dense — buries the 3 signs a casual user wants |
+| Elena  | in-aud   | casual-curious-skep | Yes | Yes | 8  | BIG 3 solver can dead-end on an unlucky sign combo |
+| Sam    | in-aud   | curious             | Yes | Yes | 8  | BIG 3 solver dead-end + no visible copy-link confirmation |
 
-IN-AUDIENCE (GATE — must advocate adv>=9 with value-clear): the astrology-curious / receptive personas who would plausibly ever open a natal+compatibility tool.
-- **Dana** (curious) — knows her big-three, target user.
-- **Jules** (curious) — astrology is part of her social identity.
-- **Aisha** (curious) — into astrology, explanation-first appeals to her.
-- **Sam** (curious) — genuinely curious, loves conversation-starters.
-- **Marcus** (casual-curious-skeptic) — engages happily, drops tools in group chat.
-- **Wen** (casual-curious-skeptic) — genuinely curious to understand placements.
-- **Rob** (casual-curious-skeptic) — idly curious about his big-three; engages.
-- **Elena** (casual-curious-skeptic) — half-believes, enjoys it as light fun.
+Clarity: 10/10 Yes. Value: 8/10 Yes (the 2 No's are both hard-skeptic non-fits, by design).
 
-CARRIED NON-GATING (hard astrology-skeptics / category non-fits — report scores, do NOT block ship):
-- **Priya** (hard-skeptic, profile audienceFit="non-fit") — considers astrology pseudoscience, would never use it for herself. Consistent with prior ships treating her as a hard non-fit.
-- **Tomás** (hard-skeptic, profile audienceFit="non-fit") — thinks astrology is harmless nonsense, won't use it himself. Consistent with prior ships treating him as a hard non-fit.
+## Tally
 
-Classification taken from each profile's `astrology_stance` + `audienceFit`, not from memory. The 8 casual-curious-skeptic / curious personas are in-audience; only the two profile-flagged hard-skeptic non-fits (Priya, Tomás) are carried non-gating.
+- **Raw: 2/10** at advocacy ≥ 9 (Dana 9, Aisha 9).
+- **In-audience (8 testers): 2/8** at advocacy ≥ 9 with clarity+value Yes.
+- In-audience advocacy mean: (8+8+9+8+9+6+8+8)/8 = **8.0**. Six of eight are at exactly 8 — one polished blocker fix likely lifts several to 9.
 
-## Per-tester results
+## Out-of-ICP roster caps (advocacy not counted against the bar)
 
-| Tester | In-audience? | Adv | Value | Clarity | Dominant complaint |
-|--------|--------------|-----|-------|---------|--------------------|
-| Dana   | YES (gate)   | 7   | Yes   | Yes     | Aspect blurbs generic/repetitive — never name what the two planets mean; no share button; mobile Compare doesn't scroll to result |
-| Jules  | YES (gate)   | 6   | Yes   | Partially | No share button in compare view; "Einstein × Obama" + identical boilerplate repeated 50×; aspect attribution + "Your/their" pronoun leftover |
-| Aisha  | YES (gate)   | 8   | Yes   | Yes     | ~40 aspect rows recycle identical generic blurbs, burying the specific ones; birth form stays mounted in compare view on mobile |
-| Sam    | YES (gate)   | 6   | Marginal | Partially | Can't easily compare own partner — Person B only from saved charts, no inline picker/hint; + repetitive filler aspects |
-| Marcus | YES (gate)   | 8   | Yes   | Yes     | Sun⚹Sun SEXTILE blurb hardcodes "same Sun sign" but A=Pisces, B=Capricorn — silently-wrong copy; + generic filler |
-| Wen    | YES (gate)   | 7   | Yes   | Yes     | KEY ASPECTS never say WHOSE planet is which, yet blurbs use directional language — silent directionality loss |
-| Rob    | YES (gate)   | 6   | Marginal | Yes   | ~50 aspect rows, only ~7 unique templates keyed to aspect TYPE not planet pair — reads as wallpaper/dense manual |
-| Elena  | YES (gate)   | 6   | Yes   | Yes     | KEY ASPECTS templated by aspect type; "key" aspects are obscure Chiron/Node pairs by orb, not the Sun/Moon/Venus/Mars chemistry users came for |
-| Priya  | carried (non-fit) | 3 | No  | Yes     | 50-row aspect list reuses generic per-type blurbs verbatim, never naming planetary themes; minor "1 house" grammar |
-| Tomás  | carried (non-fit) | 4 | No  | Partially | Key Aspects is a 50+ row jargon dump, no top-N; harmony/tension counts have no baseline |
+- **Priya (3)** — hard-skeptic backend engineer; considers astrology pseudoscience, won't advocate for the category regardless of craft. She VERIFIED data stays client-side (network tab) and found no bugs. Roster non-fit, not a defect.
+- **Tomás (5)** — hard-skeptic ops analyst; astrology is "harmless nonsense" to him. Tested for privacy/clarity on his partner's behalf; passed the privacy fine-print test. Roster non-fit.
 
-## In-audience tally at the bar (adv>=9 with value-clear)
+Both are the spec's named hard-skeptics; their low scores are category stance, not product failure.
 
-In-audience advocacy scores: Dana 7, Jules 6, Aisha 8, Sam 6, Marcus 8, Wen 7, Rob 6, Elena 6.
-**0 of 8 in-audience testers at adv>=9.** Top scorers are Aisha (8) and Marcus (8). None clears the 9 bar.
+## BIG 3 feature-specific findings (the round's focus)
 
-Carried non-fits (non-gating): Priya 3, Tomás 4.
+- (a) **Discoverable?** YES — unanimous. Every tester (incl. both skeptics, incl. all mobile testers at 375px) found the PRECISE | BIG 3 toggle at the top of the input panel without help. It's a real `role=tab` control. No one missed it.
+- (b) **Mistaken for exact?** NO — unanimous. The triple-layer signal (ESTIMATED CHART pill + bordered disclaimer banner + card header, plus the reference location tagged "(reference)" and "this is an approximation, enter full details for the precise chart") is praised by Wen and Aisha as the most honest move in the app. Impossible to mistake.
+- (c) **Loading state slow/broken?** NO. Observed times ranged ~0.7s–3.2s; the "Estimating…" state with a disabled button read as intentional, within Elena's 30s budget. Several testers saw sub-second completion. Not a blocker.
+- (d) **Signs honored?** YES — unanimous on every solvable combo. Verified pairs across testers (e.g. Leo/Scorpio/Aquarius, Aries/Pisces/Capricorn, Cancer/Sag/Leo, Taurus×3) all returned matching Sun/Moon/Rising.
 
-## VERDICT: ITERATE
+The new feature itself passed cleanly. The blockers below are mostly pre-existing whole-app issues surfaced by holistic judgment, plus one NEW BIG-3-specific defect (the solver dead-end).
 
-No in-audience tester reached adv>=9. The feature is structurally strong and broadly trusted — every tester confirmed it is DISCOVERABLE (found in ~2-8s), correctly positioned ABOVE the transit card, CLEAR within 5s, HONEST (no fake % match — counts verified 30/15/5 against rendered cards by multiple testers), private/client-side (Priya + Tomás sniffed the network: zero birth data leaves the browser), and the pre-existing natal chart is NOT broken at desktop or 375px mobile (zero console/page errors, no clipping/overflow/double-render anywhere). This is an added-feature that WORKS — the gap is content quality, not function or discoverability.
+## #1 in-audience blocker (what a fix round should address)
 
-### Single dominant blocker (named by 9 of 10 testers, all 8 in-audience)
+**The BIG 3 solver can dead-end with a hard red "COULD NOT FIND A DATE AND TIME…" failure on plausible sign combinations.** Hit independently by **Elena and Sam** (both: Leo/Scorpio/Gemini 1988), the only NEW, BIG-3-specific, reproducible defect this round. It is a genuine first-impression bounce for a no-debug, share-for-fun user who picks an unusual-but-valid combo. Fix: auto-retry nearby years or fall back to a closest-match estimate rather than a dead-end error. This is the single highest-leverage fix — it directly threatens the feature under test for the exact target personas.
 
-**The "KEY ASPECTS" list is a wall of generic, repeated boilerplate.** ~50 rows are keyed to the aspect TYPE (sextile/trine/square) rather than the planet PAIR, so the same ~3-7 sentences repeat ~8-12× each. Consequences testers cited:
-- It never says what the two specific planets mean between these two people (Dana, Wen, Rob, Elena, Priya, Tomás).
-- The page becomes 9,500-15,000px of repetition that buries the few specific, valuable interpretations (Aisha, Jules, Rob).
-- The surfaced "key" aspects are obscure Chiron/Node pairings (sorted by tightest orb) instead of the Sun/Moon/Venus/Mars chemistry a casual user came for (Elena).
+### Secondary recurring theme (genuine, but wishlist — addresses the 6-8 cluster, not a defect)
 
-### Precise fix (highest-leverage)
+**Result-page density / "buries the payoff."** Rob (6), Tomás (5/non-fit), and partly Marcus name the result page as a dense reference dump that buries the plain-English big-three payoff below jargon/glyphs. A "lead with one plain sentence per Big 3, full detail collapsible" treatment would lift Rob and likely Marcus toward 9. Recurs across 3 testers → real, but it's a presentation-priority wish, not a broken flow.
 
-Replace the type-keyed aspect dump with a curated, planet-pair-aware section:
-1. **Curate to a TOP ~5-7 aspects**, ranked by relationship significance (prioritize Sun/Moon/Venus/Mars/ASC pairings over Chiron/Node trivia), not merely by tightest orb. Collapse the long tail behind a "show all" toggle.
-2. **Write blurbs per PLANET PAIR**, not per aspect type — each card must name what the two bodies' themes mean together (e.g., "His Saturn steadying her Venus → ...") rather than a generic "a sextile here makes these two themes...".
-3. **Fix the two silently-wrong copy bugs surfaced:** (a) Marcus — the Sun⚹Sun sextile blurb hardcodes "sharing the same Sun sign" though the two Suns are different signs (it's keyed off planet-pair-same-planet, ignoring sign); (b) Wen/Jules — aspect cards don't state whose planet is whose and reuse single-chart "Your/their" pronouns ("North Node in their 1 house" under an A's-planets-in-B's-houses header), losing synastry directionality. Also fix the "1 house" → "1st house" ordinal grammar (Priya).
+### Divergent wishlist items (single-persona, deprioritize for this round)
 
-### Secondary (cheap wins, would lift several to 9 alongside the fix above)
-- **Add a share/copy-link or save-image button to the compare view** (Jules, Dana — the viral hook is missing; only "← Back to chart" exists). Several in-audience testers are sharers and explicitly named this.
-- **Make it easy to set Person B to your own partner** — inline picker / hint that you must compute+save a second chart first; currently Person B is only selectable from "Saved charts" with no guidance (Sam, Aisha, Dana — computing a new person silently wipes the loaded pair).
-- **Mobile compare view:** scroll to the result after tapping Compare (Dana); don't leave the full birth-data form mounted above the compatibility content (Aisha).
+- Shareable image / social card (Dana, Jules, Sam touch on it) — recurs but is an additive feature, not a fix to the tested flow; would lift the share-focused personas.
+- Methodology transparency / "how this is calculated" (Wen only) — single-persona, data-hygiene wish.
+- Copy-link confirmation too quiet (Marcus, Sam, Jules note it; partly a headless-clipboard test artifact each flagged as env, not defect).
+- Cold-load toggle/LOAD-EXAMPLE L-shape (Aisha only) — single-persona craft nit; cheap to fix and would clear her 9→10.
 
-The aspect-list rewrite is the one blocker to fix first — it is the centerpiece of the feature and the unanimous in-audience complaint. The two copy bugs ride along in the same edit. With it fixed (and ideally the share button), Aisha and Marcus (both already at 8) and Wen/Dana (7) are the closest to clearing the 9 bar.
+## Verdict
+
+NOT PASSED. In-audience bar (≥9 of in-audience at advocacy ≥9, clarity+value Yes) met by only 2/8. The new BIG 3 feature itself is solid (discoverable, clearly-an-estimate, fast, signs honored). The gating in-audience blocker is the **BIG 3 solver dead-end on valid combos** (Elena + Sam), with result-page density as the secondary lever to move the 6-8 cluster.

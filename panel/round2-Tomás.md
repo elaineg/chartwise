@@ -1,44 +1,42 @@
-# Tomás
+# Round 2 — Tomás (Operations analyst · Edge/Windows · HARD-SKEPTIC, out-of-ICP)
 
-Round 2. Ops analyst, Edge/Windows, hard astrology skeptic (partner's into it), non-fit, carried non-gating.
+| Round | Clarity | Value | Advocacy |
+|-------|---------|-------|----------|
+| R1    | Yes     | No    | 5        |
+| R2    | Yes     | No    | 6        |
 
-## Prior concerns (round 1) — re-checked
-1. "50+ row jargon dump, no top-N." FIXED. KEY ASPECTS now shows exactly 6 curated aspects with a
-   "SHOW ALL 50 ASPECTS" toggle that expands to the full list (verified 6→50 on desktop AND 375px).
-   Each row is directional and named, e.g. "Albert Einstein's Sun ⚹ Michelle Obama's Sun · SEXTILE ·
-   3.6° ORB · HARMONY" with a specific per-pair reading. This is genuinely readable now.
-2. "Harmony/tension counts have no baseline." PARTIALLY. The framing is honest — there is NO fake
-   "% match" or "compatibility score" (I checked). It says "30 HARMONY · 15 TENSION · 5 CONJUNCTION"
-   and "share 30 harmonious aspects to 15 tensions — an overall easy-flowing dynamic." But it still
-   never tells me whether 30:15 is good or just what ANY two charts produce. No "typical/average/most
-   pairs" anchor. So the counts are honest but still uninterpretable as a number.
+## Prior concern (R1): "Plain-English prose below the fold; result opens with jargon/glyphs."
+FIXED. On the BIG 3 estimate (Leo/Scorpio/Gemini, 1988) the result column now LEADS, directly
+under the ESTIMATED CHART badge, with: "YOUR BIG THREE — SUN LEO · MOON SCORPIO · RISING GEMINI"
+plus an honest caveat "Date, time, and place were inferred from your big three — this is an
+approximation." Plain English is at the top now, not below the fold. The estimate also did NOT
+dead-end — a valid chart rendered with no console errors.
 
-## New finding (would have cost me the feature)
-The Compatibility card has TWO things that LOOK like the button: a grey heading "Compare two people →"
-(with an arrow implying it's a link) and, separately, a black "COMPARE TWO PEOPLE" button. The arrow
-heading is a dead `<p>` — clicking it does nothing. I clicked the obvious-looking arrow text 4 times
-and concluded the feature was broken before I found the real button on the far right. A normal user
-(my partner) would give up there. The arrow on non-clickable text is a trap; pick one affordance.
-Also: it does NOT "auto-load Einstein × Michelle Obama" until you click the real button — minor.
+## 1. CLARITY — Yes
+The masthead "Your birth chart, explained in plain English" + "NATAL CHART · PLAIN ENGLISH · NO
+SIGNUP" tells me exactly what it is in 30s. The BIG 3 mode is well-labeled ("Know your Sun, Moon,
+Rising from Co-Star but not your exact birth time? Estimate the rest."). My partner could follow it.
 
-## Answers
-1. First impression / real use: Privacy is genuinely good and front-and-center — "Your chart is
-   computed on your device. Saved charts stay in your browser only," and the share link clearly warns
-   it sends data to a server. As a data-wary corporate user that's exactly the disclosure I want, and
-   it's the one thing I'd credit unprompted. The compare output is now something my partner could
-   actually read. I still won't use astrology for a real task — that's the category, not the app.
-2. Advocacy: 4/10. Up from a wobbly position because the feature now works and reads cleanly, but I'm
-   a hard skeptic — I'd only mention it to my partner ("the privacy is decent, the writeups are plain
-   English"), not advocate. Held back by: the dead-arrow trap, and counts with no baseline.
-3. Value: No. I don't have a tool for this because I don't do this; nothing to save time over for me.
-4. Clarity: Partially. Within 30s I'd say "it explains your birth chart, and compares two people's
-   charts, in plain English, free, no login." Clear. Knocked off "Yes" because the compare entry point
-   has two competing affordances and I couldn't tell which was clickable.
+## 2. VALUE — No (category cap, unchanged)
+Today I'd do nothing — neither I nor my partner tracks this. For someone who DOES want it, the
+plain-English natal write-up ("CORE IDENTITY", "EMOTIONAL WORLD", "HOW OTHERS SEE YOU") is genuinely
+readable by a layperson, and the privacy story is good: "Your chart is computed on your device.
+Saved charts stay in your browser only," and the share-link caveat is stated honestly up front. So
+the craft cleared my privacy/fine-print bar — but the underlying job (astrology) has no value to me,
+so Value stays No on principle, not on execution.
 
-Dominant note: the synastry fix landed — 6-up top-N, clean collapse, honest no-fake-score framing,
-clean at 375px, zero console errors. The remaining friction is a UX trap (arrow on dead text), not a
-data problem. Privacy disclosure is the real strength for someone like me.
+## 3. ADVOCACY — 6 (was 5). Hard-skeptic cap stands.
+The legibility fix moved my CRAFT assessment up a notch (5→6): the result is no longer a wall of
+glyphs, the estimate path works end-to-end, and privacy is handled the way I'd want for entering a
+partner's birth data. But I will not advocate for astrology itself regardless of how clean it is —
+that caps me well below the 9 unprompted-recommendation bar by definition.
+
+Biggest REMAINING blocker (within the craft): the lower planet table still opens with raw glyphs
+(☉☽☿♀♂♃♄♅♆♇) before words, and the daily-transits "FOR YOUR CHART" section says "Sun Gemini" (the
+current sky) right above a natal section that correctly says "Leo Sun" — a layperson (my partner)
+could read those side by side and think the app contradicted itself. Label the transit section as
+"today's sky, not your chart" to kill that ambiguity.
 
 ```json
-{"tester": 7, "round": 2, "clarity": "Partially", "value": "No", "advocacy": 4, "topComplaints": ["'Compare two people →' arrow text is a dead element next to the real button — I thought the feature was broken", "harmony/tension counts (30:15) have no baseline — honest but I can't tell if that's good or normal"], "priorConcernsAddressed": "some"}
+{"tester": 4, "round": 2, "clarity": "Yes", "value": "No", "advocacy": 6, "topComplaints": ["Lower planet table still leads with raw glyphs before plain words", "Daily-transits 'Sun Gemini' sits next to natal 'Leo Sun' — looks self-contradictory to a layperson"], "priorConcernsAddressed": "all"}
 ```

@@ -18,6 +18,8 @@ export interface BirthData {
   placeName: string;
   utcOffset?: number | null; // optional manual override
   hasBirthTime?: boolean; // explicit flag — false means time was unknown (houses/Asc not meaningful)
+  /** Set by the Big-3 solver to mark estimated charts (date/time/place inferred, not real) */
+  isEstimate?: boolean;
 }
 
 export interface Planet {
@@ -57,6 +59,14 @@ export interface ComputedChart {
   houseCusps: number[];
   computedAt: number;
   hasBirthTime: boolean; // false → houses/Asc are not meaningful; suppress in UI
+  /**
+   * True when the chart was produced by the Big-3 solver (date/time/place inferred).
+   * Drives the ESTIMATED CHART banner in the UI.
+   * Keyed off the compute-time BirthData flag, NOT the current UI toggle state,
+   * so toggling back to PRECISE while an estimated chart is still displayed
+   * never changes the badge erroneously.
+   */
+  isEstimate?: boolean;
 }
 
 const SIGN_ELEMENTS: Record<string, "fire" | "earth" | "air" | "water"> = {
@@ -258,6 +268,7 @@ export function computeChart(birth: BirthData): ComputedChart {
     houseCusps,
     computedAt: Date.now(),
     hasBirthTime: birth.hasBirthTime !== false, // default true if not explicitly set
+    isEstimate: birth.isEstimate === true,       // thread estimate flag from BirthData
   };
 }
 

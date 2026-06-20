@@ -1,53 +1,41 @@
-# Jules — Round 3
+# Jules — Round 3 (Content & community marketer · mobile-first · in-audience)
 
-Content/community marketer, mobile-first, shares constantly, allergic to logins. Re-testing
-the Compare/synastry feature after a fix. Tested at 375px mobile + 1280px desktop, cold.
+Tested cold on a 375px phone viewport. Ran the BIG 3 ESTIMATE flow (Leo sun / Scorpio moon
+/ Gemini rising, year 1991), then exercised CREATE SHARE LINK → COPY LINK.
 
-## Prior concern (Round 2): NO share/copy button on Compare page
-FIXED. The Compare view now has a proper "SHARE THIS COMPARISON" block with subtext
-"Creates a link anyone can open to see this compatibility reading — free, no signup," a
-read-only URL field, and a Copy button that flips to "COPIED." It put
-`http://localhost:3099/chart/<id>` on my clipboard (verified; clipboard read worked in test
-env). Opening that link in a FRESH browser (no localStorage, i.e. like a friend) returns
-200 and reopens "SHARED COMPATIBILITY — Albert Einstein × Michelle Obama" with the full
-compatibility reading + a "Create your own chart →" CTA. Works identically on mobile and
-desktop. This is exactly the share flow I needed. THIS IS THE WIN.
+## Prior concern re-check (R2 held me at 8)
+- **R2 blocker: no one-tap download / social-card image.** Still not built. BUT —
+- **Fix 1 (visible copy confirmation): LANDED.** After CREATE SHARE LINK → COPY LINK I see
+  a clear "✓ Link copied to clipboard" right under the button, and the clipboard genuinely
+  holds a real URL (`/chart/<id>`) that opens the full estimated chart in a fresh,
+  no-localStorage browser with a "Create your own chart →" CTA. That's a working viral loop.
+- **Fix 2 (estimated methodology note): LANDED.** Under the ESTIMATED CHART badge: "Date,
+  time, and place were inferred from your big three — this is an approximation…" + a "How
+  this works:" line. As someone who'll post my friends' charts, I now trust what I'm sharing.
+- priorConcernsAddressed: **some** (both built fixes landed; image-card intentionally deferred).
 
-## 1. What worked / value to me
-- (a) KEY ASPECTS are genuinely relationship-significant (Sun–Sun, Sun conjunct Mars,
-  Moon–Jupiter), readings are pair-specific AND directional with BOTH names:
-  "Albert Einstein's Sun ⚹ Michelle Obama's Sun." Expand "Show all 50 aspects" → toggles to
-  "Show top aspects only" and DOES collapse again. 28 of 30 reading prefixes were distinct —
-  no longer a wall of identical boilerplate.
-- (b) House ordinals are CORRECT: "1st House," "7th House," "8th House," "11th House." Zero
-  "in their 1 house" bugs found.
-- (d) "Compare two people" is now a clear bordered, clickable CARD (343×126) with an arrow
-  and "Plain-English compatibility… free, no signup." Pre-loads both people so you land
-  straight in a real reading.
-- Big-three (rising/Sun/Moon chips) + honest "Based on 11 placements" framing intact;
-  "computed on your device, saved charts stay in your browser" privacy note present. No
-  console/page errors anywhere. Shareable, no-login, mobile-clean — squarely my thing.
+## Clarity — Yes (10)
+Header "Your birth chart, explained in plain English" + the kicker "NATAL CHART · PLAIN
+ENGLISH · NO SIGNUP" told me instantly what it is and that I won't hit a login. The BIG 3
+toggle literally says "Know your Sun, Moon, and Rising (e.g. from Co-Star) but not your exact
+birth time?" — that's MY exact situation and names the app I'd be coming from. Zero confusion.
 
-## 2. What frustrated me / felt broken
-- DISCOVERABILITY: the Compare card does NOT exist on the cold home page. You must type or
-  load a chart FIRST, then scroll past the chart to find it. As someone who'd open this
-  specifically to compare two friends' charts, I'd never know the feature exists from the
-  landing page. The headline only sells single natal charts.
-- The shared link is `/chart/<id>` not `/compare/...` — works fine, but the URL doesn't
-  scream "compatibility" when I paste it in a story/DM. Minor.
-- Nitpick: no "not fortune-telling / for reflection" disclaimer surfaced on the compatibility
-  reading itself (device-privacy note is there; reflective-framing line wasn't).
+## Value — Yes
+Today I screenshot Co-Star or paste people's big-three into a group chat and explain it
+myself. This does the explaining for me, free, no signup, and gives a shareable link in one
+tap. It saved me real effort vs. typing out "your Scorpio moon means…" by hand.
 
-## 3. Would I use / recommend it?
-Yes — I'd use it on friends repeatedly and the share link is screenshot/DM/story-ready. The
-only thing keeping me from raving is that the compare feature is hidden until after you make
-a chart; surface it on the landing page and this jumps a point or two.
+## Advocacy — 8/10
+The link-copy fix removed the broken-feeling dead end, and shareability is now functional —
+I'd recommend it. But I do NOT bring it up unprompted at a 9 yet, and I'm being honest, not
+nice: **the single remaining blocker is still no one-tap share-as-image / social card.** My
+whole behavior is posting to X/IG/Mastodon, and those are visual. A raw `localhost`-style URL
+is fine for a DM but won't get a click in a feed the way a chart card image would. A naked
+link is the difference between "I'd text this to a friend" (8) and "I'd post this and tag
+them" (9–10). Build the downloadable card and I'm a 9.
 
-ADVOCACY: 8/10
-VALUE: yes
-CLARITY: partially (single-chart purpose is instantly clear; the compatibility feature —
-my main draw — is invisible on first load)
+Single biggest remaining blocker: **no one-tap downloadable share-as-image / social card.**
 
 ```json
-{"tester": 4, "round": 3, "clarity": "Partially", "value": "Yes", "advocacy": 8, "topComplaints": ["Compare/compatibility feature is undiscoverable on the cold home page — only appears after computing a chart", "Shared URL is /chart/<id> not obviously a compatibility link when pasted"], "priorConcernsAddressed": "all"}
+{"tester": 4, "round": 3, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["No one-tap share-as-image / social card — share is a raw link, not a postable visual; caps me at 8 as a feed-poster", "Share URL is a bare link with no preview text/title that I can see, so it's DM-only not feed-ready"], "priorConcernsAddressed": "some"}
 ```

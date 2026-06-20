@@ -1,47 +1,48 @@
-# Rob — Round 3
+# Rob — Round 3 (Brand/visual designer, freelance · casual-curious-skeptic · skims fast)
 
-Brand/visual designer, casual-curious-skeptic. Desktop (calibrated) + 375px. Tested COLD.
+## Re-check of my round-2 blocker
+Round 2 (adv 8) blocker: "below the big-three strip the page unrolls into an astrologer-grade
+reference manual (compatibility, element bars, Today's Sky, 12-row house table, transits) with
+no 'show full chart' collapse / casual stopping point."
 
-## Prior concerns (Round 2) — re-checked first
-- **"No Show fewer" → FIXED.** Expanding "Show all 50 aspects" now flips the button to
-  "Show top aspects only" and genuinely collapses back. Toggle works both ways, no double-render.
-- **Inconsistent house ordinals → STILL BROKEN.** Same list mixes numeric and spelled-out:
-  "in their 1st house", "in their 6th house", "in their 7th house" sit next to
-  "in their Sixth House", "in their Eighth House", "in their Ninth House", "in your Third House".
-  As a designer this jumps out as sloppy in the first scan. Not fixed.
-- **Aspect blurb BODY type-templated → PARTIALLY fixed.** Bodies are now distinct per
-  aspect-TYPE and read like real plain English. But they're still type-keyed, not name-specific:
-  "Jupiter conjunct Venus: ...both people feel good about the relationship." appears VERBATIM
-  twice for the reversed Venus/Jupiter pair, and the body never uses the actual names (the
-  HEADER does: "Einstein's Sun ⚹ Obama's Sun"). House-overlay tail also reuses one generic
-  Node line verbatim ("themes of that house feel fated and developmental") twice.
+Status: UNCHANGED by design — and I was told that up front. The result page is still ~4000px of
+unroll. The team's call: precise + synastry flows need every row visible without a click. Fair.
+Judging it as a divergent layout preference, not a defect (see Advocacy).
 
-## 1. Value?
-For a non-believer who wants a fun, legible "are we compatible" read on two friends: yes, it
-works. The summary banner ("share 30 harmonious aspects to 15 tensions — an easy-flowing
-dynamic") is genuinely plain-English and not a data dump. Top KEY ASPECTS are
-relationship-significant and headers are directional with both names. Share produces a REAL
-working link (`/chart/<id>`) that loads the full Einstein↔Obama comparison in a clean tab.
-"Compare two people" is now a proper bordered CARD with subtitle + arrow — clearly clickable.
+## Clarity — Yes (10)
+Cold load tells me exactly what it is: "Your birth chart, explained in plain English · NATAL CHART
+· PLAIN ENGLISH · NO SIGNUP." I'd tell a friend: "free, no-login thing that turns your birth chart
+into readable English — and you don't even need your exact birth time." The PRECISE | BIG 3 toggle
+is the first thing I see and it's obvious. BIG 3 mode even name-drops Co-Star, which is literally
+where my friends get their signs. No confusion anywhere.
 
-## 2. Frustrated / broken?
-- Ordinal inconsistency (above) — the one thing I'd notice as a designer.
-- Body text recycles for reversed pairs and skips the names — reads type-templated if you
-  actually read the tail.
-- No explicit "for fun / not science" honest-framing line anywhere I could find — tone is
-  honest (explains, doesn't predict) but a skeptic wants the disclaimer stated.
-- Synastry is hidden until you compute a chart first — cold visitor never sees it exists.
-  No clip/overflow/double-render bugs. 375px clean, 0 horizontal overflow, 0 console errors.
+## Value — Yes
+What I do today: I don't. I idly Google "what's a Scorpio moon mean" and skim a wall of horoscope-
+blog SEO sludge. This is faster and cleaner. The BIG 3 estimate flow is the winner for me — I don't
+know my birth time, I just know my big three, so three dropdowns + a year + one button got me a
+result with zero friction. And the new ESTIMATED note ("we searched 1988 for a date/time whose chart
+matches your big three… your real birth date/time/place will differ") is honest about the fudge,
+which a skeptic appreciates — it didn't pretend the estimate was gospel. That bought trust.
 
-## 3. Use again / recommend?
-I'd open it once to do my big three and to gimmick-check a couple of friend pairings. The
-share link is the actually-shareable part — that's the bit I'd send. Solid, tasteful, free.
-Not something I'd evangelize while the same list spells "6th house" and "Sixth House" side by side.
+## Advocacy — 8/10
+Held at 8, and now I'll defend it as a REAL 8, not a polite one. The big-three strip leads the
+result cleanly: "YOUR BIG THREE — SUN LEO · MOON SCORPIO · RISING GEMINI" plus three legible pill
+cards sit at the very top. That IS my casual stopping point — I read the fun part and just… stop
+scrolling. I don't actually need a collapse; nothing drags me into the 12-row house table. Realizing
+that is what keeps this at 8 instead of dropping it.
 
-ADVOCACY: 6/10
-VALUE: Yes
-CLARITY: Yes (once you're in; Partially as a cold visitor since compare is hidden behind compute)
+Why not 9: it still LOOKS like a reference manual the instant you glance past the fold — element
+bars, compatibility, Today's Sky, house table all stacked at full weight with no visual "the casual
+stuff ends here" seam. As a visual designer that's an aesthetic itch: a hairline divider or a quieter
+"Full chart details ↓" label between the big-three payoff and the astrologer-grade stuff would let a
+skimmer feel done without it feeling unfinished. That's polish, not a blocker.
+
+## Single biggest remaining blocker
+A casual-vs-deep visual seam below the big-three strip. **This is a divergent layout preference, NOT
+a true defect** — the data is all correct, legible, and the payoff leads; the density is a deliberate
+tradeoff for the precise/synastry flows and I respect that. It costs maybe one advocacy point from a
+skimmer like me, nothing more. I'd still recommend it to the friend who's into this stuff.
 
 ```json
-{"tester": 9, "round": 3, "clarity": "Yes", "value": "Yes", "advocacy": 6, "topComplaints": ["House ordinals still inconsistent within one list (1st house vs Sixth House)", "Aspect/overlay BODY still type-keyed: recycles verbatim for reversed pairs, never uses the names"], "priorConcernsAddressed": "some"}
+{"tester": 10, "round": 3, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["No visual seam between the big-three payoff and the dense full-chart section — reads like a reference manual past the fold (divergent layout preference, not a defect)"], "priorConcernsAddressed": "n/a"}
 ```

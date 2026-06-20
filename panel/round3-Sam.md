@@ -1,24 +1,26 @@
-# Sam — Round 3
+# Sam — Round 3 (Product manager, mobile-first, share-first, curious about astrology)
 
-PM, mobile-heavy, shares screenshots constantly, curious-about-astrology. Tested cold on 375px + desktop.
+## Round-2 blocker re-check (COPY LINK confirmation) — RESOLVED ✓
+This was my exact held-at-8 complaint: clipboard populated but no visible cue.
+I drove it on a 375px phone viewport, BIG 3 estimate mode end to end:
+- BIG 3 toggle → Sun **Leo** / Moon **Pisces** / Rising **Scorpio** + year **1988** → ESTIMATE CHART → CREATE SHARE LINK → **COPY LINK**.
+- After tapping COPY LINK the button flips to a solid black active state AND
+  "**✓ Link copied to clipboard**" appears right under it in clear dark text (color rgb(16,16,16), weight 500). Perceptible, no squinting.
+- Clipboard genuinely held a real URL (`/chart/IPUZxdE8vnogBBrqJl9wjYBQ`), and opening that link in a fresh tab returned 200 with the SHARED CHART + my Big Three + a "Create your own chart →" loop.
+RESOLVED. The fix is exactly what I asked for. Sharing now feels finished.
 
-## Re-check of my Round 2 complaints
-- **Buried compare entry / no clear clickable card** → FIXED. After I compute (or load) a chart, there's a bordered card: "COMPATIBILITY / Compare two people / Plain-English compatibility between two charts" with an arrow. On both 375px and desktop it reads as a tappable card. Caveat: it does NOT exist on the cold homepage at all — you only see it once a chart exists. For my "open it and immediately get it" instinct that's a half-fix (see Clarity).
-- **No single labeled "set Person B = my partner" action** → PARTIALLY. The compare view opens straight into a fully-worked Einstein × Michelle Obama demo (smart — instant payoff). The shared page has explicit PERSON A / PERSON B "Choose a person…" pickers. But in-app I never saw a labeled "set Person B = my partner" step; to use my real partner I'd have to save both charts first. Good enough to demo, still a touch indirect for my actual use.
+## Clarity — Yes (10)
+Headline "Your birth chart, explained in plain English" + "NATAL CHART · PLAIN ENGLISH · NO SIGNUP" tells me what it is and that I won't hit a wall in one glance. The "Know your Sun, Moon, and Rising (e.g. from Co-Star) but not your exact birth time? Estimate the rest." line is *perfect* for me — I know my big three from Co-Star, I do NOT know my partner's exact birth minute, and this said "that's fine."
 
-## 1. Value?
-YES. This is the first version I'd actually screenshot. The KEY ASPECTS are genuinely relationship-significant (Sun×Sun sextile, Sun conjunct Mars 0.2° orb, Moon trine Jupiter) and the readings are pair-specific AND directional with BOTH names: "Albert Einstein's Sun ⚹ Michelle Obama's Sun… the Mars person is energized by the Sun person's identity." Expanding "SHOW ALL 50 ASPECTS" gave 50 distinct readings — 87 of 90 long lines unique, only 3 honest repeats (same aspect type recurring). NOT the boilerplate I feared. Collapse ("SHOW TOP ASPECTS ONLY") returns cleanly to 6. House overlays read with correct ordinals and direction ("Moon in the 9th House", "their Venus in your Seventh House"). Today I'd send my partner a paragraph from Co-Star/screenshot a paywalled synastry report; this is cleaner, free, no signup, and shareable.
+## Value — Yes
+Today I screenshot Co-Star / The Pattern blurbs into group chats. Those are app-walled and ugly to share. Here I can do my partner's and friends' big-three from memory (no fiddly birth-time/place hunt on my phone — the BIG 3 estimate path is the whole game for me) and get a clean, screenshottable plain-English readout PLUS a real link that opens for them with a "make your own" hook. That's a better share than a Co-Star screenshot, and it took ~20 seconds on my phone. Genuinely saves effort over my current habit.
 
-## 2. Frustrated / broken?
-Almost nothing broke. The "SHARE THIS COMPARISON" button works: copied http://localhost:3099/chart/… to clipboard, button flipped to "COPIED", and opening that link fresh returns 200 with BOTH names, the big-three, and the aspects — a real shareable page titled "Albert Einstein × Michelle Obama / Create your own chart". That's exactly what I'd drop in a group chat. Zero console errors anywhere. No clip/truncation/double-render/overlap on 375px or 1280px. Minor: a few house-overlay lines for same-house placements share generic wording ("reaches their private, foundational world" appears twice for the two 4th-house planets) — noticeable if you read closely.
+## Advocacy — 9
+Up from 8. The only thing that held me at 8 — the silent copy — is fixed and I verified it myself. The whole BIG 3 estimate flow is thumb-friendly, nothing made me debug, and the share link works. I'd drop this in a chat unprompted: "type your big three, get a clean explainer, send me the link." Not a 10 only because the share is a two-tap step (CREATE SHARE LINK then COPY LINK) where one combined "Copy share link" tap would be even smoother for a share-first person, and a native share-sheet would beat copy on mobile — minor polish, not a blocker.
 
-## 3. Use again / recommend?
-Yes, I'd use it and I'd send it to 2-3 friends — it's a great conversation starter and the share link makes it spreadable. Held back from a 9 by: (a) compare is invisible until you make a chart, so a friend I send to the homepage cold won't discover it; (b) pointing Person B at my real partner isn't a one-tap labeled action in-app.
-
-ADVOCACY: 8
-VALUE: yes
-CLARITY: partially — chart side is instantly clear ("Your birth chart, explained in plain English"), but compatibility (my reason to share) is hidden on the cold homepage, so a first-time visitor can't tell this also does relationship comparison.
+## Single biggest remaining blocker
+None that stops me. Nit: collapse CREATE SHARE LINK + COPY LINK into one tap (or add a mobile share-sheet) — share-first users want the link in two taps total, not three.
 
 ```json
-{"tester": 0, "round": 3, "clarity": "Partially", "value": "Yes", "advocacy": 8, "topComplaints": ["Compare entry only appears AFTER you compute/load a chart — invisible on cold homepage, so the share-worthy compatibility feature isn't discoverable to a first-time visitor", "No one-tap labeled 'set Person B = my partner' in-app; using your own partner needs saving both charts first", "A few same-house overlay readings reuse identical generic wording"], "priorConcernsAddressed": "some"}
+{"tester": "Sam", "round": 3, "clarity": "Yes", "value": "Yes", "advocacy": 9, "topComplaints": ["share is two separate taps (Create link, then Copy link) — collapse to one for a share-first mobile user", "no native mobile share-sheet, copy-only"], "priorConcernsAddressed": "all"}
 ```

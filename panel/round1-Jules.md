@@ -1,32 +1,23 @@
-# Jules — Round 1 (synastry)
+# Jules — round 1
 
-Persona: content/community marketer, mobile-first, curious about astrology, posts her big-three, allergic to logins. Tested at 375px mobile (primary) + 1280px desktop. Cold load, no source read.
+Tested cold on mobile (375px), no-login confirmed.
 
-## 1. What I tried & what happened
-Landed cold. Header "Your birth chart, explained in plain English. Free, no signup" — instantly my thing. Tapped LOAD EXAMPLE (EINSTEIN), full natal chart appeared (Pisces Sun, Sag Moon, Cancer Rising — correct). Scrolled and found a **COMPARE TWO PEOPLE** button — discovery took ~8 seconds and yes, it sits ABOVE the "Today's Sky" transit card (compareY 1794 < transitY 1913). Tapped it: auto-loaded Einstein × Michelle Obama, two distinct charts. Zero console/page errors anywhere (natal, compare, desktop). Natal chart not broken.
+**CLARITY: Yes.** "Your birth chart, explained in plain English. Free, no signup" + the eyebrow "NATAL CHART · PLAIN ENGLISH · NO SIGNUP" tell me exactly what it is and that I won't hit a wall. Got it in ~3s.
 
-## 2. What worked / what was confusing or broken
-WORKED:
-- The COMPATIBILITY SUMMARY is genuinely lovely: Person A vs Person B big-three side by side, element-distribution bars each. Plain English, screenshot-worthy. This is the part I'd post.
-- HONEST: no fake "87% match" — it says "30 HARMONY · 15 TENSION · 5 CONJUNCTION" with a plain sentence. I trust it more for that.
-- House overlay reads in plain English ("Your Mercury in their Sixth House: communication helps organize their daily life").
+**VALUE: Yes.** Today I'd send friends to Co-Star/Astro.com or eyeball things myself; this gives a plain-English read AND a BIG 3 mode that matches how I actually ask people ("what's your big three?"). The "Today's Sky" panel even flagged Pluto retrograde — that's literally content I post. It saves me real time vs hunting through Co-Star's app.
 
-BROKEN / CONFUSING:
-- **"Albert Einstein × Michelle Obama" is printed 50 times** — once on EVERY aspect card. I already know who I'm comparing. On mobile the page is 15,000+px tall and I'm thumb-scrolling past identical labels forever.
-- **Every aspect of the same type is word-for-word identical.** Every sextile = "an easy cooperative opportunity…"; every trine = "flow together effortlessly…". ~50 cards, ~3 unique sentences. After 4 cards there's nothing new to read — feels padded, not insightful.
-- **Aspect attribution is ambiguous.** "Saturn ⚹ Mars" — whose Saturn? Whose Mars? No A/B color or label. In synastry that direction matters and I can't tell.
-- **Pronoun voice is wrong for a 3-person comparison.** Header "MICHELLE OBAMA'S PLANETS IN ALBERT EINSTEIN'S HOUSES" then body "Your North Node in their 1 house." Whose is "Your"? It's leftover single-chart voice; confusing when comparing two other people.
-- **NO SHARE in the compare view.** Natal has "Share this chart"; synastry only has "← BACK TO CHART". The entire reason I'd open this is to share "look at me + my friend" — and I can't. Dealbreaker for me.
-- Desktop nit: input form stays pinned left, element charts stack vertically not side-by-side; lots of scroll even on a wide screen.
+**ADVOCACY: 8.** I'd bring this up in a Mercury-retrograde post, but two things keep it off a 9: no image/story card to post (I share to X/IG, and a copy-link isn't a visual), and the share is a deliberate 2-step "CREATE SHARE LINK → sends to our server" rather than an instant link, which dents the "no-signup, all-on-device" promise slightly.
 
-## 3. Would I use / recommend it?
-The natal explainer: yes, I'd use and share it tomorrow. The synastry feature: the summary card is share-gold but it's buried under a giant repetitive aspect dump with no share button and confusing pronouns. I'd open it once, screenshot only the top, and not come back to the aspect list. Close, not there.
+**BIGGEST BLOCKER:** No shareable image/card for social. As a community marketer I post screenshots/cards, and right now the only output to share is a text link.
 
-- ADVOCACY: 6 — I'd recommend the natal app unprompted, but the synastry can't be shared and the aspect list is a repetitive wall, which is exactly what I'd judge hardest.
-- VALUE: Yes (vs Co–Star/CafeAstrology synastry which need accounts or are jargon-dense) — but value is concentrated in the top card only.
-- CLARITY: Partially — summary clear in 5s; aspect list + "Your/their" pronouns muddy who's who.
-- DOMINANT COMPLAINT: No share button on the compatibility view, and "Einstein × Obama" + identical boilerplate repeated 50× makes the aspect list an unreadable mobile scroll.
+**BIG 3 flow notes**
+- Toggle discoverable on mobile: Yes — PRECISE | BIG 3 sits at top of the input panel, clearly tappable.
+- Copy is perfect for me: "Know your Sun, Moon, and Rising (e.g. from Co-Star)…" — speaks my language.
+- Estimate labeled: Yes, strongly. "ESTIMATED CHART" badge + "Date, time, and place were inferred from your big three — this is an approximation. Enter your full birth date… for the precise chart." Honest.
+- Loading: ~0.7s, snappy — never felt slow or broken. (Feared 2.4s didn't happen.)
+- Signs honored: Yes exactly — picked Leo/Scorpio/Pisces → Sun 6°39' Leo, Moon 11°47' Scorpio, 0°02' Pisces rising.
+- Share link verified: loads a 200 chart page with "Create your own chart →" CTA. (Copy button: clipboard read blocked in test env; copy verified visually.)
 
 ```json
-{"tester": 0, "round": 1, "clarity": "Partially", "value": "Yes", "advocacy": 6, "topComplaints": ["No share button in compare view — can't share a synastry, which is the whole point for a sharer", "Pair label 'Albert Einstein × Michelle Obama' + identical per-type boilerplate repeated on all 50 aspect cards = unreadable 15000px mobile scroll", "Aspect attribution ambiguous (whose Saturn vs whose Mars?) and 'Your/their' pronouns wrong for comparing two other people"], "priorConcernsAddressed": "n/a"}
+{"tester": 2, "round": 1, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["No shareable image/social card — only a text link to post", "Share is a 2-step server-side 'create link' action, slightly dents the on-device/no-signup promise"], "priorConcernsAddressed": "n/a"}
 ```

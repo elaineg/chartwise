@@ -1,31 +1,15 @@
-# Wen — Round 1 (synastry)
+# Wen — round 1
 
-Persona: marketing data analyst, casual-curious astrology skeptic. Desktop + 375px mobile. Cold open.
+**CLARITY: Yes.** In 5s I'd tell a friend: "Type your birth date/time/place (no signup), it computes your real natal chart and explains every placement in plain English." The H1 "Your birth chart, explained in plain English" + "NATAL CHART · PLAIN ENGLISH · NO SIGNUP" nailed it. As a curious skeptic I finally got plain-language definitions of "rising," houses, and retrogrades without reading a wheel.
 
-## 1. What I tried / what happened
-Landed cold, header "Your birth chart, explained in plain English · NATAL CHART · PLAIN ENGLISH · NO SIGNUP" — instantly legible. Clicked LOAD EXAMPLE (EINSTEIN). Chart rendered fine. Found the compatibility entry in ~6 seconds: a "COMPATIBILITY — Compare two people →" block with a "COMPARE TWO PEOPLE" button sitting just ABOVE the "Today's Sky" transit card (button top ~480px, transit ~614px) — correct placement, discoverable. Clicked it; it auto-loaded Einstein × Michelle Obama, two genuinely distinct charts (Pisces/Sag/Cancer vs Capricorn/Pisces/Virgo).
+**VALUE: Yes.** Today I'd half-understand Co-Star's cryptic blurbs or fall down a Wikipedia rabbit hole. This actually decodes MY chart: 11 placements with degrees + houses, an element-distribution count ("Based on 11 placements"), a retrograde (℞) flag, and per-placement plain-English. The privacy line — "Your chart is computed on your device — nothing is sent anywhere" — is exactly what wins my trust; it survives my data-hygiene sniff test.
 
-## 2. What worked / what was confusing or broken
-WORKED (and earned my trust as a data person):
-- NO fake % match score. Summary is honest counts: "30 HARMONY · 15 TENSION · 5 CONJUNCTION" + a hedged sentence. I checked the rendered cards: exactly 30/15/5 — summary matches the detail, internally consistent. Good data hygiene.
-- Aspects show ORB in degrees (0.0°–7.9°) and sort by tightness — I can see WHY an aspect "counts." That transparency is exactly what I want.
-- HOUSE OVERLAY is bidirectional and explicitly labeled ("MICHELLE OBAMA'S PLANETS IN ALBERT EINSTEIN'S HOUSES" and vice-versa) — directionality is clear here.
-- Big-three side-by-side + element distribution bars ("Based on 11 planetary placements") are plain-English readable with zero wheel literacy.
-- Natal chart NOT broken: Einstein ASC 7°24' Cancer, MC 7°28' Pisces, Sun Pisces — matches his known chart, arcminutes shown.
-- Mobile 375px: zero horizontal overflow, two columns hold, nothing clipped/doubled. Desktop clean. 0 console/page errors anywhere.
+**ADVOCACY: 8/10.** I'd bring it up to friends who quote their Big 3. Not a 9 because it shows me the WHAT but never the HOW — no "we use Placidus houses / tropical zodiac," no source for the city's lat/long or the ephemeris, and the city autocomplete rounds coords to 0.01° (41.8500, -87.6500) with no precision note. A "how this is calculated" line would move me to 9.
 
-CONFUSING / MY REAL GRIPE:
-- KEY ASPECTS hide directionality. "Saturn ⚹ Mars" never says WHOSE Saturn and WHOSE Mars — every card just reads "Albert Einstein × Michelle Obama." Worse, the interpretation text uses directional language ("the Saturn person provides grounding the Sun person can use") without telling me which person is the Saturn person. In synastry his-Saturn-on-her-Venus ≠ her-Saturn-on-his-Venus; collapsing that is a silent loss of information. The house section gets this right, so the aspects section feels like a regression by comparison.
-- Generic fallback blurbs repeat verbatim ("A trine here makes these two themes flow together effortlessly...") across many cards — fine, but it makes the section feel padded; the specific ones (Venus/Saturn, Mercury/Sun) are far better.
+**BIGGEST BLOCKER:** No methodology transparency. It asserts placements confidently but never names the house system, zodiac, or data source — so a skeptic can't audit whether the math is credible vs invented. Quote that bugs me: confident plain-English on BIG-3-estimated houses reads identical to a precise chart's, despite being back-solved.
 
-## 3. Would I use / recommend it
-For entertainment with a friend's birth data, yes — it's the rare astrology tool that shows its work instead of inventing a compatibility percentage, which is the exact thing that makes me close these apps. The directionality gap is what keeps me from trusting it fully.
-
-ADVOCACY: 7/10 — but read as honest-7-is-failing: I'd recommend it to one curious friend with the caveat "ignore who's-whose in the aspect list." Fix planet directionality in KEY ASPECTS and it jumps to 9.
-VALUE: Yes — replaces eyeballing two AstroSeek tabs; the harmony/tension counts + orbs do in one screen what I'd otherwise reconcile by hand.
-CLARITY: Clear within 5 seconds — "Compatibility, explained / How two charts get along — in plain English" plus the side-by-side big-three needs no astrology literacy.
-DOMINANT COMPLAINT: KEY ASPECTS never says whose planet is whose, yet the blurbs talk about "the Saturn person" — directionally ambiguous data.
+**BIG 3 flow:** Toggle (PRECISE | BIG 3) is fully discoverable — top-left, both labels visible cold. Form copy is great: "Know your Sun, Moon, and Rising (e.g. from Co-Star) but not your exact birth time? Estimate the rest." Loading: ~3s, real "Estimating…" spinner — felt intentional, not broken. **Estimate labeled honestly: YES** — "ESTIMATED CHART" banner: "Date, time, and place were inferred from your big three — this is an approximation," and it openly shows the fabricated inputs "1990-03-25 01:14 New York, USA (reference)." That candor is the single best honesty move in the app. **Signs honored: YES** — I picked Aries/Pisces/Capricorn and got exactly Aries Sun, Pisces Moon, Capricorn Rising. One gap: the inferred Mercury/Venus/Mars/houses get the same confident voice with no per-placement "approximate" tag.
 
 ```json
-{"tester": 0, "round": 1, "clarity": "Yes", "value": "Yes", "advocacy": 7, "topComplaints": ["KEY ASPECTS omit planet ownership (whose Saturn / whose Mars), but blurbs reference 'the Saturn person' — directionally ambiguous", "Generic trine/sextile/square fallback blurbs repeat verbatim across many cards, feels padded"], "priorConcernsAddressed": "n/a"}
+{"tester": 1, "round": 1, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["No methodology transparency — house system / zodiac / ephemeris / coord source never named, so chart math can't be audited", "BIG-3-estimated placements (Mercury/Venus/Mars/houses) read as confidently as precise ones with no per-placement approximate tag"], "priorConcernsAddressed": "n/a"}
 ```

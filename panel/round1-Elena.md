@@ -1,23 +1,20 @@
-# Elena — Round 1 (synastry)
+# Elena — round 1
 
-Engineering manager, 8 reports, wall-to-wall meetings, ~30-sec patience, casual-curious-skeptic. Tested cold on laptop + 375px phone.
+**CLARITY: Yes.** "Your birth chart, explained in plain English" + "NATAL CHART · PLAIN ENGLISH · NO SIGNUP" told me what it is in under 5s. No login wall, no fluff. I'd explain it to a report in one line: "free thing that explains your chart in normal words."
 
-## 1. What I tried / what happened
-Loaded cold, hit "LOAD EXAMPLE (EINSTEIN)" (the obvious move), Einstein's chart appeared. Scrolling, I found the COMPATIBILITY "Compare two people →" card sitting right above "Today's Sky" — discovery took ~5 seconds, exactly where I'd expect. Tapped "COMPARE TWO PEOPLE" and it auto-loaded Einstein × Michelle Obama, two genuinely distinct charts (Sun Pisces vs Sun Capricorn, Moon Sag vs Moon Pisces, Rising Cancer vs Rising Virgo). Zero setup, instant. That part nailed my bar.
+**VALUE: Yes.** Today I'd just half-read whatever Co-Star pushes me, or google "Leo Scorpio meaning" and skim a wall of text. This is faster and the Big 3 mode is built for exactly my situation — I know my Sun/Moon/Rising from Slack banter, NOT my 4:17am birth time. Picking three dropdowns + a year and getting a full chart is genuinely zero-setup. The plain-English framing + element distribution + "Today's Sky" is more than I expected for a 30s glance.
 
-## 2. What worked / what was confusing or broken
-WORKED: Instant, no signup, no typing required to see value. Big-three side-by-side (Person A / Person B) is the best part — readable at a glance even on my phone. NO fake "87% match" score (I checked — there is none; reads honest). House-overlay section is actually good plain English ("your communication helps organize their daily life," "your presence triggers transformation"). Mobile at 375px: no horizontal scroll, nothing clipped/overlapping, no console errors. Natal chart sanity check passed (Einstein values correct).
+**ADVOCACY: 8/10.** I'd actually drop this in our team Slack where we joke about signs — that's a real unprompted share. Not a 9 because of the one rough edge below; if a casual pick can dead-end me, some teammates will bounce before they see the payoff.
 
-CONFUSING / WEAK: The "KEY ASPECTS" list is the let-down. Every trine prints the IDENTICAL sentence ("makes these two themes flow together effortlessly"); every sextile prints the IDENTICAL sentence. I counted 8+ copies of each on one screen. Worse, the "key" aspects shown are Saturn-Mars, Chiron-Uranus, Chiron-North Node, Chiron-South Node — obscure body-pairings surfaced by tightest orb, NOT the juicy Sun/Moon/Venus/Mars chemistry a casual user actually wants. So I scroll a wall of repeated boilerplate about Chiron and Nodes and learn nothing about whether Einstein and Michelle would actually click. It reads like a glossary of "what a trine is," repeated, instead of "what HER Jupiter does to HIS Moon."
+**BIGGEST BLOCKER:** The Big 3 solver can dead-end. My first casual combo (Leo Sun / Scorpio Moon / Gemini Rising, 1988) returned a red "COULD NOT FIND A DATE AND TIME THAT PLACES YOUR SUN, MOON, AND RISING IN THE REQUESTED SIGNS." The message is honest and tells me to try a nearby year, but a between-meetings user who hits that on their FIRST try reads it as "broken" and leaves. 4 of my next 4 combos solved fine, so it's an edge case — but it's the first impression for an unlucky pick. Auto-trying a couple nearby years (or a softer "we couldn't pin this exact combo, here's the closest") would save the bounce.
 
-## 3. Would I use / recommend it?
-I'd genuinely pull this up between meetings to compare my chart with a coworker's — it's fast and fun enough. But I'd skim the big-three + house overlay and bounce off the aspects wall. I'd share the natal-chart app before I'd specifically hype the compatibility feature, because the centerpiece (aspects) feels templated.
-
-- ADVOCACY: 6
-- VALUE: Yes (big-three + house overlay deliver instant, honest, zero-setup fun; aspects drag it down)
-- CLARITY: Yes — "Compatibility, explained / How two charts get along — in plain English" told me exactly what it is in under 5 sec
-- DOMINANT complaint: "Key aspects" repeats one canned sentence per aspect-type and surfaces Chiron/Node trivia instead of the Sun/Moon/Venus chemistry I came for.
+## BIG 3 flow notes
+- **Discoverable fast?** Yes. PRECISE | BIG 3 toggle sits right at the top of the input panel, clearly visible at 375px above the fold. Found it instantly.
+- **Estimate labeled?** Yes, strongly. Result header says "Estimated chart", plus an "ESTIMATED CHART" callout: "Date, time, and place were inferred from your big three — this is an approximation. Enter your full birth date, time, and place for the precise chart." Never felt like it was passing guesses off as fact.
+- **Loading within budget?** Yes. Saw an "Estimating…" state, full result in ~2.4–3.2s. Did NOT feel broken or blow my 30s budget.
+- **Signs honored?** Yes. Picked Leo/Pisces/Capricorn → result showed Sun in Leo, Moon in Pisces, Capricorn rising. Exact matches every solvable combo.
+- Bonus: auto-saved to "Saved charts" (device-local) and a "Compare two people" CTA — nice for sharing a coworker's chart.
 
 ```json
-{"tester": 1, "round": 1, "clarity": "Yes", "value": "Yes", "advocacy": 6, "topComplaints": ["Inter-aspect blurbs are templated by aspect type — every trine/sextile prints the identical sentence 8+ times, reads like filler not insight", "'Key aspects' surfaces obscure Chiron/Node pairings by tightest orb instead of the Sun/Moon/Venus/Mars chemistry a casual user wants"], "priorConcernsAddressed": "n/a"}
+{"tester": 0, "round": 1, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["Big 3 solver can dead-end on an unlucky casual sign combo (red 'could not find a date' error on first try reads as broken)", "no auto-retry of nearby years before showing the failure"], "priorConcernsAddressed": "n/a"}
 ```

@@ -1,27 +1,43 @@
-# Jules
+# Round 2 — Jules (Content & community marketer, mobile-first ~375px)
 
-Round 2 — Content & community marketer, mobile-first, astrology-curious. Tested desktop (1280) + mobile (375). Round 1 adv 6.
+| Tester | Round | Clarity | Value | Advocacy | Prior concerns |
+|--------|-------|---------|-------|----------|----------------|
+| Jules  | 2     | Yes     | Yes   | 8        | some addressed  |
 
-## Re-check of my Round-1 complaints
-1. **No share button in Compare** — NOT FIXED. The synastry page's only controls are "← Back to chart" and "Show all 50 aspects". Natal has "Create share link" / "Share this chart", but the compare result — the ONE thing I'd actually post — has nothing to copy or share. This is the screen I'd screenshot for the gram and it gives me no link.
-2. **Identical boilerplate repeated ~50×** — PARTIALLY FIXED. The default view is now great: 6 KEY ASPECTS, each specific per planet-pair. BUT the moment I tap "Show all 50 aspects" (and I 100% tap it to hunt my Venus/Mars), the long tail reverts to generic-by-aspect-TYPE boilerplate: "A trine here makes these two themes flow together effortlessly" appears **13×**, the square line 10×, sextile 9×. The wall is hidden behind a toggle, not actually gone.
-3. **Attribution + "your/their" pronoun leftovers** — MOSTLY FIXED in headers (every aspect now reads "Albert Einstein's Sun ⚹ Michelle Obama's Sun", directional, full names — this is excellent). But blurb BODIES still use generic "your/their" (your=36, their=42 instances) so the names in the header don't carry into the sentence. And node blurbs still print a bare number: "Your North Node in their **1 house**" / "South Node in their **5 house**" — ordinal fix missed that one template.
+## Round-1 concern re-check
+- **BIG 3 estimate dead-end (Leo/Scorpio/Gemini, 1988):** FIXED. Switched Precise→Big 3, picked
+  Leo · Scorpio · Gemini, year 1988, hit "Estimate chart" → valid ESTIMATED CHART rendered, zero
+  red error. Chart honors all three (Sun Leo, Moon Scorpio, Gemini rising). Clean on mobile.
+- **At-a-glance big-three strip:** SHIPPED. Top of the result reads
+  "YOUR BIG THREE — SUN LEO · MOON SCORPIO · RISING GEMINI" right under the ESTIMATED CHART badge.
+  That IS a screenshot-able line — partial win for shareability.
+- **Shareable image/social card (my #1 blocker):** NOT built. Share is still "Create share link" →
+  a server-stored URL (http://localhost:3000/chart/...) with copy "sends this chart's birth info to
+  our server." Still a 2-step server action, still no image/social card.
 
-## The three questions
-**First impression?** The compare result actually looks like a real synastry reading now. Top aspects are the ones that matter (Sun, Mars, Moon, Venus, Mercury, Saturn — no obscure Chiron/Node leading), the honest count card ("30 harmonious aspects to 15 tensions", no fake %) reads credible, big-three element bars per person are clean side-by-side. On mobile: no clipping, no overflow, no JS errors, directional headers wrap nicely. Genuinely much better than R1.
+## 1. CLARITY — Yes
+"NATAL CHART · PLAIN ENGLISH · NO SIGNUP" + "Your birth chart, explained in plain English. Free, no
+signup" tells me in 5 seconds exactly what it is and that it's my kind of free, login-free tool. The
+Precise | Big 3 toggle is obvious. I'd pitch it to my followers in one line.
 
-**Would I use this for a real task?** Yes — I'd run me + a friend and read the top 6. But I'd hit two walls: I can't share/link the result (deal-breaker for my whole use case), and if I expand for the juicy aspects it turns back into copy-paste mush that's embarrassing to screenshot.
+## 2. VALUE — Yes
+Today I'd screenshot Co–Star or paste a chart from astro.com (login-y, clunky on mobile) to make a
+"know your big three" post. This is faster: no signup, mobile-clean, and the big-three strip gives me
+a clean line to screenshot. It saves me real time over my current habit.
 
-**What stops me recommending it?** (a) No share on the compare page. (b) The "Show all 50" tail is repetitive boilerplate and there's no "Show fewer" to collapse it back once opened. (c) Body text says "your/their" while the header has real names — inconsistent, and the "1 house" / "5 house" typo undercuts the polish.
+## 3. ADVOCACY — 8
+Still an 8, and I'm holding it there honestly rather than nudging to 9. The dead-end fix and the
+big-three strip are genuine improvements — I can now screenshot that strip. But the single biggest
+REMAINING blocker is unchanged: there's still **no one-tap "share as image / social card."** As a
+marketer my native action is "download a square card I can drop straight into X/IG/Mastodon," not
+"Create share link" → a server URL that says it uploads my birth info. The strip is screenshot-able
+but it's a plain text row, not a designed card — I'd still have to crop a screenshot by hand. Give me
+a "Download share card" button (the big-three strip styled as a 1080×1080 image) and this is a 9–10
+I bring up unprompted. The share-card gap still caps me; the strip narrowed it but didn't close it.
 
-## Scores
-- **Advocacy: 7** (up from 6). The core fix landed — top aspects are right, directional, named, honest, mobile-clean. Held back hard by: no share on compare, repetitive long tail behind the toggle, pronoun/ordinal leftovers in blurb bodies. A real 7, not a polite one — fix sharing + de-boilerplate the tail and this jumps to 9.
-- **Value: Yes** — for the default 6-aspect view it beats me eyeballing Co-Star/astro.com synastry, free and no login.
-- **Clarity: Yes** — "Compatibility, explained", named directional aspects, and the honest count card make it instantly legible.
-
-## Dominant note
-Right content, no megaphone. The aspect ranking/directionality fix is real and good — but I'm a marketer, the compare screen is the shareable artifact and it has no share button, and tapping "Show all" still hands me a wall of identical sentences I'd never post.
+(Note: clipboard read returned empty in the headless test env — share link generated visually, copy
+not independently verifiable here; not counted against the app.)
 
 ```json
-{"tester": 4, "round": 2, "clarity": "Yes", "value": "Yes", "advocacy": 7, "topComplaints": ["No share/copy-link button anywhere on the Compare page — the one result I'd post can't be shared", "Show all 50 aspects reverts to generic by-aspect-type boilerplate (trine line repeats 13x) with no Show-fewer to collapse back", "Aspect blurb bodies still say generic your/their (not the named people) and node blurbs print bare '1 house'/'5 house' instead of an ordinal"], "priorConcernsAddressed": "some"}
+{"tester": 8, "round": 2, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["No one-tap share-as-image / social card; share is still a server-link, the big-three strip is screenshot-able text but not a designed downloadable card", "'Create share link' copy says it uploads birth info to your server — friction for a privacy-minded share"], "priorConcernsAddressed": "some"}
 ```

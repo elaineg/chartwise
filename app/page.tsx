@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import type { BirthData, ComputedChart } from "../lib/chartCompute";
 import { EINSTEIN_BIRTH } from "../lib/chartCompute";
 import BirthForm from "./components/BirthForm";
+import BigThreeForm from "./components/BigThreeForm";
 import ChartView from "./components/ChartView";
 import PeopleList from "./components/PeopleList";
 import SynastryView from "./components/SynastryView";
@@ -11,6 +12,7 @@ import SynastryView from "./components/SynastryView";
 const STORAGE_KEY = "chartwise:people";
 
 type ShareState = "idle" | "loading" | "copied" | "error";
+type EntryMode = "precise" | "big3";
 
 export default function Home() {
   // SSR-safe: init to empty; read from localStorage in useEffect only
@@ -23,6 +25,8 @@ export default function Home() {
   const [shareUrl, setShareUrl] = useState<string>("");
   const [hydrated, setHydrated] = useState(false);
   const [showSynastry, setShowSynastry] = useState(false);
+  // Entry mode toggle: "precise" (default, byte-identical to existing flow) or "big3"
+  const [entryMode, setEntryMode] = useState<EntryMode>("precise");
 
   // Load saved people from localStorage after hydration (SSR-safe)
   useEffect(() => {
@@ -148,26 +152,99 @@ export default function Home() {
           <aside>
             <div className="ds-panel" style={{ padding: "var(--sp-6) 0" }}>
 
-              {/* Load Einstein button — primary ink-filled, the one hero CTA */}
-              <button
-                type="button"
-                data-testid="load-einstein-btn"
-                onClick={loadEinstein}
-                disabled={isComputing}
-                className="ds-btn ds-btn--block"
-                style={{ marginBottom: "var(--sp-4)" }}
+              {/* Entry-mode toggle: PRECISE | BIG 3 */}
+              {/* Two-segment control, ink↔paper inversion, hairline, square corners */}
+              <div
+                data-testid="entry-mode-toggle"
+                role="group"
+                aria-label="Entry mode"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  border: "1px solid var(--grey-300)",
+                  marginBottom: "var(--sp-5)",
+                  overflow: "hidden",
+                }}
               >
-                Load example (Einstein)
-              </button>
-
-              {/* OR divider */}
-              <div style={{ display: "flex", alignItems: "center", gap: "var(--sp-3)", marginBottom: "var(--sp-4)" }}>
-                <hr className="ds-rule" style={{ flex: 1, margin: 0 }} />
-                <span className="ds-label ds-label--secondary">Or enter your own</span>
-                <hr className="ds-rule" style={{ flex: 1, margin: 0 }} />
+                <button
+                  type="button"
+                  data-testid="mode-precise"
+                  role="tab"
+                  aria-selected={entryMode === "precise"}
+                  onClick={() => setEntryMode("precise")}
+                  style={{
+                    background: entryMode === "precise" ? "var(--ink)" : "var(--paper)",
+                    color: entryMode === "precise" ? "var(--paper)" : "var(--ink)",
+                    border: "none",
+                    borderRight: "1px solid var(--grey-300)",
+                    padding: "var(--sp-2) var(--sp-3)",
+                    cursor: "pointer",
+                    fontSize: "var(--fs-micro)",
+                    fontWeight: "var(--fw-medium)",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    fontFamily: "inherit",
+                    borderRadius: 0,
+                    transition: "background 0.15s, color 0.15s",
+                  }}
+                >
+                  Precise
+                </button>
+                <button
+                  type="button"
+                  data-testid="mode-big3"
+                  role="tab"
+                  aria-selected={entryMode === "big3"}
+                  onClick={() => setEntryMode("big3")}
+                  style={{
+                    background: entryMode === "big3" ? "var(--ink)" : "var(--paper)",
+                    color: entryMode === "big3" ? "var(--paper)" : "var(--ink)",
+                    border: "none",
+                    padding: "var(--sp-2) var(--sp-3)",
+                    cursor: "pointer",
+                    fontSize: "var(--fs-micro)",
+                    fontWeight: "var(--fw-medium)",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    fontFamily: "inherit",
+                    borderRadius: 0,
+                    transition: "background 0.15s, color 0.15s",
+                  }}
+                >
+                  Big 3
+                </button>
               </div>
 
-              <BirthForm onCompute={computeChart} isComputing={isComputing} />
+              {/* PRECISE mode: Einstein button + OR divider + BirthForm (byte-identical) */}
+              {entryMode === "precise" && (
+                <>
+                  {/* Load Einstein button — primary ink-filled, the one hero CTA */}
+                  <button
+                    type="button"
+                    data-testid="load-einstein-btn"
+                    onClick={loadEinstein}
+                    disabled={isComputing}
+                    className="ds-btn ds-btn--block"
+                    style={{ marginBottom: "var(--sp-4)" }}
+                  >
+                    Load example (Einstein)
+                  </button>
+
+                  {/* OR divider */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "var(--sp-3)", marginBottom: "var(--sp-4)" }}>
+                    <hr className="ds-rule" style={{ flex: 1, margin: 0 }} />
+                    <span className="ds-label ds-label--secondary">Or enter your own</span>
+                    <hr className="ds-rule" style={{ flex: 1, margin: 0 }} />
+                  </div>
+
+                  <BirthForm onCompute={computeChart} isComputing={isComputing} />
+                </>
+              )}
+
+              {/* BIG 3 mode: explainer + three sign dropdowns + year + Estimate button */}
+              {entryMode === "big3" && (
+                <BigThreeForm onCompute={computeChart} isComputing={isComputing} />
+              )}
             </div>
 
             {/* Compute error */}

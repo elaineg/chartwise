@@ -1,55 +1,24 @@
-# Wen
+# Round 2 — Wen (Marketing data analyst, casual-curious-skeptic)
 
-Round 2. Marketing data analyst, desktop + a 375px check. Casual-curious astrology skeptic
-who wants to see HOW a number was derived. Round-1 complaint (adv 7): "silent directionality
-loss" — Key Aspects never said whose planet was whose, yet blurbs used directional language.
+| tester | round | clarity | value | advocacy | prior concerns |
+|--------|-------|---------|-------|----------|----------------|
+| Wen | 2 | Yes | Yes | 8 | some |
 
-## Prior concern — addressed?
-FIXED, and well. Every Key Aspect card now names both owners in full:
-"Albert Einstein's Mars ☌ Michelle Obama's Sun". I stress-tested the hardest case —
-conjunctions, where the blurb uses role language. The Sun-Mars card reads "the Mars person is
-energized by the Sun person's identity"; header says Einstein=Mars, Obama=Sun, so it's Einstein
-energized by Obama. Traceable BY NAME, direction consistent with wording. That's exactly what I
-asked for. No leftover single-chart "your/their" pronoun confusion — the remaining "your" is the
-couple's "your relationship / each of you", which is correct.
+## Round-1 concerns, re-checked in the live app
+- **R1 #1 (panel's top blocker) — BIG 3 estimate dead-ended on Leo/Scorpio/Gemini 1988:** FIXED.
+  Re-ran the exact combo: returns a valid chart honoring all three — `↑ 0°00' Gemini rising · ☉ Sun 0°35' Leo · House 3 · ☽ Moon 13°41' Scorpio`. Tested 3 more combos (Aries/Aquarius/Capricorn, Pisces/Aries/Libra, Cancer/Cancer/Cancer) — all 4/4 honor Sun/Moon/Rising, zero console errors. (One combo looked like a dead-end in a fast loop; with a real wait it resolved — timing artifact in MY test, not the app.)
+- **"YOUR BIG THREE" payoff strip:** PRESENT and good — sits right under the ESTIMATED CHART badge with an honest "inferred… this is an approximation" disclaimer + the back-solved date/time/place. Exactly the confidence signal I wanted.
+- **R1 my-own blocker — methodology transparency (house system / ephemeris source):** NOT addressed (it wasn't targeted this round). Still no statement of Placidus-vs-Whole-Sign, no ephemeris/source note. Still caps me, but less than R1 now that the bigger correctness hole is closed.
 
-## What's genuinely good
-- Top 6 aspects are now relationship-significant (Sun, Moon, Venus, Mars, Saturn pairs) — no
-  obscure Chiron/Node leading. Tail (Lilith/Node junk) is correctly demoted, not deleted.
-- "Show all 50 aspects" toggle works both ways ("Show top aspects only" on expand). Page is no
-  longer a wall — collapsed by default. 6 → 50 cards on expand, confirmed.
-- Honest framing: "30 HARMONY · 15 TENSION · 5 CONJUNCTION" — raw counts, no fake compatibility %.
-- 375px mobile: zero horizontal overflow, no clip/double-render, no JS console errors. Big-three
-  summary (Person A/B Sun-Moon-Rising) is clear. Natal chart still computes fine.
+## CLARITY — Yes
+30 sec in I'd tell a friend: "Free, no-signup natal-chart reader — type your birth date/time/place (or just your Co-Star Big 3) and it explains every placement in plain English, as a houses-as-rows table." The "PLAIN ENGLISH · NO SIGNUP" eyebrow, the headline, and the "Know your Sun, Moon, Rising… not your exact birth time? Estimate the rest" line on the BIG 3 tab make the audience and job legible immediately.
 
-## What holds it back (data-hygiene nits I can't unsee)
-1. BOILERPLATE TAIL. Top blurbs are specific, but the expanded tail is mostly type-templates:
-   the SAME trine sentence appears 13×, square 10×, sextile 9×, conjunction 4×. Two DISTINCT
-   pairs — Einstein's Jupiter☌Obama's Venus vs Einstein's Venus☌Obama's Jupiter — render
-   byte-identical text. As an analyst that reads as "no specific content here," which undercuts
-   trust in the specific ones.
-2. ORDINAL INCONSISTENCY in House Overlay. Card header says "North Node in the 1st House" but its
-   blurb says "their 1 house"; also "your 5 house" and "house of 8". Other cards correctly say
-   "Sixth/Eighth House". Mixed 1st-vs-1 in the same view is sloppy — easy fix, but it's the kind
-   of inconsistency that makes me doubt the pipeline.
-3. Discoverability: "Compare two people" is invisible until you load/compute a natal chart first.
-   Cold, the homepage gives no hint synastry exists.
+## VALUE — Yes
+Today I'd paste my Big 3 into a generic LLM or skim Cafe Astrology and stitch meanings myself. This is faster and more coherent: the houses-as-rows table + per-placement plain-English (e.g. House 3 "Your identity shines through communication") is the legible-without-reading-a-wheel thing I actually wanted, and the Big-3 estimate means I don't need an exact birth time. Saves real effort over my current habit.
 
-## Answers
-1. First impression: substantially fixed, and I'd actually use this to settle a "are we
-   compatible" curiosity for entertainment. The directionality fix is the difference between a
-   tool I distrust and one I'd poke at. Boilerplate tail + ordinal slop stop a recommend.
-2. ADVOCACY: 8/10. Up from 7. Directionality is explicit and correct — my one blocking issue is
-   gone. Not 9 because the long-tail boilerplate and "1st House"/"1 house" inconsistency are
-   exactly the invisible-transform sloppiness I distrust; clean those and it's a 9.
-3. VALUE: Yes. I'd otherwise paste two charts into astro.com and squint at a wheel I can't read;
-   this names the pairs and explains them in English without me learning glyphs.
-4. CLARITY: Yes. Header "Compatibility, explained — in plain English", named owners on every
-   card, raw harmony/tension counts. I could explain it to a friend in one sentence.
-
-Dominant note: my exact round-1 blocker (silent directionality) is genuinely fixed and verified
-by name on the hardest cards. What's left is data-hygiene polish, not a correctness hole.
+## ADVOCACY — 8
+I'd bring it up to curious-but-skeptic friends, but not at a 9 because of the one thing my data-hygiene brain keeps snagging on. **Single biggest remaining blocker: zero methodology transparency.** It silently picks a house system, an ephemeris, and a "reference" location (New York) to back-solve the estimate — and tells me none of it. As someone who distrusts tools that transform data invisibly, I want one line: "Placido houses · Swiss-ephemeris-derived · estimate anchored to a NYC reference longitude." A small "How this is computed" disclosure would move me to a 9. The Big-3 fix was the right call for the panel and earns the held-steady 8; the methodology gap is what keeps it from climbing.
 
 ```json
-{"tester": 2, "round": 2, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["Expanded-aspect tail is type-template boilerplate (same trine sentence 13x; reciprocal pairs render identical text)", "House Overlay ordinal inconsistency: header '1st House' but blurb 'their 1 house' / 'house of 8'", "Synastry is undiscoverable until you compute a natal chart first"], "priorConcernsAddressed": "all"}
+{"tester": 1, "round": 2, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["No methodology transparency: house system, ephemeris source, and the NYC 'reference' anchor for estimates are all undisclosed", "Estimated chart shows a precise-looking date/time (1988-07-23 01:29) that could read as fabricated-real to a skeptic without a louder 'inferred' cue"], "priorConcernsAddressed": "some"}
 ```

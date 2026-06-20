@@ -1,29 +1,42 @@
-# Marcus — Round 1 (synastry)
+# Marcus — round 1
 
-**Persona:** Frontend eng, 2yr, casual-curious-skeptic. Tests on desktop Chrome + 375px mobile. Judges polish hard, shares slick free tools in team Slack.
+**CLARITY: Yes.** In 5s the H1 "Your birth chart, explained in plain English" + the
+"NATAL CHART · PLAIN ENGLISH · NO SIGNUP" eyebrow told me exactly what it is and that
+it's free/no-login. Sub-line "Free, no signup — type your birth date, time, and place, or
+load an example" sealed it. I'd tell a friend: "free chart explainer, no account, paste
+your birthday."
 
-## 1. What I tried & what happened
-Loaded cold, hit "Load example (Einstein)" → full natal chart in <2s. Hunted for the compare entry: found "Compare two people" sitting directly under the "Albert Einstein" chart header, ABOVE "Today's Sky" (transit). Discovery was instant (~1.6s, it's the first button after the chart title). Clicked it → auto-loaded Einstein × Michelle Obama, two genuinely distinct charts (Pisces/Sag/Cancer vs Capricorn/Pisces/Virgo). Read the whole compatibility view, then "← Back to chart" cleanly restored the natal view.
+**VALUE: Yes.** Today I'd Google "what's a Scorpio moon mean" or open Co-Star (which makes
+you sign up + log everyone in). This does it cold, instant, no auth, and gives a real
+plain-English read per placement plus a "Today's Sky" transit panel. The share-link is the
+actual value for me: I can generate a chart and drop a URL in the group chat.
 
-## 2. What worked / what was confusing or broken
-WORKED (a lot):
-- Discoverable: yes, obvious, correctly placed above transit.
-- Clear in 5s: "Compatibility, explained — How two charts get along, in plain English." Big-three side-by-side (Person A | Person B), element-distribution bars, then KEY ASPECTS + HOUSE OVERLAY (bidirectional, "X's planets in Y's houses"). Every aspect has a plain-English blurb. I could read it with zero astrology literacy.
-- HONEST: no fake "87% match" score. Header reads "30 HARMONY · 15 TENSION · 5 CONJUNCTION" and I counted the cards — exactly 30/15/5. Math is real, not invented. Big credibility win for a skeptic like me.
-- Mobile (375px): genuinely impressive. No horizontal scroll (scrollWidth==clientWidth==375), Person A/B stay two-column with a divider and nothing truncates ("Sun Capricorn"/"Rising Virgo" all fit), element bars render clean. Zero console/page errors desktop OR mobile.
+**ADVOCACY: 8/10.** Genuinely well-made — I'd share this. Monochrome design is clean and
+intentional, zero CSS jank, zero console errors across both flows. Not a 9 because the
+clipboard/share confirmation is subtle and I want a one-tap "copy link" that's unmistakable
+for non-technical friends (see blocker); also the result page is very long/dense to skim on
+first drop.
 
-BROKEN / silently-wrong value (my dominant flag):
-- "Sun ⚹ Sun · SEXTILE · 3.6° ORB" shows the blurb **"Sharing the same Sun sign creates a strong sense of recognition... your core energies pull in the same direction."** But Person A is Pisces Sun and Person B is Capricorn Sun — NOT the same sign (they're 60° apart, hence the sextile). The same-planet blurb is keyed off the planet pair only and wrongly hardcodes a "same sign" claim for any Sun-Sun aspect. As a dev this reads like a copy/logic bug I'd flag in review — and a skeptic will catch it and trust the whole thing less.
-- Minor: the long KEY ASPECTS list (~50 aspects) is mostly generic "a trine makes these flow together effortlessly" filler; the good specific blurbs (Venus/Saturn, Mercury/Sun) are buried. No top-N highlight.
+**BIGGEST BLOCKER:** Share/copy feedback is too quiet for the share-it-in-chat use case.
+The "Create share link" button works (link generated, copied-state fires, no error) but the
+confirmation is understated — for a tool whose whole viral hook is "drop it in the group
+chat," the copy moment should be loud and obvious. (Clipboard read came back empty in my
+test env — that's headless Chromium blocking navigator.clipboard, not the app; copy verified
+visually, click handler fired with no JS error.)
 
-## 3. Would I use / recommend it?
-Yes — this is exactly the slick, free, no-signup thing I'd drop in the group chat ("run you vs your ex"). The honesty (real counts, no fake %) is what makes me actually willing to vouch for it instead of rolling my eyes. The Sun-Sun "same sign" wrong-copy is the one thing keeping me from an unprompted share, because that's precisely the kind of glitch my friends would screenshot and dunk on.
-
-- **ADVOCACY: 8/10** — would share, with a wince at the Sun-Sun copy bug. Fix that and trim the filler aspects → 9.
-- **VALUE: Yes** — vs nothing/google "synastry calculator" (ad-walls, paywalls, jargon), this is instant, free, plain-English.
-- **CLARITY: Yes** — understood it in 5s; "Compatibility, explained" + side-by-side big-three carried it.
-- **DOMINANT COMPLAINT:** "Sun ⚹ Sun" sextile blurb falsely says "sharing the same Sun sign" when the two charts have different Sun signs (Pisces vs Capricorn) — silently-wrong copy a skeptic will catch.
+## BIG 3 flow notes
+- **Discoverable?** Yes — PRECISE | BIG 3 toggle sits at the very top of the input panel.
+  Found it instantly. Banner explains it: "Know your Sun, Moon, and Rising (e.g. from
+  Co-Star) but not your exact birth time? Estimate the rest." Smart framing.
+- **Estimate labeled?** Yes, clearly — "ESTIMATED CHART" chip badge + "Estimated chart"
+  header + banner: inputs "were inferred from your big three — this is approximate. Enter
+  full birth details for the precise chart." No risk of mistaking it for exact.
+- **Loading ok?** Yes — button showed "Estimating…", ~2.4–3.5s total. Felt deliberate, not
+  broken.
+- **Signs honored?** Yes — picked Sun Leo / Moon Scorpio / Rising Gemini and all three came
+  through correctly in the result (Sun Leo House 2, Moon Scorpio, Rising Gemini).
 
 ```json
-{"tester": 1, "round": 1, "clarity": "Yes", "value": "Yes", "advocacy": 8, "topComplaints": ["Sun sextile Sun blurb wrongly claims 'same Sun sign' when signs differ (Pisces vs Capricorn) — silently-wrong copy", "~50-aspect list is mostly generic filler; specific good blurbs buried, no top-N highlight"], "priorConcernsAddressed": "n/a"}
+{"tester": 1, "round": 1, "clarity": "Yes", "value": "Yes", "advocacy": 8,
+ "topComplaints": ["Share/copy confirmation too quiet for the share-in-group-chat hook", "Result page is long/dense to skim on first share"], "priorConcernsAddressed": "n/a"}
 ```
