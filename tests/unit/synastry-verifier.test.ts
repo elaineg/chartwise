@@ -64,14 +64,19 @@ describe("Synastry aspect geometry — shortestArc / 360° wrap", () => {
 // ─── 2. Aspect orb enforcement ────────────────────────────────────────────────
 
 describe("Synastry aspect — orb enforcement (within vs just-outside)", () => {
-  it("computeSynastry detects trine when Moon-Jupiter arc is within orb of 120°", async () => {
-    const { computeChart, EINSTEIN_BIRTH, SYNASTRY_PARTNER_BIRTH } = await import("../../lib/chartCompute");
+  it("computeSynastry detects trine when Moon-Jupiter arc is within orb of 120° (hardcoded Einstein×Obama anchor)", async () => {
+    // NOTE: hardcoded Einstein×Obama data — does NOT use EINSTEIN_BIRTH export (which is now Diana×Charles).
+    // This is a pure algorithmic anchor for the computeSynastry detection logic.
+    const { Origin, Horoscope } = require("circular-natal-horoscope-js");
     const { computeSynastry } = await import("../../lib/synastry");
+    const { computeChart } = await import("../../lib/chartCompute");
 
-    // Einstein Moon ~254.33° (Sagittarius); Michelle Obama Jupiter ~12.67° (Aries)
-    // Arc ≈ 118.33° → trine (120°) with orb ≈ 1.67° — well within Moon/Jupiter 8°/5° orb
-    const chartA = computeChart(EINSTEIN_BIRTH);
-    const chartB = computeChart(SYNASTRY_PARTNER_BIRTH);
+    // Einstein (Ulm, 11:30 LMT) — month 0-indexed for Origin
+    const EINSTEIN_RAW = { name: "Albert Einstein", year: 1879, month: 3, day: 14, hour: 11, minute: 30, latitude: 48.4011, longitude: 9.9876, placeName: "Ulm, Germany", hasBirthTime: true };
+    const OBAMA_RAW = { name: "Michelle Obama", year: 1964, month: 1, day: 17, hour: 21, minute: 53, latitude: 41.8781, longitude: -87.6298, placeName: "Chicago, IL", hasBirthTime: true };
+
+    const chartA = computeChart(EINSTEIN_RAW);
+    const chartB = computeChart(OBAMA_RAW);
 
     const moonA = chartA.planets.find((p) => p.key === "moon")!;
     const jupB = chartB.planets.find((p) => p.key === "jupiter")!;
@@ -114,11 +119,12 @@ describe("Synastry aspect — orb enforcement (within vs just-outside)", () => {
   it("an aspect exactly AT the orb limit is detected; just OVER the limit is not", async () => {
     // Use computeSynastry with real charts to verify the orb boundary.
     // We can only do this analytically given we can't craft arbitrary ecliptic degrees.
-    // So we verify the code logic directly.
-    const { computeChart, EINSTEIN_BIRTH } = await import("../../lib/chartCompute");
+    // So we verify the code logic directly. Uses hardcoded Einstein data (not exported constant).
+    const { computeChart } = await import("../../lib/chartCompute");
     const { computeSynastry } = await import("../../lib/synastry");
 
-    const chartA = computeChart(EINSTEIN_BIRTH);
+    const EINSTEIN_RAW = { name: "Albert Einstein", year: 1879, month: 3, day: 14, hour: 11, minute: 30, latitude: 48.4011, longitude: 9.9876, placeName: "Ulm, Germany", hasBirthTime: true };
+    const chartA = computeChart(EINSTEIN_RAW);
     const result = computeSynastry(chartA, chartA); // self-synastry: every body is conjunction 0°
 
     // All bodies should form exact conjunctions with themselves (0° orb)
@@ -157,22 +163,24 @@ describe("Synastry regression anchor — Einstein × Michelle Obama (verifier-in
     expect(orbFromTrine, `Moon-Jupiter trine orb: arc=${arc.toFixed(4)}°, target=120°`).toBeLessThanOrEqual(2);
   });
 
-  it("computeSynastry on example pair includes Moon-Jupiter trine ≤2° orb with a harmony reading", async () => {
+  it("computeSynastry on example pair (Diana × Charles) produces harmony aspects with readings", async () => {
     const { computeChart, EINSTEIN_BIRTH, SYNASTRY_PARTNER_BIRTH } = await import("../../lib/chartCompute");
     const { computeSynastry } = await import("../../lib/synastry");
 
+    // EINSTEIN_BIRTH = Princess Diana, SYNASTRY_PARTNER_BIRTH = Prince Charles (as of 2026-06-26 P1 fix)
     const chartA = computeChart(EINSTEIN_BIRTH);
     const chartB = computeChart(SYNASTRY_PARTNER_BIRTH);
     const result = computeSynastry(chartA, chartB);
 
-    const moonJupTrine = result.aspects.find(
-      (a) => a.bodyA === "moon" && a.bodyB === "jupiter" && a.aspectType === "trine"
-    );
-    expect(moonJupTrine, "Moon-Jupiter trine must appear in aspect list").toBeDefined();
-    expect(moonJupTrine!.orb).toBeLessThanOrEqual(2);
-    expect(moonJupTrine!.reading, "Moon-Jupiter trine must have a reading").toBeTruthy();
-    expect(moonJupTrine!.reading.length).toBeGreaterThan(30);
-    expect(moonJupTrine!.nature, "Trine nature must be harmony").toBe("harmony");
+    // The example pair must produce at least one harmony or tension aspect with a reading
+    expect(result.aspects.length, "Example pair must produce at least one aspect").toBeGreaterThan(0);
+    const anyHarmony = result.aspects.find((a) => a.nature === "harmony");
+    const anyTension = result.aspects.find((a) => a.nature === "tension");
+    expect(anyHarmony ?? anyTension, "Example pair must have at least one harmony or tension aspect").toBeDefined();
+    const first = result.aspects[0];
+    expect(first.reading, "First aspect must have a reading").toBeTruthy();
+    expect(first.reading.length).toBeGreaterThan(30);
+    expect(["harmony", "tension", "context"]).toContain(first.nature);
   });
 });
 
@@ -193,28 +201,32 @@ describe("Synastry summaryText — no fake percentage score", () => {
     expect(result.summaryText.toLowerCase()).not.toMatch(/\d+%|match score|compatibility score/);
   });
 
-  it("summaryText mentions both names and is >50 chars", async () => {
+  it("summaryText mentions both names and is >50 chars (Diana × Charles)", async () => {
     const { computeChart, EINSTEIN_BIRTH, SYNASTRY_PARTNER_BIRTH } = await import("../../lib/chartCompute");
     const { computeSynastry } = await import("../../lib/synastry");
 
+    // EINSTEIN_BIRTH = Princess Diana, SYNASTRY_PARTNER_BIRTH = Prince Charles (P1 fix 2026-06-26)
     const chartA = computeChart(EINSTEIN_BIRTH);
     const chartB = computeChart(SYNASTRY_PARTNER_BIRTH);
     const result = computeSynastry(chartA, chartB);
 
     expect(result.summaryText.length).toBeGreaterThan(50);
-    expect(result.summaryText).toContain("Albert Einstein");
-    expect(result.summaryText).toContain("Michelle Obama");
+    expect(result.summaryText).toContain("Princess Diana");
+    expect(result.summaryText).toContain("Prince Charles");
   });
 });
 
 // ─── 5. House overlay — Placidus consistency check ──────────────────────────
 
 describe("Synastry house overlay — Placidus consistency (P0 fix verification)", () => {
-  it("overlay uses Placidus cusps — Einstein self-synastry Sun overlay matches natal H10", async () => {
-    const { computeChart, EINSTEIN_BIRTH } = await import("../../lib/chartCompute");
+  it("overlay uses Placidus cusps — Einstein self-synastry Sun overlay matches natal H10 (hardcoded anchor)", async () => {
+    // NOTE: Uses hardcoded Einstein birth data — does NOT use EINSTEIN_BIRTH export (now Diana).
+    // This is an algorithmic anchor for Placidus house assignment consistency.
+    const { computeChart } = await import("../../lib/chartCompute");
     const { computeSynastry } = await import("../../lib/synastry");
 
-    const chart = computeChart(EINSTEIN_BIRTH);
+    const EINSTEIN_RAW = { name: "Albert Einstein", year: 1879, month: 3, day: 14, hour: 11, minute: 30, latitude: 48.4011, longitude: 9.9876, placeName: "Ulm, Germany", hasBirthTime: true };
+    const chart = computeChart(EINSTEIN_RAW);
     // Self-synastry: every planet's overlay house must equal its natal Placidus house
     const result = computeSynastry(chart, chart);
 

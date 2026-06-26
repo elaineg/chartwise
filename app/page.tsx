@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import type { BirthData, ComputedChart } from "../lib/chartCompute";
-import { EINSTEIN_BIRTH } from "../lib/chartCompute";
 import BirthForm from "./components/BirthForm";
 import BigThreeForm from "./components/BigThreeForm";
 import ChartView from "./components/ChartView";
@@ -83,12 +82,6 @@ export default function Home() {
     }
   }, []);
 
-  async function loadEinstein() {
-    setShareState("idle");
-    setShareUrl("");
-    await computeChart(EINSTEIN_BIRTH);
-  }
-
   function selectPerson(index: number) {
     const person = people[index];
     if (!person) return;
@@ -138,7 +131,7 @@ export default function Home() {
             Your birth chart, explained in plain English.
           </h1>
           <p style={{ fontSize: "var(--fs-body)", color: "var(--grey-600)", maxWidth: "480px", margin: 0 }}>
-            Free, no signup — type your birth date, time, and place, or load an example.
+            Free, no signup — type your birth date, time, and place.
           </p>
         </header>
 
@@ -162,7 +155,7 @@ export default function Home() {
                   display: "grid",
                   gridTemplateColumns: "1fr 1fr",
                   border: "1px solid var(--grey-300)",
-                  marginBottom: "var(--sp-5)",
+                  marginBottom: "var(--sp-4)",
                   overflow: "hidden",
                 }}
               >
@@ -215,30 +208,9 @@ export default function Home() {
                 </button>
               </div>
 
-              {/* PRECISE mode: Einstein button + OR divider + BirthForm (byte-identical) */}
+              {/* PRECISE mode: BirthForm */}
               {entryMode === "precise" && (
-                <>
-                  {/* Load Einstein button — primary ink-filled, the one hero CTA */}
-                  <button
-                    type="button"
-                    data-testid="load-einstein-btn"
-                    onClick={loadEinstein}
-                    disabled={isComputing}
-                    className="ds-btn ds-btn--block"
-                    style={{ marginBottom: "var(--sp-4)" }}
-                  >
-                    Load example (Einstein)
-                  </button>
-
-                  {/* OR divider */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "var(--sp-3)", marginBottom: "var(--sp-4)" }}>
-                    <hr className="ds-rule" style={{ flex: 1, margin: 0 }} />
-                    <span className="ds-label ds-label--secondary">Or enter your own</span>
-                    <hr className="ds-rule" style={{ flex: 1, margin: 0 }} />
-                  </div>
-
-                  <BirthForm onCompute={computeChart} isComputing={isComputing} />
-                </>
+                <BirthForm onCompute={computeChart} isComputing={isComputing} />
               )}
 
               {/* BIG 3 mode: explainer + three sign dropdowns + year + Estimate button */}
@@ -256,7 +228,7 @@ export default function Home() {
 
             {/* Privacy note */}
             <p style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", marginTop: "var(--sp-3)" }}>
-              Your chart is computed on your device. Saved charts stay in your browser only.
+              Chart computation happens in your browser. Birth data is only sent to our server if you choose to create a share link — nothing is uploaded otherwise, and there is no account or tracking.
             </p>
           </aside>
 
@@ -289,7 +261,7 @@ export default function Home() {
                   Your explained chart will appear here
                 </p>
                 <p style={{ color: "var(--grey-400)", fontSize: "var(--fs-sm)" }}>
-                  Enter your birth data or load the Einstein example
+                  Enter your birth data to see your explained chart
                 </p>
               </div>
             )}

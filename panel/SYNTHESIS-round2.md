@@ -1,54 +1,56 @@
-# chartwise — Panel SYNTHESIS, round 2
+# chartwise — Panel SYNTHESIS, round 2 (delta re-test)
 
-Feature under test: PRECISE | BIG 3 toggle. BIG 3 estimates a full chart from Sun/Moon/Rising + birth year, with an ESTIMATED CHART badge.
-Round-2 fixes verified: (1) BIG 3 solver dead-end eliminated (full 1728-combo sweep, 0 dead-ends, every combo honors all three signs); (2) new "YOUR BIG THREE — Sun X · Moon Y · Rising Z" payoff strip under the ESTIMATED badge.
-Tested LIVE at http://localhost:3000 (prod build). Re-ran the 6 sub-bar in-audience testers + Tomás (cap partly the now-fixed payoff item). Dana + Aisha carried forward.
+Run: 20260626-085836-daily. Tested LIVE at http://localhost:3000 (prod build, rebuilt with round-1 fixes; NOT rebuilt/redeployed this round).
+Round 2 re-tested the 6 sub-bar IN-AUDIENCE testers (Marcus, Wen, Dana, Rob, Elena, Sam) by name. Jules/Aisha (already ≥9) and Priya/Tomás (out-of-audience category rejections) CARRY FORWARD unchanged from round 1.
 
-## Score table
+Two targeted fixes under test (the in-scope subset of the four directed fixes):
+- **FIX C (privacy copy honesty):** disclosure now states chart computation is in-browser and birth data is sent to the server ONLY when the user chooses to create a share link (no account/tracking).
+- **FIX E (planet-name casing):** transit prose capitalizes planet names ("Mars's themes", not "mars's themes").
+Deliberately NOT touched this run (deferred, out of scope): (A) compatibility homepage entry point; (B) result-page density / big-three burial.
 
-| Tester | Fit | Astro stance | Clarity | Value | R1 Adv | R2 Adv | Status | Biggest remaining blocker |
-|--------|-----|--------------|---------|-------|--------|--------|--------|---------------------------|
-| Marcus | in-aud | casual-curious-skep | Yes | Yes | 8 | **9** | re-run ↑ | (minor) full chart still long below the strip; 2-step share |
-| Elena  | in-aud | casual-curious-skep | Yes | Yes | 8 | **9** | re-run ↑ | (minor) estimate-mode houses look authoritative but are illustrative |
-| Wen    | in-aud | casual-curious-skep | Yes | Yes | 8 | 8 | re-run = | No methodology transparency (house system / ephemeris / NYC anchor) |
-| Jules  | in-aud | curious             | Yes | Yes | 8 | 8 | re-run = | No one-tap download share-as-image / social card |
-| Sam    | in-aud | curious             | Yes | Yes | 8 | 8 | re-run = | COPY LINK gives no visible "Copied!" confirmation (share-first tool) |
-| Rob    | in-aud | casual-curious-skep | Yes | Yes | 6 | **8** | re-run ↑↑ | Below the strip still unrolls into an astrologer-grade reference manual; no "show full chart" stopping point |
-| Dana   | in-aud | curious             | Yes | Yes | 9 | **9** | carried  | (R1) no one-tap save/share-as-image card |
-| Aisha  | in-aud | curious             | Yes | Yes | 9 | **9** | carried  | (R1) cold-load toggle + LOAD EXAMPLE L-shape |
-| Priya  | non-fit | hard-skeptic       | Yes | No  | 3 | 3 | capped   | Category — won't advocate for astrology (craft verified good) |
-| Tomás  | non-fit | hard-skeptic       | Yes | No  | 5 | 6 | re-run (capped) | Category cap; craft read +1 from legibility fix |
+## Score table (all 10)
 
-Carried-forward testers (Dana, Aisha) were NOT re-run: both fully passed round 1 (advocacy 9, clarity+value Yes) and their named blockers sit on surfaces this round did not touch (save/share-image card; cold-load L-shape). Their round-1 verdicts are carried into the exit count per the delta-re-testing rule.
+| Tester | In-audience? | Astro stance        | Clarity | Value | Advocacy | Δ vs R1 | Status |
+|--------|--------------|---------------------|---------|-------|----------|---------|--------|
+| Priya  | no (non-fit) | hard-skeptic        | Yes | No  | 3 | — | carried (category rejection) |
+| Marcus | yes          | casual-curious-skep | Yes | Yes | 9 | +1 | re-tested ↑ |
+| Wen    | yes          | casual-curious-skep | Yes | Yes | 8 | +2 | re-tested ↑ (FIX C+E target) |
+| Tomás  | no (non-fit) | hard-skeptic        | Yes | No  | 4 | — | carried (category rejection) |
+| Dana   | yes          | curious             | Yes | Yes | 8 | 0 | re-tested = |
+| Jules  | yes          | curious             | Yes | Yes | 9 | — | carried |
+| Aisha  | yes          | curious             | Yes | Yes | 9 | — | carried |
+| Rob    | yes          | casual-curious-skep | Yes | Yes | 7 | 0 | re-tested = |
+| Elena  | yes          | casual-curious-skep | Yes | Yes | 8 | 0 | re-tested = |
+| Sam    | yes          | curious             | Yes | Yes | 9 | +1 | re-tested ↑ |
 
-## Tally
+Clarity: 10/10 Yes. Value: 8/8 in-audience Yes (the 2 No's are hard-skeptic non-fits, by design).
 
-- **Raw: 6/10** at advocacy ≥ 9 (Marcus 9, Elena 9, Dana 9, Aisha 9 — plus the two capped non-fits at 3/6 drag the raw count).
-- **In-audience (8 testers): 4/8** at advocacy ≥ 9 with clarity+value Yes (Marcus, Elena, Dana, Aisha). Up from 2/8 in round 1.
-- **In-audience advocacy mean: (9+9+8+8+8+8+9+9)/8 = 8.5** (up from 8.0). All 8 in-audience testers are now Yes/Yes, none below 8.
+## Exit-bar check (in-audience-weighted)
 
-## Out-of-ICP roster caps (advocacy not counted against the bar)
+Bar: ≥9 of 10 (in-audience-weighted) at advocacy ≥9 AND clarity=Yes AND value=Yes.
+In-audience testers: 8 (Marcus, Wen, Dana, Jules, Aisha, Rob, Elena, Sam).
+In-audience at advocacy ≥9: **4 of 8** (Marcus 9, Jules 9, Aisha 9, Sam 9) — up from 2/8 in round 1.
+In-audience advocacy mean = (9+8+8+9+9+7+8+9)/8 = **8.4** (up from 7.9).
+Out-of-audience non-fits (do NOT gate): Priya 3, Tomás 4 — category rejection, not defects.
 
-- **Priya (3)** — hard-skeptic backend engineer; verified data stays client-side, found no bugs. Category stance, not a defect.
-- **Tomás (5→6)** — hard-skeptic ops analyst; re-run because his R1 density complaint was concrete and is now fixed. He confirmed the plain-English strip resolves the glyph-wall legibility issue (craft read +1) and the privacy fine-print passes, but his Value=No and sub-9 advocacy are a pure category cap by his own statement, not an execution failure. Carried as capped.
+**EXIT BAR NOT MET.** 4/8 in-audience at ≥9 vs. the ≥9-of-10 requirement. No P0/P1; both directed fixes verified resolved on the wire by every tester who held the related concern. Clarity/value unanimous among in-audience; zero regressions; zero console errors across all 6 re-tests.
 
-## Regressions
+## Directed-fix verification (this round's mandate)
 
-NONE. All 8 in-audience testers remain clarity=Yes AND value=Yes. No tester dropped. The dead-end fix and the payoff strip were both confirmed live by every re-run tester with zero new defects introduced (zero console errors reported across testers).
+- **FIX C — RESOLVED, unanimous.** Wen verified against the network tab: COMPUTE CHART fires zero non-GET requests; only CREATE SHARE LINK POSTs `/api/chart-share` (201) with the birth payload. Copy now matches reality. Marcus/Dana/Rob/Elena/Sam confirm the honest in-browser/server-only-on-share wording (shown on home + BIG 3 form + result page + at the share button). Cleared Wen's primary trust blocker.
+- **FIX E — RESOLVED, unanimous.** Transit prose capitalizes every planet ("Mars's themes", "Venus's themes", "Pluto's energy", "Jupiter's themes"); automated lowercase-planet scans returned zero hits for Wen, Marcus, Dana, Rob, Elena, Sam. Cleared Wen's casing blocker.
 
-## BIG 3 fix verification (the round's focus)
+## Remaining sub-9 in-audience blockers — scope-labeled (gates ship vs. iterate)
 
-- **Solver dead-end — RESOLVED, unanimous.** Every re-run tester (Marcus, Wen, Jules, Elena, Sam, Rob, Tomás) re-ran the exact round-1 dead-end combo **Leo/Scorpio/Gemini 1988** and got a VALID chart — no red "COULD NOT FIND A DATE" error — with the estimate honoring all three signs (↑ Gemini rising · ☉ Leo · ☽ Scorpio confirmed across testers). Elena and Sam, who personally hit the bug in R1, both explicitly confirmed resolution. Wen, Sam, and Rob spot-checked 3+ additional combos each (incl. same-sign triples) — all valid, all honor the three signs.
-- **Payoff strip — SHIPPED, lands.** "YOUR BIG THREE — SUN X · MOON Y · RISING Z" sits directly under the ESTIMATED CHART badge with an honest approximation caveat. Confirmed present and effective by all re-run testers. It moved Rob +2 (6→8), contributed to Marcus +1 and Elena +1, and Tomás +1 craft.
+- **Wen → 8.** Original blockers (C, E) both RESOLVED. Residual: transit-prose template reads repetitively across its six bullets (minor) → **FIX-SCOPE (transit prose; not one of the four directed fixes — minor/deepen-class)**. Plus density (B) + compatibility teaser (A) → **OUT-OF-SCOPE**.
+- **Dana → 8.** (1) compatibility no cold-homepage entry → **OUT-OF-SCOPE (A)**; (2) result page dense, buries screenshottable big-three card → **OUT-OF-SCOPE (B)**. No in-scope blocker remains.
+- **Rob → 7.** (1) result page is a firehose burying the big three → **OUT-OF-SCOPE (B)**; (2) compatibility only reachable via in-page card → **OUT-OF-SCOPE (A)**. No in-scope blocker remains.
+- **Elena → 8.** (1) compatibility buried until after computing a chart → **OUT-OF-SCOPE (A)**; (2) result-page density → **OUT-OF-SCOPE (B)**; (3) no zero-setup reason to RETURN (recurrence hook) → **FIX-SCOPE (recurrence hook; not one of the four directed fixes — deepen-class)**.
 
-## #1 remaining in-audience blocker
-
-There is **no single shared blocker** — the bar is missed because the three held-at-8 testers cite **three DISTINCT, non-overlapping** issues, none of which the round-2 fixes targeted:
-
-1. **Result-page density below the strip (Rob 8, partly Marcus).** The payoff now leads, but below it the page unrolls into a full astrologer reference (compatibility, element bars, 10-row Today's Sky, 12-row house table, transits) with no "show full chart" collapse / casual stopping point. RECURS across 2 testers → the highest-leverage single fix: a collapsible "full chart" affordance under the big-three strip would likely lift Rob 8→9 and Marcus's remaining nit, and is the closest thing to a shared lever.
-2. **Share-confirmation / share-card (Sam 8, Jules 8, and carried Dana's R1 nit).** Two flavors: Sam wants the COPY LINK button to show a visible "Copied!" state (he verified the clipboard genuinely populates — the handler fires, only the visual cue is missing); Jules/Dana want a one-tap downloadable share-as-image card (additive). The copy-confirmation half is a cheap, real defect for a share-first tool; the image-card half is an additive wishlist feature. RECURS across 3 testers if grouped as "shareability," → second-highest lever.
-3. **Methodology transparency (Wen 8).** Single-persona data-hygiene wish — one "How this is computed" line (house system / ephemeris / NYC reference anchor). Wen explicitly says it would move her 8→9. Single-persona, lower priority.
+Marcus (9) and Sam (9) cleared the bar; their only off-10 notes are OUT-OF-SCOPE (A/B).
 
 ## Verdict
 
-**NOT PASSED — in-audience bar (≥9 of in-audience at advocacy ≥9, clarity+value Yes) met by 4/8** (up from 2/8 in round 1). The round's two fixes both landed and verified clean with zero regressions, and lifted the in-audience mean 8.0→8.5 with all 8 in-audience now Yes/Yes. The remaining gap is three distinct issues across Rob/Sam/Jules/Wen; the **single highest-leverage next fix is a collapsible "show full chart" affordance under the big-three strip** (the recurring density blocker — Rob + Marcus), with a visible COPY LINK "Copied!" confirmation (Sam, cheap real defect) as the second lever.
+NOT PASSED, but the round's two directed fixes (C, E) FULLY SUCCEEDED and verified clean on the wire, lifting in-audience ≥9 from 2/8 → 4/8 (mean 7.9 → 8.4), zero regressions. **Every remaining sub-9 in-audience blocker is OUT-OF-SCOPE** (A compatibility discoverability + B result-page density) except two minor/deepen-class FIX-SCOPE-adjacent residues (Wen's transit-prose repetition, Elena's recurrence hook) — neither among the four directed fixes, neither alone clears the bar.
+
+Decision implication: this run's directed scope (C + E) is COMPLETE and VERIFIED. The remaining advocacy gap is entirely OUT-OF-SCOPE A/B work not authorized this run. The directed-fix delta is ready to ship; reaching the ≥9-of-10 bar requires the deferred A/B work, which is a separate directive.

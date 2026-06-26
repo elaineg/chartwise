@@ -323,34 +323,39 @@ export function computeTransits(): Planet[] {
   });
 }
 
+/**
+ * Synastry example person A — Princess Diana (born 1 Jul 1961, 19:45 BST, Sandringham, UK).
+ * AstroDatabank AA-rated birth data. Sun Cancer, Moon Aquarius, Rising Sagittarius.
+ * Used as Person A in the worked synastry example pair.
+ */
 export const EINSTEIN_BIRTH: BirthData = {
-  name: "Albert Einstein",
-  year: 1879,
-  month: 3, // March (1-indexed)
-  day: 14,
-  hour: 11,
-  minute: 30,
-  latitude: 48.4011,
-  longitude: 9.9876,
-  placeName: "Ulm, Germany",
+  name: "Princess Diana",
+  year: 1961,
+  month: 7, // July (1-indexed)
+  day: 1,
+  hour: 19,
+  minute: 45,
+  latitude: 52.8311,   // Sandringham, Norfolk, UK
+  longitude: 0.5065,
+  placeName: "Sandringham, UK",
   hasBirthTime: true,
 };
 
 /**
- * Synastry example partner — Michelle Obama (born 17 Jan 1964, 21:53 CST, Chicago, IL).
- * AstroDatabank A-rated birth data. Used as Person B in the worked example pair.
- * Regression anchor: Einstein Moon (Sagittarius, 254.33°) trine Michelle Jupiter (Aries, 12.67°) ≈ 1.67° orb.
+ * Synastry example person B — Prince Charles (born 14 Nov 1948, 21:14 GMT, London, UK).
+ * AstroDatabank AA-rated birth data. Sun Scorpio, Moon Taurus, Rising Leo.
+ * Used as Person B in the worked synastry example pair.
  */
 export const SYNASTRY_PARTNER_BIRTH: BirthData = {
-  name: "Michelle Obama",
-  year: 1964,
-  month: 1,   // January (1-indexed)
-  day: 17,
+  name: "Prince Charles",
+  year: 1948,
+  month: 11,  // November (1-indexed)
+  day: 14,
   hour: 21,
-  minute: 53,
-  latitude: 41.8781,   // Chicago, IL
-  longitude: -87.6298,
-  placeName: "Chicago, IL",
+  minute: 14,
+  latitude: 51.5074,   // London, UK
+  longitude: -0.1278,
+  placeName: "London, UK",
   hasBirthTime: true,
 };
 

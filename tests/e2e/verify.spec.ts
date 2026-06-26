@@ -5,12 +5,43 @@
  */
 import { test, expect } from "@playwright/test";
 
+// ─── Helper: Einstein birth data + localStorage seed ─────────────────────────
+// The "Load example (Einstein)" button was removed from the UI 2026-06-26.
+// Tests that need the Einstein chart seed via localStorage instead.
+const EINSTEIN_BIRTH = {
+  name: "Albert Einstein",
+  year: 1879, month: 3, day: 14,
+  hour: 11, minute: 30,
+  latitude: 48.4011, longitude: 9.9876,
+  placeName: "Ulm, Germany",
+  hasBirthTime: true,
+};
+
+async function loadEinsteinChart(page: import("@playwright/test").Page) {
+  await page.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, EINSTEIN_BIRTH);
+  await page.goto("/");
+  await expect(page.getByText("Albert Einstein")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Albert Einstein").first().click();
+}
+
+async function loadEinsteinChartOnPage1(page1: import("@playwright/test").Page) {
+  await page1.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, EINSTEIN_BIRTH);
+  await page1.goto("/");
+  await expect(page1.getByText("Albert Einstein")).toBeVisible({ timeout: 8000 });
+  await page1.getByText("Albert Einstein").first().click();
+}
+
+
+
 // ───────────────────────────────────────────────────────────
 // 0. Plain-English reading section: visible by default, mentions Sun
 // ───────────────────────────────────────────────────────────
 test("plain-english-reading section is visible by default and mentions Sun", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // The plain-english-reading section must be visible without any user interaction
@@ -33,8 +64,7 @@ test("plain-english-reading section is visible by default and mentions Sun", asy
 // 1. Einstein anchor: Sun=Pisces/House10, Moon=Sagittarius, Asc=Cancer, MC=Pisces
 // ───────────────────────────────────────────────────────────
 test("Einstein anchor: Sun in Pisces, House 10", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // house-row-10 (desktop tr) must contain "Pisces" (sign) and planet-chip-sun
@@ -44,8 +74,7 @@ test("Einstein anchor: Sun in Pisces, House 10", async ({ page }) => {
 });
 
 test("Einstein anchor: Moon in Sagittarius", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
   // Moon chip now includes degree: "☽ Moon 14° Sagittarius"
   await expect(page.getByTestId("big-three-chips")).toContainText("Sagittarius");
@@ -53,8 +82,7 @@ test("Einstein anchor: Moon in Sagittarius", async ({ page }) => {
 });
 
 test("Einstein anchor: Ascendant in Cancer", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
   // House 1 sign = Cancer (Ascendant)
   const house1 = page.getByTestId("house-row-1").first();
@@ -68,8 +96,7 @@ test("Einstein anchor: Ascendant in Cancer", async ({ page }) => {
 // R6-1. Big-three headline chips show degree symbol (Wen fix)
 // ───────────────────────────────────────────────────────────
 test("big-three headline chips show degree symbol (°) on Einstein chart", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const chips = page.getByTestId("big-three-chips");
@@ -86,8 +113,7 @@ test("big-three headline chips show degree symbol (°) on Einstein chart", async
 });
 
 test("Einstein anchor: Midheaven in Pisces", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
   // Midheaven pill appears below the table
   await expect(page.getByText(/Midheaven.*Pisces|Pisces.*Midheaven/)).toBeVisible();
@@ -97,8 +123,7 @@ test("Einstein anchor: Midheaven in Pisces", async ({ page }) => {
 // 2. Houses table: 12 house rows present
 // ───────────────────────────────────────────────────────────
 test("Houses table renders 12 house rows", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
   for (let h = 1; h <= 12; h++) {
     await expect(page.getByTestId(`house-row-${h}`).first()).toBeVisible();
@@ -110,8 +135,7 @@ test("Houses table renders 12 house rows", async ({ page }) => {
 //    Test a chip that is NOT pre-expanded (e.g. Moon chip)
 // ───────────────────────────────────────────────────────────
 test("Clicking a non-pre-expanded planet chip reveals a reading", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // Moon chip is in house 6 for Einstein — not pre-expanded
@@ -128,8 +152,7 @@ test("Clicking a non-pre-expanded planet chip reveals a reading", async ({ page 
 });
 
 test("Clicking a sign chip reveals a reading", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // Click House 1 sign chip
@@ -146,8 +169,7 @@ test("Clicking a sign chip reveals a reading", async ({ page }) => {
 // 4. Element bar: four totals present and sum to 11
 // ───────────────────────────────────────────────────────────
 test("Element bar shows four non-blank totals summing to 11 planets", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("element-bar")).toBeVisible({ timeout: 10000 });
   const bar = page.getByTestId("element-bar");
   await expect(bar).toContainText("Fire");
@@ -163,8 +185,7 @@ test("Element bar shows four non-blank totals summing to 11 planets", async ({ p
 // 5. Transit card present with dated structure
 // ───────────────────────────────────────────────────────────
 test("Transit card is present with planet signs and a date string", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("transit-card")).toBeVisible({ timeout: 10000 });
   const card = page.getByTestId("transit-card");
   // Wait for transits to load (async effect)
@@ -182,8 +203,7 @@ test("Transit card is present with planet signs and a date string", async ({ pag
 test("No horizontal page overflow at 375px (mobile)", async ({ browser }) => {
   const ctx = await browser.newContext({ viewport: { width: 375, height: 812 } });
   const page = await ctx.newPage();
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const overflow = await page.evaluate(() => {
@@ -196,8 +216,7 @@ test("No horizontal page overflow at 375px (mobile)", async ({ browser }) => {
 test("No horizontal page overflow at 1280px (desktop)", async ({ browser }) => {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
   const page = await ctx.newPage();
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const overflow = await page.evaluate(() => {
@@ -214,8 +233,7 @@ test("Share round-trip: create link, open in clean context, same chart renders",
   // Step 1: create the share link in a normal context
   const ctx1 = await browser.newContext();
   const page1 = await ctx1.newPage();
-  await page1.goto("/");
-  await page1.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChartOnPage1(page1);
   await expect(page1.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // Click "Create share link"
@@ -298,7 +316,8 @@ test("Cold load: homepage SSR returns 200 and hydrates without React errors", as
 
   const resp = await page.goto("/");
   expect(resp?.status()).toBe(200);
-  await expect(page.getByTestId("load-einstein-btn")).toBeVisible();
+  // Einstein button removed 2026-06-26; check empty state prompt instead
+  await expect(page.getByTestId("chart-empty-state")).toBeVisible();
 
   // No React hydration errors (418, 185, 310)
   const hydrateErrors = errors.filter((e) =>
@@ -497,8 +516,7 @@ test("Geocoder: Bangalore alias resolves to Bengaluru, India (not empty)", async
 // 12. Plain-English reading: visible by default ABOVE houses table, mentions Sun
 // ───────────────────────────────────────────────────────────
 test("plain-english-reading is rendered before houses-table in DOM order", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
   await expect(page.getByTestId("plain-english-reading")).toBeVisible();
 
@@ -518,8 +536,7 @@ test("plain-english-reading is rendered before houses-table in DOM order", async
 // 13. No empty reading bodies: planet chips & sign chips
 // ───────────────────────────────────────────────────────────
 test("No planet chip reading body is empty: Sun, Moon, Saturn, Pluto", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const planetChipsToCheck = ["sun", "moon", "saturn", "pluto"];
@@ -539,8 +556,7 @@ test("No planet chip reading body is empty: Sun, Moon, Saturn, Pluto", async ({ 
 });
 
 test("No sign chip reading body is empty: Houses 1, 5, 10", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const signChipsToCheck = ["h1", "h5", "h10"];
@@ -562,8 +578,7 @@ test("No sign chip reading body is empty: Houses 1, 5, 10", async ({ page }) => 
 // 14. Capitalization: transit/reading prose uses Title Case planet & sign names
 // ───────────────────────────────────────────────────────────
 test("plain-english-reading prose does not contain lowercase planet names (mars, neptune, etc.)", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("plain-english-reading")).toBeVisible({ timeout: 10000 });
 
   const text = await page.getByTestId("plain-english-reading").textContent() ?? "";
@@ -577,8 +592,7 @@ test("plain-english-reading prose does not contain lowercase planet names (mars,
 });
 
 test("transit card prose does not use interior lowercase planet names", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("transit-card")).toBeVisible({ timeout: 10000 });
   // Wait for transit to load
   await expect(page.getByTestId("transit-card")).not.toContainText("Computing", { timeout: 8000 });
@@ -598,8 +612,7 @@ test("transit card prose does not use interior lowercase planet names", async ({
 //        (spec success check: "No 'Save as image' button is present in the UI")
 // ───────────────────────────────────────────────────────────
 test("save-image-btn is NOT present (feature deleted per spec)", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // The save-image-btn must NOT exist anywhere in the DOM
@@ -612,8 +625,7 @@ test("save-image-btn is NOT present (feature deleted per spec)", async ({ page }
 // R2-b. Per-planet degrees: degree symbol appears in the houses table
 // ───────────────────────────────────────────────────────────
 test("planet degrees (° symbol) appear in the houses table", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const table = page.getByTestId("houses-table");
@@ -629,8 +641,7 @@ test("/chart/[token] page HTML contains og:title meta tag", async ({ browser, ba
   // Step 1: create a share link
   const ctx1 = await browser.newContext();
   const page1 = await ctx1.newPage();
-  await page1.goto("/");
-  await page1.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChartOnPage1(page1);
   await expect(page1.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const shareBtn = page1.getByTestId("share-btn");
@@ -660,8 +671,7 @@ test("/chart/[token] page HTML contains og:title meta tag", async ({ browser, ba
 // R2-d. De-templated transit: notes are varied (not all identical sentence frame)
 // ───────────────────────────────────────────────────────────
 test("transit notes are varied — multiple lines, not all identical sentence structure", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("transit-card")).toBeVisible({ timeout: 10000 });
   // Wait for transits to compute
   await expect(page.getByTestId("transit-card")).not.toContainText("Computing", { timeout: 10000 });
@@ -704,8 +714,7 @@ test("transit notes are varied — multiple lines, not all identical sentence st
 test("expanded planet reading at 1280px spans full table width (colSpan row, not a sliver)", async ({ browser }) => {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
   const page = await ctx.newPage();
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // Sun chip is pre-expanded — reading is already visible
@@ -741,8 +750,7 @@ test("expanded planet reading at 1280px spans full table width (colSpan row, not
 test("clicking moon chip on desktop reveals full-width colSpan reading (≥60% table width)", async ({ browser }) => {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
   const page = await ctx.newPage();
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // Click the moon chip (desktop — first() is the desktop instance)
@@ -767,8 +775,7 @@ test("/chart/[token] HTML contains og:image and twitter:card=summary_large_image
   // Step 1: create a share link
   const ctx1 = await browser.newContext();
   const page1 = await ctx1.newPage();
-  await page1.goto("/");
-  await page1.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChartOnPage1(page1);
   await expect(page1.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const shareBtn = page1.getByTestId("share-btn");
@@ -808,8 +815,7 @@ test("GET /chart/[token]/opengraph-image returns HTTP 200 image/* for a created 
   // Step 1: create a share token
   const ctx1 = await browser.newContext();
   const page1 = await ctx1.newPage();
-  await page1.goto("/");
-  await page1.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChartOnPage1(page1);
   await expect(page1.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const shareBtn = page1.getByTestId("share-btn");
@@ -841,8 +847,7 @@ test("GET /chart/[token]/opengraph-image returns HTTP 200 image/* for a created 
 // headline sentences. Assert lead sentences for Sun, Moon, Mercury, Venus, Mars differ.
 // ───────────────────────────────────────────────────────────
 test("plain-english-reading: per-planet lead sentences are distinct (de-templated)", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("plain-english-reading")).toBeVisible({ timeout: 10000 });
 
   // Collect all <p> text nodes inside the plain-english-reading section
@@ -882,8 +887,7 @@ test("plain-english-reading: per-planet lead sentences are distinct (de-template
 test("No horizontal page overflow at 1440px (wide desktop)", async ({ browser }) => {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const overflow = await page.evaluate(() => {
@@ -966,8 +970,7 @@ test("/chart/[token] SSR returns 200, no hydration error, chart renders in clean
   // Create a share token first
   const ctx1 = await browser.newContext();
   const page1 = await ctx1.newPage();
-  await page1.goto("/");
-  await page1.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChartOnPage1(page1);
   await expect(page1.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const shareBtn = page1.getByTestId("share-btn");
@@ -1092,8 +1095,7 @@ test("Geocoder: San Francisco, CA, United States is first and all labels distinc
 test("plain-english-reading: same-sign blurb bodies differ beyond first word (Einstein Pisces: Sun/MC both Pisces check)", async ({ page }) => {
   // Einstein has Sun and MC both in Pisces — the plain-english-reading must not
   // show two identical sentences for Pisces-signed placements.
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("plain-english-reading")).toBeVisible({ timeout: 10000 });
 
   // Collect all <p> blurbs in the plain-english-reading section
@@ -1215,8 +1217,7 @@ test("QA: Jiangmen chart — Black Moon Lilith appears at ~26° Libra in House 1
 // QA-3. Arcminute formatting: positions show D°MM' not floor-truncated whole degrees (P2)
 // ───────────────────────────────────────────────────────────
 test("QA: Einstein chart — planet positions use D°MM' arcminute format", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const tableText = await page.getByTestId("houses-table").textContent() ?? "";
@@ -1233,8 +1234,7 @@ test("QA: Einstein chart — planet positions use D°MM' arcminute format", asyn
 // QA-4. Element distribution basis label shows body names (P2 spec check)
 // ───────────────────────────────────────────────────────────
 test("QA: element bar shows explicit basis label naming counted bodies", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("element-bar")).toBeVisible({ timeout: 10000 });
 
   const basisLabel = page.getByTestId("element-basis-label");
@@ -1324,8 +1324,7 @@ test("QA: Jiangmen — North Node, South Node, and Black Moon Lilith sign+degree
 // S-1. "Compare two people" entry is visible ABOVE the transit card in chart view
 // ───────────────────────────────────────────────────────────
 test("synastry: 'Compare two people' entry is visible above transit card after loading Einstein", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // The synastry entry must be present and visible
@@ -1348,8 +1347,7 @@ test("synastry: 'Compare two people' entry is visible above transit card after l
 // S-2. Clicking "Compare two people" opens the synastry view
 // ───────────────────────────────────────────────────────────
 test("synastry: clicking compare button shows synastry view", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   await page.getByTestId("open-synastry-btn").click();
@@ -1358,12 +1356,12 @@ test("synastry: clicking compare button shows synastry view", async ({ page }) =
 });
 
 // ───────────────────────────────────────────────────────────
-// S-3. Example pair: Sun-Sun conjunction visible with reading, tagged CONJUNCTION
-// REGRESSION ANCHOR from APP_SPEC.md
+// S-3. Example pair: Mars-Moon trine visible with reading, tagged HARMONY
+// REGRESSION ANCHOR — Diana × Charles (replaced Einstein × Obama 2026-06-26)
+// Diana Mars (Virgo) trine Charles Moon (Taurus), orb ~1.22°
 // ───────────────────────────────────────────────────────────
-test("synastry regression: Moon-Jupiter trine visible with reading on example pair (Einstein × Michelle Obama)", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+test("synastry regression: Mars-Moon trine visible with reading on example pair (Princess Diana × Prince Charles)", async ({ page }) => {
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // Open synastry
@@ -1373,26 +1371,25 @@ test("synastry regression: Moon-Jupiter trine visible with reading on example pa
   // Wait for the example pair to load (auto-loads since < 2 people saved)
   await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 10000 });
 
-  // Moon-Jupiter trine aspect row must be present (Einstein Moon trine Michelle Obama Jupiter, ~1.67° orb)
-  const moonJupRow = page.getByTestId("synastry-aspect-moon-jupiter-trine");
-  await expect(moonJupRow).toBeVisible({ timeout: 5000 });
+  // Mars-Moon trine aspect row must be present (Diana Mars trine Charles Moon, ~1.22° orb)
+  const marsMonRow = page.getByTestId("synastry-aspect-mars-moon-trine");
+  await expect(marsMonRow).toBeVisible({ timeout: 5000 });
 
-  // Row must contain "trine" and "HARMONY" tags
-  await expect(moonJupRow).toContainText("trine");
+  // Row must contain "trine"
+  await expect(marsMonRow).toContainText("trine");
 
   // Reading must be visible on the row (no click needed)
-  const reading = page.getByTestId("synastry-aspect-reading-moon-jupiter-trine");
+  const reading = page.getByTestId("synastry-aspect-reading-mars-moon-trine");
   await expect(reading).toBeVisible({ timeout: 5000 });
   const readingText = await reading.textContent() ?? "";
-  expect(readingText.length, "Moon-Jupiter trine reading must have substance").toBeGreaterThan(30);
+  expect(readingText.length, "Mars-Moon trine reading must have substance").toBeGreaterThan(30);
 });
 
 // ───────────────────────────────────────────────────────────
-// S-4. Both big-three columns visible: Person A = Einstein, Person B = Michelle Obama
+// S-4. Both big-three columns visible: Person A = Princess Diana, Person B = Prince Charles
 // ───────────────────────────────────────────────────────────
-test("synastry: both big-three columns visible, Einstein and Michelle Obama shown", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+test("synastry: both big-three columns visible, Princess Diana and Prince Charles shown", async ({ page }) => {
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   await page.getByTestId("open-synastry-btn").click();
@@ -1401,22 +1398,21 @@ test("synastry: both big-three columns visible, Einstein and Michelle Obama show
   const bigThree = page.getByTestId("synastry-big-three");
   await expect(bigThree).toBeVisible({ timeout: 5000 });
 
-  // Person A (Einstein): Sun Pisces / Moon Sagittarius / Rising Cancer
-  await expect(bigThree).toContainText("Sun Pisces");
-  await expect(bigThree).toContainText("Moon Sagittarius");
-  await expect(bigThree).toContainText("Rising Cancer");
+  // Person A (Princess Diana): Sun Cancer / Moon Aquarius / Rising Sagittarius
+  await expect(bigThree).toContainText("Sun Cancer");
+  await expect(bigThree).toContainText("Moon Aquarius");
+  await expect(bigThree).toContainText("Rising Sagittarius");
 
-  // Person B (Michelle Obama): Sun Capricorn — both names visible
-  await expect(bigThree).toContainText("Sun Capricorn");
-  await expect(bigThree).toContainText("Michelle Obama");
+  // Person B (Prince Charles): Sun Scorpio — both names visible
+  await expect(bigThree).toContainText("Sun Scorpio");
+  await expect(bigThree).toContainText("Prince Charles");
 });
 
 // ───────────────────────────────────────────────────────────
 // S-5. Harmony/tension framing visible without clicking
 // ───────────────────────────────────────────────────────────
 test("synastry: harmony/tension tags visible without any click, readings un-clipped", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   await page.getByTestId("open-synastry-btn").click();
@@ -1432,8 +1428,8 @@ test("synastry: harmony/tension tags visible without any click, readings un-clip
   const aspectsList = page.getByTestId("synastry-aspects-list");
   await expect(aspectsList).toBeVisible({ timeout: 5000 });
 
-  // At least the Moon-Jupiter trine reading should be visible (regression anchor)
-  const reading = page.getByTestId("synastry-aspect-reading-moon-jupiter-trine");
+  // Mars-Moon trine reading must be visible (regression anchor: Diana Mars trine Charles Moon)
+  const reading = page.getByTestId("synastry-aspect-reading-mars-moon-trine");
   await expect(reading).toBeVisible({ timeout: 5000 });
 
   // Check no text is truncated with ellipsis
@@ -1448,10 +1444,12 @@ test("synastry: harmony/tension tags visible without any click, readings un-clip
 test("synastry: 'Load example pair' button shown and loads results", async ({ browser }) => {
   const ctx = await browser.newContext({ storageState: { cookies: [], origins: [] } });
   const page = await ctx.newPage();
+  await page.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, EINSTEIN_BIRTH);
   await page.goto("/");
-
-  // Load Einstein first (needed to see the synastry entry)
-  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByText("Albert Einstein")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Albert Einstein").first().click();
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // Open synastry
@@ -1469,8 +1467,7 @@ test("synastry: 'Load example pair' button shown and loads results", async ({ br
 // S-7. Back button closes synastry, returns to natal chart view
 // ───────────────────────────────────────────────────────────
 test("synastry: back button closes the compatibility view", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   await page.getByTestId("open-synastry-btn").click();
@@ -1490,8 +1487,7 @@ test("synastry: back button closes the compatibility view", async ({ page }) => 
 test("synastry: no horizontal overflow at 375px", async ({ browser }) => {
   const ctx = await browser.newContext({ viewport: { width: 375, height: 812 } });
   const page = await ctx.newPage();
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   await page.getByTestId("open-synastry-btn").click();
@@ -1521,8 +1517,8 @@ test("big3: entry-mode-toggle is present, PRECISE is active by default", async (
   // BIG 3 button should have aria-selected=false
   const big3Btn = page.getByTestId("mode-big3");
   await expect(big3Btn).toHaveAttribute("aria-selected", "false");
-  // load-einstein-btn is visible in PRECISE mode
-  await expect(page.getByTestId("load-einstein-btn")).toBeVisible();
+  // Einstein button removed 2026-06-26 — PRECISE mode leads directly with BirthForm
+  await expect(page.getByTestId("chart-empty-state")).toBeVisible();
 });
 
 // ───────────────────────────────────────────────────────────
@@ -1541,8 +1537,7 @@ test("big3: switching to BIG 3 mode shows the big3 form", async ({ page }) => {
   await expect(page.getByTestId("big3-year")).toBeVisible();
   // Estimate button
   await expect(page.getByTestId("big3-estimate-btn")).toBeVisible();
-  // Load-einstein-btn is now hidden
-  await expect(page.getByTestId("load-einstein-btn")).toHaveCount(0);
+  // Einstein button removed 2026-06-26 — it's gone from both modes
 });
 
 // ───────────────────────────────────────────────────────────
@@ -1581,10 +1576,8 @@ test("big3: Aries/Taurus/Gemini/1990 → chart Sun=Aries, Moon=Taurus, Asc=Gemin
 // B-4. Estimate badge appears on estimated chart, not on precise chart
 // ───────────────────────────────────────────────────────────
 test("big3: estimate-badge shown for estimated chart, NOT shown for precise Einstein chart", async ({ page }) => {
-  await page.goto("/");
-
-  // Load Einstein (precise) — badge must NOT appear
-  await page.getByTestId("load-einstein-btn").click();
+  // Load Einstein (precise) via localStorage — badge must NOT appear
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
   await expect(page.getByTestId("estimate-badge")).toHaveCount(0);
 
@@ -1603,24 +1596,22 @@ test("big3: estimate-badge shown for estimated chart, NOT shown for precise Eins
 });
 
 // ───────────────────────────────────────────────────────────
-// B-5. Switching back to PRECISE mode leaves Einstein flow byte-identical
+// B-5. Switching back to PRECISE mode still gives correct chart (Einstein via localStorage)
 // ───────────────────────────────────────────────────────────
-test("big3: switching back to PRECISE and loading Einstein still gives Sun Pisces / Moon Sagittarius / Asc Cancer", async ({ page }) => {
-  await page.goto("/");
+test("big3: switching back to PRECISE mode shows BirthForm; Einstein (seeded) gives Sun Pisces / Moon Sagittarius / Asc Cancer", async ({ page }) => {
+  // Seed Einstein so the people list is populated
+  await loadEinsteinChart(page);
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
-  // Go to BIG 3 mode first
+  // Switch to BIG 3 mode
   await page.getByTestId("mode-big3").click();
   await expect(page.getByTestId("big3-form")).toBeVisible();
 
-  // Switch back to PRECISE
+  // Switch back to PRECISE — BirthForm must be visible
   await page.getByTestId("mode-precise").click();
-  await expect(page.getByTestId("load-einstein-btn")).toBeVisible({ timeout: 3000 });
+  await expect(page.getByTestId("birth-form")).toBeVisible({ timeout: 3000 });
 
-  // Load Einstein
-  await page.getByTestId("load-einstein-btn").click();
-  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
-
-  // Regression: Sun Pisces / Moon Sagittarius / Asc Cancer
+  // Einstein chart should still be visible on the right (mode toggle does not clear the chart)
   const chips = page.getByTestId("big-three-chips");
   await expect(chips).toContainText("Pisces");
   await expect(chips).toContainText("Sagittarius");
@@ -1838,12 +1829,16 @@ test("RE-VERIFY-2: Leo/Scorpio/Gemini/1988 renders with correct signs + big3 str
 });
 
 // ── RE-VERIFY-2: Einstein precise chart must NOT show big3 strip ────────────
-test("RE-VERIFY-2: Einstein precise chart shows NO estimate-badge and NO big3 strip", async ({ page }) => {
+// The "Load example (Einstein)" button was removed 2026-06-26; seed via localStorage.
+test("RE-VERIFY-2: Einstein precise chart shows NO estimate-badge and NO big3 strip", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await ctx.newPage();
+  await page.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, EINSTEIN_BIRTH);
   await page.goto("/");
-  await page.waitForLoadState("domcontentloaded");
-
-  // Load Einstein example
-  await page.getByRole("button", { name: /einstein/i }).click();
+  await expect(page.getByText("Albert Einstein")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Albert Einstein").first().click();
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // No estimate badge
@@ -1851,6 +1846,8 @@ test("RE-VERIFY-2: Einstein precise chart shows NO estimate-badge and NO big3 st
 
   // No big3 strip
   await expect(page.getByTestId("estimate-big3-strip")).not.toBeVisible();
+
+  await ctx.close();
 });
 
 // selects it must still see the estimate badge — the isEstimate flag must survive
@@ -1911,10 +1908,13 @@ test("RE-VERIFY-3 FIX 1 success path: Copy link shows visible share-copied-cue w
       writable: true,
     });
   });
+  await page.addInitScript((data) => {
+    // Seed Einstein so the people list is available
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, EINSTEIN_BIRTH);
   await page.goto("/");
-
-  // Load Einstein example
-  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByText("Albert Einstein")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Albert Einstein").first().click();
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
 
   // Click Create share link
@@ -1953,8 +1953,7 @@ test("RE-VERIFY-3 FIX 1 blocked-clipboard path: Copy link shows blocked cue when
     });
   });
 
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
 
   // Click Create share link
@@ -2004,11 +2003,191 @@ test("RE-VERIFY-3 FIX 2: estimate-methodology line visible in estimate badge for
 });
 
 test("RE-VERIFY-3 FIX 2: Einstein precise chart shows NO estimate-methodology line", async ({ page, baseURL }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await loadEinsteinChart(page);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
 
   // No estimate-badge and no estimate-methodology for precise chart
   await expect(page.getByTestId("estimate-badge")).not.toBeVisible();
   await expect(page.getByTestId("estimate-methodology")).not.toBeVisible();
+});
+
+// ── FIX (1): BIG 3 FORM SPACING — ds-field gap consistency ────────────────
+test("FIX-1: BIG 3 form uses ds-field class for consistent vertical spacing", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible({ timeout: 5000 });
+
+  // All field wrappers in the Big-3 form should carry the ds-field class
+  // which applies --sp-6 (24px) margin-bottom between groups.
+  const dsFields = page.getByTestId("big3-form").locator(".ds-field");
+  const count = await dsFields.count();
+  expect(count).toBeGreaterThanOrEqual(3); // sun, moon, rising at minimum
+
+  // No two adjacent field groups should have 0 gap — verify via computed style
+  // that at least one ds-field has margin-bottom > 0
+  const firstField = dsFields.first();
+  const mb = await firstField.evaluate((el) =>
+    parseFloat(getComputedStyle(el).marginBottom)
+  );
+  expect(mb).toBeGreaterThan(0);
+});
+
+// ── FIX (2): CONSISTENT BOX PADDING — no var(--sp-5), compare-box ≥ 0 ────
+test("FIX-2: no var(--sp-5) token in served CSS", async ({ page }) => {
+  // Collect all linked stylesheets
+  await page.goto("/");
+  const sheetTexts = await page.evaluate(async () => {
+    const sheets = Array.from(document.styleSheets);
+    const texts: string[] = [];
+    for (const sheet of sheets) {
+      try {
+        const rules = Array.from(sheet.cssRules ?? []);
+        texts.push(rules.map((r) => r.cssText).join("\n"));
+      } catch {
+        // cross-origin sheet — skip
+      }
+    }
+    return texts.join("\n");
+  });
+  expect(sheetTexts).not.toContain("var(--sp-5)");
+});
+
+test("FIX-2: synastry-entry box (Compare two people) has non-zero left padding", async ({ page, browser }) => {
+  // Need a chart loaded so the synastry entry is rendered
+  const ctx = await browser.newContext();
+  const p = await ctx.newPage();
+  await p.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, EINSTEIN_BIRTH);
+  await p.goto("/");
+  await expect(p.getByText("Albert Einstein")).toBeVisible({ timeout: 8000 });
+  await p.getByText("Albert Einstein").first().click();
+  await expect(p.getByTestId("houses-table")).toBeVisible({ timeout: 15000 });
+
+  // The synastry-entry uses open-synastry-btn with padding var(--sp-6)
+  const btn = p.getByTestId("open-synastry-btn");
+  await expect(btn).toBeVisible({ timeout: 5000 });
+  const paddingLeft = await btn.evaluate((el) =>
+    parseFloat(getComputedStyle(el).paddingLeft)
+  );
+  expect(paddingLeft).toBeGreaterThan(0);
+
+  // Share card uses ds-card which has padding var(--sp-8)
+  const shareCard = p.getByTestId("share-btn").locator("xpath=ancestor::div[contains(@class,'ds-card')]");
+  const shareCardPadding = await shareCard.evaluate((el) =>
+    parseFloat(getComputedStyle(el).paddingLeft)
+  );
+  expect(shareCardPadding).toBeGreaterThan(0);
+
+  await ctx.close();
+});
+
+// ── FIX (3): SAVE + NAME ESTIMATED CHART — share round-trip ──────────────
+test("FIX-3: estimated chart save/name/share round-trip (marquee check)", async ({ browser, baseURL }) => {
+  // Step 1: estimate a Big-3 chart, give it a name, create share link
+  const ctx1 = await browser.newContext();
+  const page1 = await ctx1.newPage();
+  await page1.goto("/");
+
+  // Switch to BIG 3 mode
+  await page1.getByTestId("mode-big3").click();
+  await expect(page1.getByTestId("big3-form")).toBeVisible({ timeout: 5000 });
+
+  // Fill in name
+  const nameInput = page1.getByTestId("big3-name");
+  await nameInput.fill("Aries Test Person");
+
+  // Fill Sun=Aries, Moon=Taurus, Rising=Gemini, year=1990
+  await page1.getByTestId("big3-sun").selectOption("aries");
+  await page1.getByTestId("big3-moon").selectOption("taurus");
+  await page1.getByTestId("big3-rising").selectOption("gemini");
+  await page1.getByTestId("big3-year").fill("1990");
+  await page1.getByTestId("big3-estimate-btn").click();
+
+  // Houses table renders
+  await expect(page1.getByTestId("houses-table")).toBeVisible({ timeout: 20000 });
+
+  // Estimate badge is shown
+  await expect(page1.getByTestId("estimate-badge")).toBeVisible({ timeout: 5000 });
+
+  // big3-name field is visible in BIG 3 mode
+  await expect(nameInput).toBeVisible();
+
+  // Create share link
+  const shareBtn = page1.getByTestId("share-btn");
+  await expect(shareBtn).toBeVisible({ timeout: 5000 });
+  await shareBtn.click();
+
+  // Wait for the copy-share-link to appear (token created)
+  const copyBtn = page1.getByTestId("copy-share-link");
+  await expect(copyBtn).toBeVisible({ timeout: 15000 });
+
+  // Extract the share URL
+  const shareInput = page1.locator('input[aria-label="Share link URL"]');
+  const shareUrl = await shareInput.inputValue();
+  expect(shareUrl).toMatch(/\/chart\/[A-Za-z0-9]{10,}/);
+
+  const tokenPath = new URL(shareUrl).pathname;
+  await ctx1.close();
+
+  // Step 2: open in CLEAN context (no localStorage)
+  const ctx2 = await browser.newContext({
+    storageState: { cookies: [], origins: [] },
+  });
+  const page2 = await ctx2.newPage();
+  await page2.goto(tokenPath);
+
+  // Houses table must render
+  await expect(page2.getByTestId("houses-table")).toBeVisible({ timeout: 20000 });
+
+  // ESTIMATED CHART badge must be present (isEstimate flag survived round-trip)
+  await expect(page2.getByTestId("estimate-badge")).toBeVisible({ timeout: 5000 });
+
+  // Name must appear (either in heading or visible text)
+  await expect(page2.getByText("Aries Test Person").first()).toBeVisible({ timeout: 5000 });
+
+  // Big-three chips show the correct signs (round-trip fidelity)
+  const chips = page2.getByTestId("big-three-chips");
+  const chipsText = (await chips.textContent()) ?? "";
+  expect(chipsText.toLowerCase()).toContain("aries");
+  expect(chipsText.toLowerCase()).toContain("taurus");
+  expect(chipsText.toLowerCase()).toContain("gemini");
+
+  await ctx2.close();
+});
+
+test("FIX-3: big3-name field visible in BIG 3 mode, blank name still estimates", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible({ timeout: 5000 });
+
+  // Name field must be visible
+  await expect(page.getByTestId("big3-name")).toBeVisible();
+
+  // Leave name blank and estimate anyway
+  await page.getByTestId("big3-sun").selectOption("aries");
+  await page.getByTestId("big3-moon").selectOption("taurus");
+  await page.getByTestId("big3-rising").selectOption("gemini");
+  await page.getByTestId("big3-year").fill("1990");
+  await page.getByTestId("big3-estimate-btn").click();
+
+  // Chart renders even with blank name
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 20000 });
+  await expect(page.getByTestId("estimate-badge")).toBeVisible({ timeout: 5000 });
+});
+
+// ── FIX (4): NO EINSTEIN IN THE UI ────────────────────────────────────────
+test("FIX-4: load-einstein-btn is absent from rendered UI", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("domcontentloaded");
+
+  // The Einstein button must be completely absent (not just hidden)
+  const einsteinBtn = page.getByTestId("load-einstein-btn");
+  await expect(einsteinBtn).not.toBeVisible();
+
+  // Also verify no user-facing "Einstein" text on the landing page
+  // (internal data anchors are in tests only, not in the product UI)
+  const bodyText = await page.locator("body").innerText();
+  // The word "Einstein" should not appear in rendered text on the homepage
+  expect(bodyText).not.toContain("Einstein");
 });

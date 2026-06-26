@@ -1,4 +1,27 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page, type BrowserContext } from "@playwright/test";
+
+// ─── Helper: seed Einstein in localStorage and navigate ──────────────────────
+// The "Load example (Einstein)" button was removed from the UI 2026-06-26.
+// Tests that need the Einstein chart now seed via localStorage (no UI button needed).
+const EINSTEIN_BIRTH = {
+  name: "Albert Einstein",
+  year: 1879, month: 3, day: 14,
+  hour: 11, minute: 30,
+  latitude: 48.4011, longitude: 9.9876,
+  placeName: "Ulm, Germany",
+  hasBirthTime: true,
+};
+
+async function seedEinsteinAndLoad(ctx: BrowserContext): Promise<Page> {
+  const page = await ctx.newPage();
+  await page.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, EINSTEIN_BIRTH);
+  await page.goto("/");
+  await expect(page.getByText("Albert Einstein")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Albert Einstein").first().click();
+  return page;
+}
 
 // Baseline smoke: page loads, communicates purpose, no console errors.
 test("landing page loads and states its purpose", async ({ page }) => {
@@ -21,11 +44,16 @@ test("landing page loads and states its purpose", async ({ page }) => {
   expect(realErrors).toEqual([]);
 });
 
-test("Load example (Einstein) button renders a chart", async ({ page }) => {
+test("No Einstein button on landing (removed 2026-06-26)", async ({ page }) => {
   await page.goto("/");
+  // The button must NOT exist in the UI
   const einsteinBtn = page.getByTestId("load-einstein-btn");
-  await expect(einsteinBtn).toBeVisible();
-  await einsteinBtn.click();
+  await expect(einsteinBtn).not.toBeVisible();
+});
+
+test("Einstein chart renders from seeded localStorage", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await seedEinsteinAndLoad(ctx);
 
   // Wait for houses table to appear
   await expect(page.getByTestId("houses-table")).toBeVisible({
@@ -34,11 +62,12 @@ test("Load example (Einstein) button renders a chart", async ({ page }) => {
 
   // House 10 row should be present (use first() — desktop + mobile both exist in DOM)
   await expect(page.getByTestId("house-row-10").first()).toBeVisible();
+  await ctx.close();
 });
 
-test("Einstein chart shows Sun in Pisces in House 10", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+test("Einstein chart shows Sun in Pisces in House 10", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await seedEinsteinAndLoad(ctx);
 
   // Wait for chart to render
   await expect(page.getByTestId("houses-table")).toBeVisible({
@@ -55,11 +84,13 @@ test("Einstein chart shows Sun in Pisces in House 10", async ({ page }) => {
   // The Sun chip should be inside house 10 (desktop row)
   const sunInHouse10 = house10Row.getByTestId("planet-chip-sun");
   await expect(sunInHouse10).toBeVisible();
+  await ctx.close();
 });
 
-test("Einstein chart shows Moon in Sagittarius", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+test("Einstein chart shows Moon in Sagittarius", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await seedEinsteinAndLoad(ctx);
+
   await expect(page.getByTestId("houses-table")).toBeVisible({
     timeout: 10000,
   });
@@ -70,11 +101,13 @@ test("Einstein chart shows Moon in Sagittarius", async ({ page }) => {
 
   // The profile summary shows "Sagittarius Moon" pill (use first() since plain-english section also mentions it)
   await expect(page.getByText("Sagittarius Moon").first()).toBeVisible();
+  await ctx.close();
 });
 
-test("Ascendant shows Cancer for Einstein", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+test("Ascendant shows Cancer for Einstein", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await seedEinsteinAndLoad(ctx);
+
   await expect(page.getByTestId("houses-table")).toBeVisible({
     timeout: 10000,
   });
@@ -85,13 +118,14 @@ test("Ascendant shows Cancer for Einstein", async ({ page }) => {
   // ASC pill in big-three chips now shows degree: "Cancer 7° rising"
   await expect(page.getByTestId("big-three-chips")).toContainText("Cancer");
   await expect(page.getByTestId("big-three-chips")).toContainText("rising");
+  await ctx.close();
 });
 
 test("Einstein chart has element bar with non-zero totals", async ({
-  page,
+  browser,
 }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  const ctx = await browser.newContext();
+  const page = await seedEinsteinAndLoad(ctx);
 
   // Wait for chart to render
   await expect(page.getByTestId("element-bar")).toBeVisible({
@@ -104,11 +138,13 @@ test("Einstein chart has element bar with non-zero totals", async ({
   await expect(page.getByTestId("element-bar")).toContainText("Water");
   // Should show some placements count — basis label path renders "11 placements: Sun..."
   await expect(page.getByTestId("element-bar")).toContainText("11 placements");
+  await ctx.close();
 });
 
-test("Tapping a planet chip reveals a reading", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+test("Tapping a planet chip reveals a reading", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await seedEinsteinAndLoad(ctx);
+
   await expect(page.getByTestId("houses-table")).toBeVisible({
     timeout: 10000,
   });
@@ -122,16 +158,19 @@ test("Tapping a planet chip reveals a reading", async ({ page }) => {
   const readingText = await sunReading.textContent();
   expect(readingText).toBeTruthy();
   expect(readingText!.length).toBeGreaterThan(10);
+  await ctx.close();
 });
 
-test("Transit card is present", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+test("Transit card is present", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await seedEinsteinAndLoad(ctx);
+
   await expect(page.getByTestId("transit-card")).toBeVisible({
     timeout: 10000,
   });
   // Transit card should list some planets
   await expect(page.getByTestId("transit-card")).toContainText("Sun");
+  await ctx.close();
 });
 
 test("City search returns suggestions", async ({ page }) => {
@@ -147,11 +186,10 @@ test("City search returns suggestions", async ({ page }) => {
   await expect(suggestions.first()).toContainText("London");
 });
 
-test("Load example button is prominently visible on landing", async ({
-  page,
-}) => {
+test("BIG 3 mode is reachable and shows a chart without login", async ({ page }) => {
   await page.goto("/");
-  const btn = page.getByTestId("load-einstein-btn");
-  await expect(btn).toBeVisible();
-  await expect(btn).toContainText("Einstein");
+  await page.getByTestId("mode-big3").click();
+  await expect(page.getByTestId("big3-form")).toBeVisible();
+  // Name field is present
+  await expect(page.getByTestId("big3-name")).toBeVisible();
 });

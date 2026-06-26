@@ -10,6 +10,7 @@ interface BigThreeFormProps {
 }
 
 export default function BigThreeForm({ onCompute, isComputing = false }: BigThreeFormProps) {
+  const [chartName, setChartName] = useState("");
   const [sunSign, setSunSign] = useState<ZodiacKey | "">("");
   const [moonSign, setMoonSign] = useState<ZodiacKey | "">("");
   const [risingSign, setRisingSign] = useState<ZodiacKey | "">("");
@@ -40,7 +41,11 @@ export default function BigThreeForm({ onCompute, isComputing = false }: BigThre
       // Dynamic import — client-side only; avoids SSR issues
       const { estimateFromBigThree } = await import("../../lib/estimateFromBigThree");
       const birthData = estimateFromBigThree({ sunSign, moonSign, risingSign, year });
-      onCompute(birthData);
+      // Apply the user's name if given; otherwise keep the default "Estimated chart"
+      const namedBirthData: BirthData = chartName.trim()
+        ? { ...birthData, name: chartName.trim() }
+        : birthData;
+      onCompute(namedBirthData);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       setError(msg);
@@ -71,15 +76,30 @@ export default function BigThreeForm({ onCompute, isComputing = false }: BigThre
   return (
     <form onSubmit={handleSubmit} data-testid="big3-form">
 
-      {/* Calm explainer */}
+      {/* Calm explainer — --sp-6 below to match the field rhythm */}
       <p style={{
         fontSize: "var(--fs-sm)",
         color: "var(--grey-600)",
-        marginBottom: "var(--sp-5)",
+        marginBottom: "var(--sp-6)",
         lineHeight: "1.5",
       }}>
         Know your Sun, Moon, and Rising (e.g. from Co-Star) but not your exact birth time? Estimate the rest.
       </p>
+
+      {/* Name this chart (optional) — FIX 3: add naming to Big-3 form */}
+      <div className="ds-field">
+        <label htmlFor="big3-name" className="ds-label">Name this chart</label>
+        <input
+          id="big3-name"
+          type="text"
+          data-testid="big3-name"
+          value={chartName}
+          onChange={(e) => setChartName(e.target.value)}
+          placeholder="Me"
+          className="ds-input"
+          aria-label="Chart name"
+        />
+      </div>
 
       {/* Sun Sign */}
       <div className="ds-field">
@@ -164,6 +184,7 @@ export default function BigThreeForm({ onCompute, isComputing = false }: BigThre
         data-testid="big3-estimate-btn"
         disabled={isLoading}
         className="ds-btn ds-btn--secondary ds-btn--block"
+        style={{ marginTop: "var(--sp-2)" }}
       >
         {isLoading ? "Estimating…" : "Estimate chart"}
       </button>

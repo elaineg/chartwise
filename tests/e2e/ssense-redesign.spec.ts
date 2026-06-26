@@ -3,15 +3,39 @@
  * Verifies that the pure-visual SSENSE reskin did NOT regress behavioral or data correctness,
  * and that the new ElementBar grid form satisfies the spec's visual success check.
  * Run with: BASE_URL=http://localhost:3099 npx playwright test tests/e2e/ssense-redesign.spec.ts
+ *
+ * Updated 2026-06-26: "Load example (Einstein)" button removed from UI.
+ * Tests now seed Einstein via localStorage instead of clicking a button.
  */
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page, type BrowserContext } from "@playwright/test";
+
+// ─── Shared Einstein data + helper ───────────────────────────────────────────
+const EINSTEIN_BIRTH = {
+  name: "Albert Einstein",
+  year: 1879, month: 3, day: 14,
+  hour: 11, minute: 30,
+  latitude: 48.4011, longitude: 9.9876,
+  placeName: "Ulm, Germany",
+  hasBirthTime: true,
+};
+
+async function seedEinsteinAndLoad(ctx: BrowserContext): Promise<Page> {
+  const page = await ctx.newPage();
+  await page.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, EINSTEIN_BIRTH);
+  await page.goto("/");
+  await expect(page.getByText("Albert Einstein")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Albert Einstein").first().click();
+  return page;
+}
 
 // ───────────────────────────────────────────────────────────
 // SSENSE-1. ElementBar new grid form: all four element NAMES and counts visible
 // ───────────────────────────────────────────────────────────
-test("SSENSE redesign: ElementBar grid renders all four element names (Fire/Earth/Air/Water) and their counts", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+test("SSENSE redesign: ElementBar grid renders all four element names (Fire/Earth/Air/Water) and their counts", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await seedEinsteinAndLoad(ctx);
   await expect(page.getByTestId("element-bar")).toBeVisible({ timeout: 10000 });
 
   const bar = page.getByTestId("element-bar");
@@ -38,14 +62,15 @@ test("SSENSE redesign: ElementBar grid renders all four element names (Fire/Eart
   expect(basisText).toContain("Moon");
   expect(basisText).toContain("Mercury");
   expect(basisText).toContain("Chiron");
+  await ctx.close();
 });
 
 // ───────────────────────────────────────────────────────────
 // SSENSE-2. ElementBar counts sum to the basis label N (data fidelity, Einstein = 11)
 // ───────────────────────────────────────────────────────────
-test("SSENSE redesign: ElementBar basis label reports 11 placements for Einstein chart", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+test("SSENSE redesign: ElementBar basis label reports 11 placements for Einstein chart", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await seedEinsteinAndLoad(ctx);
   await expect(page.getByTestId("element-bar")).toBeVisible({ timeout: 10000 });
 
   const basisLabel = page.getByTestId("element-basis-label");
@@ -55,15 +80,16 @@ test("SSENSE redesign: ElementBar basis label reports 11 placements for Einstein
   expect(match, "element-basis-label must contain 'Based on N placements:'").toBeTruthy();
   const expectedTotal = parseInt(match![1], 10);
   expect(expectedTotal, "Einstein element tally should be 11 placements").toBe(11);
+  await ctx.close();
 });
 
 // ───────────────────────────────────────────────────────────
 // SSENSE-3. No element-colored inline styles remain on the element grid
 //   The new grid uses --ink for bars; orange/green/sky/blue named colors not allowed
 // ───────────────────────────────────────────────────────────
-test("SSENSE redesign: ElementBar has no element-colored (orange/green/sky/blue) inline styles", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+test("SSENSE redesign: ElementBar has no element-colored (orange/green/sky/blue) inline styles", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await seedEinsteinAndLoad(ctx);
   await expect(page.getByTestId("element-bar")).toBeVisible({ timeout: 10000 });
 
   // Inspect inline style background values on fill elements inside the bar
@@ -85,14 +111,15 @@ test("SSENSE redesign: ElementBar has no element-colored (orange/green/sky/blue)
       ).not.toContain(banned);
     }
   }
+  await ctx.close();
 });
 
 // ───────────────────────────────────────────────────────────
 // SSENSE-4. Houses table still renders 12 rows (structural integrity)
 // ───────────────────────────────────────────────────────────
-test("SSENSE redesign: houses table renders 12 house rows and House 10 has Sun chip", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+test("SSENSE redesign: houses table renders 12 house rows and House 10 has Sun chip", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await seedEinsteinAndLoad(ctx);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   for (let h = 1; h <= 12; h++) {
@@ -102,14 +129,15 @@ test("SSENSE redesign: houses table renders 12 house rows and House 10 has Sun c
   const house10 = page.getByTestId("house-row-10").first();
   await expect(house10).toContainText("Pisces");
   await expect(house10.getByTestId("planet-chip-sun")).toBeVisible();
+  await ctx.close();
 });
 
 // ───────────────────────────────────────────────────────────
 // SSENSE-5. Placement chip ▾ reading toggle still expands/collapses
 // ───────────────────────────────────────────────────────────
-test("SSENSE redesign: placement chip expand/collapse reading toggle still works (▾ caret preserved)", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+test("SSENSE redesign: placement chip expand/collapse reading toggle still works (▾ caret preserved)", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const page = await seedEinsteinAndLoad(ctx);
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // Moon chip is not pre-expanded — click to expand
@@ -132,6 +160,7 @@ test("SSENSE redesign: placement chip expand/collapse reading toggle still works
   // Click again to collapse
   await moonChip.click();
   await expect(moonReading).not.toBeVisible({ timeout: 3000 });
+  await ctx.close();
 });
 
 // ───────────────────────────────────────────────────────────
@@ -139,9 +168,9 @@ test("SSENSE redesign: placement chip expand/collapse reading toggle still works
 // ───────────────────────────────────────────────────────────
 test("SSENSE redesign: share-link copy cue ('Copied' text) appears after clicking copy button", async ({ browser }) => {
   const ctx = await browser.newContext();
-  const page = await ctx.newPage();
 
   // Override clipboard to prevent permission errors in headless mode
+  const page = await ctx.newPage();
   await page.addInitScript(() => {
     Object.defineProperty(navigator, "clipboard", {
       value: {
@@ -150,10 +179,19 @@ test("SSENSE redesign: share-link copy cue ('Copied' text) appears after clickin
       configurable: true,
       writable: true,
     });
+    window.localStorage.setItem("chartwise:people", JSON.stringify([{
+      name: "Albert Einstein",
+      year: 1879, month: 3, day: 14,
+      hour: 11, minute: 30,
+      latitude: 48.4011, longitude: 9.9876,
+      placeName: "Ulm, Germany",
+      hasBirthTime: true,
+    }]));
   });
 
   await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByText("Albert Einstein")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Albert Einstein").first().click();
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const shareBtn = page.getByTestId("share-btn");

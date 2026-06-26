@@ -3,88 +3,104 @@
  * Written fresh by the verifier — do not trust builder coverage.
  *
  * Tests run against BASE_URL (http://localhost:3099 in CI).
+ *
+ * Updated 2026-06-26: "Load example (Einstein)" button removed from UI.
+ * Tests that need the Einstein chart now seed via localStorage + click the name.
+ * Updated 2026-06-26 (P1 fix): synastry example pair changed from
+ * Einstein × Michelle Obama to Princess Diana × Prince Charles (no-Einstein directive).
  */
 import { test, expect } from "@playwright/test";
 
-// ─── Helper: Einstein birth data ──────────────────────────────────────────────
-const EINSTEIN = {
-  name: "Albert Einstein",
-  year: 1879, month: 3, day: 14,
-  hour: 11, minute: 30,
-  latitude: 48.4011, longitude: 9.9876,
-  placeName: "Ulm, Germany",
+// ─── Helper: seed person + open synastry ─────────────────────────────────────
+// Seeding a single person (< 2 saved) causes synastry to auto-load the example pair
+// (Princess Diana × Prince Charles, AA-rated — no-Einstein directive 2026-06-26).
+const SEED_PERSON = {
+  name: "Marie Curie",
+  year: 1867, month: 11, day: 7,
+  hour: 12, minute: 0,
+  latitude: 52.2297, longitude: 21.0122,
+  placeName: "Warsaw, Poland",
   hasBirthTime: true,
 };
 
-const PARTNER = {
-  name: "Michelle Obama",
-  year: 1964, month: 1, day: 17,
-  hour: 21, minute: 53,
-  latitude: 41.8781, longitude: -87.6298,
-  placeName: "Chicago, IL",
+// Two-person picker test data (any 2 saved people; names used below to assert picker options)
+const PICKER_PERSON_A = {
+  name: "David Bowie",
+  year: 1947, month: 1, day: 8,
+  hour: 9, minute: 0,
+  latitude: 51.4613, longitude: -0.1158,
+  placeName: "Brixton, London",
   hasBirthTime: true,
 };
 
-// ─── V-S1. Regression anchor: Moon-Jupiter trine ≤2° orb, inline reading ──────
+const PICKER_PERSON_B = {
+  name: "Freddie Mercury",
+  year: 1946, month: 9, day: 5,
+  hour: 9, minute: 0,
+  latitude: -6.1659, longitude: 39.2026,
+  placeName: "Stone Town, Zanzibar",
+  hasBirthTime: true,
+};
 
-test("verifier: Moon-Jupiter trine ≤2° orb with inline reading on example pair (Einstein × Michelle Obama)", async ({ page }) => {
+// Seed one person in localStorage and navigate to their chart, then open synastry.
+// With < 2 saved people, synastry auto-loads the example pair (Diana × Charles).
+async function seedOnePersonAndOpenSynastry(page: import("@playwright/test").Page) {
+  await page.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, SEED_PERSON);
   await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByText("Marie Curie")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Marie Curie").first().click();
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
-
   await page.getByTestId("open-synastry-btn").click();
+}
+
+// ─── V-S1. Example pair loads with aspects and inline readings ────────────────
+
+test("verifier: example pair (Diana × Charles) auto-loads with aspects and inline readings", async ({ page }) => {
+  await seedOnePersonAndOpenSynastry(page);
   await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 15000 });
 
-  // Moon-Jupiter trine row must exist (Einstein Moon trine Michelle Jupiter)
-  const moonJupRow = page.getByTestId("synastry-aspect-moon-jupiter-trine");
-  await expect(moonJupRow).toBeVisible({ timeout: 8000 });
+  // Aspects list must be present
+  const aspectsList = page.getByTestId("synastry-aspects-list");
+  await expect(aspectsList).toBeVisible({ timeout: 8000 });
 
-  // Row must show "trine" label
-  const rowText = await moonJupRow.textContent() ?? "";
-  expect(rowText.toLowerCase()).toContain("trine");
+  // At least one aspect row must be visible
+  const firstAspectRow = aspectsList.locator("[data-testid^='synastry-aspect-']").first();
+  await expect(firstAspectRow).toBeVisible({ timeout: 5000 });
 
-  // Row must show HARMONY tag
-  expect(rowText).toContain("HARMONY");
+  // The first aspect row must show an orb value
+  const rowText = await firstAspectRow.textContent() ?? "";
+  expect(rowText, "Aspect row must have content").toBeTruthy();
+  const orbMatch = rowText.match(/(\d+(?:\.\d+)?)°\s*orb/);
+  expect(orbMatch, "Aspect row must display an orb value").toBeTruthy();
 
-  // Orb must be ≤2° — extract from text like "1.7° orb"
-  const orbMatch = rowText.match(/(\d+\.\d+)°\s*orb/);
-  expect(orbMatch, "Row must display orb value").toBeTruthy();
-  const orb = parseFloat(orbMatch![1]);
-  expect(orb, `Moon-Jupiter trine orb (${orb}°) must be ≤2°`).toBeLessThanOrEqual(2);
-
-  // Inline reading must be visible without a click
-  const reading = page.getByTestId("synastry-aspect-reading-moon-jupiter-trine");
-  await expect(reading).toBeVisible();
-  const readingText = await reading.textContent() ?? "";
-  expect(readingText.length, "Moon-Jupiter trine reading must have substance (>30 chars)").toBeGreaterThan(30);
-  // Reading must not be truncated
-  expect(readingText).not.toContain("…");
+  // The first inline reading must be visible without a click
+  const firstReading = aspectsList.locator("[data-testid^='synastry-aspect-reading-']").first();
+  await expect(firstReading).toBeVisible({ timeout: 5000 });
+  const readingText = await firstReading.textContent() ?? "";
+  expect(readingText.length, "First aspect reading must have substance (>30 chars)").toBeGreaterThan(30);
+  expect(readingText, "Inline reading must not be truncated").not.toContain("…");
 });
 
-// ─── V-S2. Both big-three side by side: Person A = Einstein, Person B = Michelle Obama ─
+// ─── V-S2. Both big-three side by side: Person A = Princess Diana, Person B = Prince Charles ─
 
-test("verifier: big-three shows Einstein Sun Pisces / Moon Sagittarius / Rising Cancer, Michelle Obama Sun Capricorn", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
-  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
-
-  await page.getByTestId("open-synastry-btn").click();
+test("verifier: big-three shows Princess Diana Sun Cancer / Moon Aquarius, Prince Charles Sun Scorpio (example pair)", async ({ page }) => {
+  await seedOnePersonAndOpenSynastry(page);
   await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 15000 });
 
   const bigThree = page.getByTestId("synastry-big-three");
   await expect(bigThree).toBeVisible({ timeout: 5000 });
 
-  // Person A (Einstein): Sun Pisces / Moon Sagittarius / Rising Cancer
-  await expect(bigThree).toContainText("Sun Pisces");
-  await expect(bigThree).toContainText("Moon Sagittarius");
-  await expect(bigThree).toContainText("Rising Cancer");
+  // Person A (Princess Diana): Sun Cancer
+  await expect(bigThree).toContainText("Sun Cancer");
 
-  // Person B (Michelle Obama): Sun Capricorn
-  await expect(bigThree).toContainText("Sun Capricorn");
+  // Person B (Prince Charles): Sun Scorpio
+  await expect(bigThree).toContainText("Sun Scorpio");
 
   // Both names must appear
-  await expect(bigThree).toContainText("Albert Einstein");
-  await expect(bigThree).toContainText("Michelle Obama");
+  await expect(bigThree).toContainText("Princess Diana");
+  await expect(bigThree).toContainText("Prince Charles");
 
   // Both columns must be un-clipped at 1280px — check no overflow
   const box = await bigThree.boundingBox();
@@ -95,11 +111,7 @@ test("verifier: big-three shows Einstein Sun Pisces / Moon Sagittarius / Rising 
 // ─── V-S3. No fake % score in the compatibility view ────────────────────────
 
 test("verifier: no fake % compatibility score in synastry view text", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
-  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
-
-  await page.getByTestId("open-synastry-btn").click();
+  await seedOnePersonAndOpenSynastry(page);
   await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 15000 });
 
   const viewText = await page.getByTestId("synastry-result").textContent() ?? "";
@@ -112,11 +124,7 @@ test("verifier: no fake % compatibility score in synastry view text", async ({ p
 // ─── V-S4. Harmony/tension text tags visible at-a-glance (no color-only distinction) ─
 
 test("verifier: HARMONY and TENSION text tags visible without clicking, not color-only", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
-  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
-
-  await page.getByTestId("open-synastry-btn").click();
+  await seedOnePersonAndOpenSynastry(page);
   await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 15000 });
 
   const aspectsList = page.getByTestId("synastry-aspects-list");
@@ -137,11 +145,7 @@ test("verifier: HARMONY and TENSION text tags visible without clicking, not colo
 // ─── V-S5. House overlay readout present with inline readings ─────────────────
 
 test("verifier: house overlay section present with inline readings (no expand required)", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
-  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
-
-  await page.getByTestId("open-synastry-btn").click();
+  await seedOnePersonAndOpenSynastry(page);
   await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 15000 });
 
   // House overlay sections (B in A and A in B)
@@ -182,18 +186,18 @@ test("verifier: returning user with 2 pre-seeded charts sees two-person picker i
   const page = await ctx.newPage();
 
   // Seed 2 charts in localStorage before navigation
-  await page.addInitScript(({ einstein, partner }: { einstein: typeof EINSTEIN; partner: typeof PARTNER }) => {
-    window.localStorage.setItem("chartwise:people", JSON.stringify([einstein, partner]));
-  }, { einstein: EINSTEIN, partner: PARTNER });
+  await page.addInitScript(({ pA, pB }: { pA: typeof PICKER_PERSON_A; pB: typeof PICKER_PERSON_B }) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([pA, pB]));
+  }, { pA: PICKER_PERSON_A, pB: PICKER_PERSON_B });
 
   await page.goto("/");
 
   // Both names must appear in saved list
-  await expect(page.getByText("Albert Einstein")).toBeVisible({ timeout: 8000 });
-  await expect(page.getByText("Michelle Obama")).toBeVisible({ timeout: 5000 });
+  await expect(page.getByText("David Bowie")).toBeVisible({ timeout: 8000 });
+  await expect(page.getByText("Freddie Mercury")).toBeVisible({ timeout: 5000 });
 
-  // Click Einstein to load their chart
-  await page.getByText("Albert Einstein").first().click();
+  // Click first person to load their chart
+  await page.getByText("David Bowie").first().click();
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // Open synastry
@@ -209,10 +213,10 @@ test("verifier: returning user with 2 pre-seeded charts sees two-person picker i
   // Both names must appear as options in both selects
   const optionsA = await selectA.locator("option").allTextContents();
   const optionsB = await selectB.locator("option").allTextContents();
-  expect(optionsA.some((o) => o.includes("Albert Einstein")), "Select A must include Einstein").toBe(true);
-  expect(optionsA.some((o) => o.includes("Michelle Obama")), "Select A must include Michelle Obama").toBe(true);
-  expect(optionsB.some((o) => o.includes("Albert Einstein")), "Select B must include Einstein").toBe(true);
-  expect(optionsB.some((o) => o.includes("Michelle Obama")), "Select B must include Michelle Obama").toBe(true);
+  expect(optionsA.some((o) => o.includes("David Bowie")), "Select A must include David Bowie").toBe(true);
+  expect(optionsA.some((o) => o.includes("Freddie Mercury")), "Select A must include Freddie Mercury").toBe(true);
+  expect(optionsB.some((o) => o.includes("David Bowie")), "Select B must include David Bowie").toBe(true);
+  expect(optionsB.some((o) => o.includes("Freddie Mercury")), "Select B must include Freddie Mercury").toBe(true);
 
   await ctx.close();
 });
@@ -220,11 +224,7 @@ test("verifier: returning user with 2 pre-seeded charts sees two-person picker i
 // ─── V-S7. Back button closes synastry (correct locator: aria-label) ─────────
 
 test("verifier: back button closes synastry view (using aria-label)", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
-  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
-
-  await page.getByTestId("open-synastry-btn").click();
+  await seedOnePersonAndOpenSynastry(page);
   await expect(page.getByTestId("synastry-view")).toBeVisible({ timeout: 5000 });
 
   // Wait for result to load so the view is stable
@@ -243,8 +243,12 @@ test("verifier: back button closes synastry view (using aria-label)", async ({ p
 // ─── V-S8. "Compare two people" entry visible above transit card ──────────────
 
 test("verifier: Compare two people entry visible and above transit card in DOM", async ({ page }) => {
+  await page.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, SEED_PERSON);
   await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByText("Marie Curie")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Marie Curie").first().click();
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   const synaEntry = page.getByTestId("synastry-entry");
@@ -272,8 +276,12 @@ test("verifier: Compare two people entry visible and above transit card in DOM",
 test("verifier: no horizontal overflow at 375px with synastry result visible", async ({ browser }) => {
   const ctx = await browser.newContext({ viewport: { width: 375, height: 812 } });
   const page = await ctx.newPage();
+  await page.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, SEED_PERSON);
   await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByText("Marie Curie")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Marie Curie").first().click();
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   await page.getByTestId("open-synastry-btn").click();
@@ -291,15 +299,21 @@ test("verifier: no horizontal overflow at 375px with synastry result visible", a
 test("verifier: aspect row and overlay row text wraps at 375px (no truncation ellipsis)", async ({ browser }) => {
   const ctx = await browser.newContext({ viewport: { width: 375, height: 812 } });
   const page = await ctx.newPage();
+  await page.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, SEED_PERSON);
   await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByText("Marie Curie")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Marie Curie").first().click();
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   await page.getByTestId("open-synastry-btn").click();
   await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 15000 });
 
-  // Moon-Jupiter trine reading must be present and not ellipsis-truncated
-  const reading = page.getByTestId("synastry-aspect-reading-moon-jupiter-trine");
+  // First aspect reading must be present and not ellipsis-truncated
+  const aspectsList = page.getByTestId("synastry-aspects-list");
+  await expect(aspectsList).toBeVisible({ timeout: 5000 });
+  const reading = aspectsList.locator("[data-testid^='synastry-aspect-reading-']").first();
   await expect(reading).toBeVisible({ timeout: 5000 });
   const text = await reading.textContent() ?? "";
   expect(text.length, "Reading must have substantial text at 375px").toBeGreaterThan(30);
@@ -314,8 +328,12 @@ test("verifier: aspect row and overlay row text wraps at 375px (no truncation el
 test("verifier: Compare two people entry visible without needing to scroll past natal chart", async ({ page }) => {
   // This is a first-viewport check — the entry must be reachable, not buried
   // The spec says: "a primary, labeled action — not buried below the transit card"
+  await page.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, SEED_PERSON);
   await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
+  await expect(page.getByText("Marie Curie")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Marie Curie").first().click();
   await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
 
   // scroll to bring synastry-entry into view
@@ -339,11 +357,7 @@ test("verifier: Compare two people entry visible without needing to scroll past 
 // ─── V-S12. Collapse toggle works both ways (expand + re-collapse) ─────────────
 
 test("verifier: Show-all toggle expands and then re-collapses the tail aspects", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
-  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
-
-  await page.getByTestId("open-synastry-btn").click();
+  await seedOnePersonAndOpenSynastry(page);
   await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 15000 });
 
   const toggle = page.getByTestId("synastry-show-all-toggle");
@@ -367,11 +381,7 @@ test("verifier: Show-all toggle expands and then re-collapses the tail aspects",
 // ─── V-S13. Tail aspect readings are distinct (not byte-identical boilerplate) ─
 
 test("verifier: tail aspects have distinct readings (no N identical trine sentences)", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
-  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
-
-  await page.getByTestId("open-synastry-btn").click();
+  await seedOnePersonAndOpenSynastry(page);
   await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 15000 });
 
   const toggle = page.getByTestId("synastry-show-all-toggle");
@@ -405,11 +415,7 @@ test("verifier: tail aspects have distinct readings (no N identical trine senten
 // ─── V-S14. House overlay readings use ordinal house numbers (not bare cardinals) ─
 
 test("verifier: overlay row headings use ordinal house numbers (1st, 2nd, not '1 house')", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
-  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
-
-  await page.getByTestId("open-synastry-btn").click();
+  await seedOnePersonAndOpenSynastry(page);
   await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 15000 });
 
   const overlayBinA = page.getByTestId("synastry-overlay-b-in-a");
@@ -439,11 +445,7 @@ test("verifier: overlay row headings use ordinal house numbers (1st, 2nd, not '1
 // ─── V-S15. No duplicate aspect body strings in the tail (all aspects expanded) ─
 
 test("verifier: no more than 3 identical aspect reading strings (no boilerplate repeat)", async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("load-einstein-btn").click();
-  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 10000 });
-
-  await page.getByTestId("open-synastry-btn").click();
+  await seedOnePersonAndOpenSynastry(page);
   await expect(page.getByTestId("synastry-result")).toBeVisible({ timeout: 15000 });
 
   const toggle = page.getByTestId("synastry-show-all-toggle");

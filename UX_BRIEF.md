@@ -1,80 +1,133 @@
-# chartwise — UX Brief
+# chartwise — UX Brief (ADD-FEATURE delta, 2026-06-26)
 
-## 1. Problem statement
-You know your star sign — this shows you your whole birth chart in plain English, free and with no login.
-
-## 2. Primary user action
-Enter birth date, time, and place to get an explained chart. The landing view shows ONE birth-info form, focused on the date field. A prominent "Load example (Einstein)" button sits beside it so a cold visitor sees a fully-explained chart in one click — show, don't tell. The Einstein chart (table + element bar + a sample reading already expanded) IS the demo; the visitor reads a real explanation before typing anything.
-
-## 3. Emotional tone
-Calm, clear, and confident — the opposite of a dense professional wheel. Reads like a
-knowledgeable friend explaining, not a star-chart printout.
-
-**Visual language (source of truth): SSENSE house design system.** The look is austere
-editorial minimalism — see `lib/design-system/ssense.md` (rules) + `lib/design-system/ssense.css`
-(tokens/`.ds-*` classes), mapped surface-by-surface in **`DESIGN_REDESIGN.md`** in this app
-dir (the authority for all styling). Monochrome only: paper white background, near-black ink
-text, a grey ramp — **no indigo/violet/amber/element colors, no gradients, no shadows, no
-rounded corners**. Structure is drawn with 1px hairline rules, not filled cards. Type is one
-neutral grotesque (Helvetica Neue → free Archivo fallback): sentence-case editorial copy for
-readings, tiny UPPERCASE 11px letter-spaced micro-labels for every structural label (section
-eyebrows, table heads, form labels, buttons, "saved charts"). Hierarchy comes from size/
-weight/case/space and inversion (ink↔paper on active/hover), never color. Generous, calm
-whitespace. This is a pure visual reskin: the information hierarchy, flows, and 5-second rule
-below are UNCHANGED — only the visual language updates.
-
-## 4. Design decisions
-- **Houses-as-rows, reflow to cards on mobile.** Desktop: 12 numbered house rows × Sign / Planets / Nodes columns, scannable top-to-bottom. At ≤640px DO NOT shrink the table or force horizontal scroll — each house becomes a stacked card ("House 10 — Career & public life" header, then its placements as tappable chips). This is the hero surface and the win over astro-seek.
-- **Every placement chip is tappable to reveal its reading (no hover-only).** Each planet-in-house / sign-in-house chip carries a visible affordance (chip styled as a button + a small "ⓘ"/chevron); tap/click expands a 1–2 sentence plain-English reading inline beneath it. Discoverable on touch; the Einstein example ships with one reading pre-expanded so the interaction is taught by example.
-- **Mode-aware privacy copy.** Computing/saving says "Your chart is computed on your device — nothing is sent anywhere." The Share action explicitly states "Creating a share link sends this chart's birth info to our server so the link works." Never a blanket "nothing leaves your device" claim once share exists.
-
-## 5. 5-second check (above the fold)
-- **Headline:** "Your birth chart, explained in plain English."
-- **Subtitle:** "Free, no signup — type your birth date, time, and place, or load an example."
-- **Primary action:** the birth-info form (date pre-focused) + a clear "Load example (Einstein)" button.
-- **Pre-filled example:** clicking Einstein renders the houses table with House 10 → Sun (Pisces) and one reading already open — proof the explanation is real.
-
-## Supporting details
-- **Input:** fielded date/time + place type-ahead (all-the-cities, lazy-loaded on first keystroke; pick-from-suggestions disambiguates collisions). "Time unknown" checkbox degrades gracefully — compute Sun/planets/signs, gray out houses + Ascendant with a one-line note "houses and rising need a birth time." "Enter coordinates manually" escape hatch (lat/long + optional UTC offset, marked Advanced) for missing places.
-- **Element bar:** compact horizontal Fire/Earth/Air/Water tally with counts + colored segments, directly under the table — obvious at a glance, never blank.
-- **Current sky / transit:** a clearly separated "Today" card below the chart — today's planet signs, retrograde flags, and ≥1 concise note keyed to this profile. Visually distinct (dated header) from the static natal chart.
-- **Saved charts (recurrence hook):** a persistent, visible people list (localStorage) — partner/friend/coworker. Add-person and switch-person are one obvious tap from the chart view; current profile clearly marked. Delete is secondary-weighted (small, muted, confirm).
-- **Share:** optional "Share this chart" → secret URL with the mode-aware copy above; "Copy link" confirms inline.
+This is a focused DELTA on the shipped app, covering four bundled fixes from Elaine's
+2026-06-26 PRIORITY directive. The full app's hero, flows, 5-second rule, and SSENSE
+visual language are UNCHANGED — see `DESIGN_REDESIGN.md` and `lib/design-system/ssense.md`
+(the authority). Everything below stays monochrome (ink/paper/grey ramp), square corners,
+1px hairline rules, no shadows/color/gradients, tiny uppercase `.ds-label` micro-labels.
+Spacing tokens live in `app/ssense.css` (`--sp-1`=4, `--sp-2`=8, `--sp-3`=12, `--sp-4`=16,
+`--sp-6`=24, `--sp-8`=32). NOTE: there is NO `--sp-5` token — any inline `var(--sp-5)`
+resolves to 0 and is a latent bug (it is the cause of fix #2).
 
 ---
-## SYNASTRY / COMPATIBILITY (core flow 3 — added feature)
+## FIX 1 — Big-3 form breathing room (`BigThreeForm.tsx`)
 
-**5-second rule.** A stranger landing on the compatibility view understands "this compares two people's charts in plain English" within 5 seconds: a left-aligned title "Compatibility, explained" + sub-label "How two charts get along — in plain English, free, no signup," and the two named people (A and B) shown side by side at the top with their big three already filled in (Einstein vs the example partner if nothing is saved). They see a real harmony/tension reading before doing anything.
+The BIG 3 tab feels cramped: explainer, three selects, the year input, and the button are
+packed with no consistent rhythm. Open up the vertical spacing to match the calm SSENSE
+density of the precise form.
 
-**Entry / discoverability (added-feature-buried — DO NOT bury).** A first-class "Compare two people →" action lives in the chart view ABOVE the transit card and reachable without scrolling past the natal table — a labeled primary control (not a footnote, not behind a menu), with the value sub-label below it. The two-person picker is unmistakable: two explicit, labeled selectors, "PERSON A" and "PERSON B," each a dropdown/tag-row of saved charts, BOTH visible at once, view recomputes on either change. With <2 saved charts, show a single bold "Load example pair" button (Einstein + fixed partner) so the payoff is one click on a cold first visit — show, don't tell. This is the new feature's hero; surface it in build #1.
-
-**Layout (explanation-first, payload not behind clicks).** Top→bottom, single column, full-width: (1) COMPATIBILITY SUMMARY — the two-person picker, then the two big-three columns side by side, then the element-balance comparison, then a 1-2 sentence honest harmony-vs-tension framing (NO numeric score). (2) KEY ASPECTS — the inter-aspect rows, each reading inline. (3) HOUSE OVERLAY — A's planets in B's houses and vice-versa, each reading inline. Lead with the summary; never collapse the aspect/overlay payload behind an expand.
-
-**Visibility / clip (8th added-feature-buried recurrence + inline-style-overrides-responsive-class).** Every newly-added value — each aspect reading, each overlay row, both big-three columns — is visible WITHOUT a click (no expand-to-reveal gate) and un-clipped/un-truncated at BOTH desktop AND 375px. Labels and readings WRAP, never truncate to an ellipsis. Any responsive show/hide (e.g. a side-by-side two-column big-three on desktop that stacks at ≤640px) MUST be a CLASS (`sm:hidden` / `sm:grid-cols-2` etc.), NEVER an inline `style={{display:...}}` — inline display beats media queries and resurrects the wrong layout at the wrong width (this exact bug bit the last chartwise run). After build, assert at desktop width that no stacked/duplicate layout shows, and at 375px that nothing is clipped.
-
-**Glanceability in monochrome (color-to-mono).** Harmony vs tension must read at a glance WITHOUT color (color is banned): each aspect row carries an explicit text tag — `HARMONY` or `TENSION` as a `.ds-label` micro-label (plus the aspect word: trine/sextile = harmony, square/opposition = tension, conjunction = blended) — and rows are GROUPED (harmonies together, tensions together) or ordered so the balance is visible without reading every line; optionally a 2-line count summary ("4 harmony · 3 tension"). The two-chart element-balance comparison reuses the existing ElementBar convention exactly: dominant-first ORDER + grey-VALUE ramp + bar LENGTH = proportion — NOT identical mono fills, and NOT a reverted colored bar. Show the two people's element bars adjacently (A above B, or two labeled columns) so the contrast in their balances is glanceable by bar length/order.
-
-**SSENSE conformance.** Every new control and surface uses the house system: uppercase 11px tracked `.ds-label`/`.ds-eyebrow` micro-labels (section eyebrows "COMPATIBILITY SUMMARY" / "KEY ASPECTS" / "HOUSE OVERLAY", the "PERSON A"/"PERSON B" labels, the HARMONY/TENSION tags), 1px `--grey-200` hairline rules between rows (not filled cards), square corners, NO shadow/color/gradient, `.ds-panel`/`.ds-card`/`.ds-tag`/`.ds-btn` for containers and the picker, `.ds-btn` (ink-filled primary) for "Load example pair" and the "Compare two people →" entry. Person names render sentence-case (proper nouns), aspect/sign/degree data sentence-case in `--ink`; only the structural labels uppercase. Aspect glyphs (☌☍△□⚹), if used, render in `--ink`/`--grey-600`, never colored, and never as the SOLE harmony/tension signal (the text tag carries it).
-
----
-## BIG-3 ESTIMATE (core flow 4 — added feature)
-
-**Toggle pattern (discoverable, not dominating — DO NOT bury).** A **two-segment toggle** sits at the very TOP of the left input panel, ABOVE the "Load example (Einstein)" button: two equal segments, `PRECISE` (active by default) and `BIG 3`, rendered as uppercase 11px tracked `.ds-label` micro-labels inside a single hairline-bordered control. Active segment = ink fill / paper text (the existing ink↔paper inversion convention); inactive = paper / ink. Square corners, 1px `--grey-200` divider between segments, no color. Chosen over a text link because a labeled segmented control reads as a real mode switch at a glance (the prior friction: an undiscoverable entry mode forced panel rounds purely to surface it) — yet keeping `PRECISE` pre-selected and visually active keeps the full birth-form the obvious default. Switching segments swaps ONLY the form body below (Load-Einstein button, OR-divider, and `BirthForm` are kept byte-identical and shown in PRECISE mode; the privacy note stays in both). Switching modes does NOT clear the rendered chart on the right.
-
-**Big-3 form layout.** Under the toggle, one calm explainer line in `--grey-600` body text: "Know your Sun, Moon, and Rising (e.g. from Co-Star) but not your exact birth time? Estimate the rest." Then, stacked top→bottom, four `.ds-field` rows reusing the existing field styling: three `<select>` dropdowns each labeled with a `.ds-label` micro-label — `SUN SIGN`, `MOON SIGN`, `RISING SIGN` — each a 12-option zodiac list (Aries…Pisces), placeholder "Select…", styled to match `.ds-input`; then a `BIRTH YEAR` numeric input (4-digit, e.g. placeholder "1990", same range bound as the precise date field). Submit is a full-width ink-or-secondary button labeled "Estimate chart" (mirror `ds-btn ds-btn--secondary ds-btn--block`, matching the precise "Compute chart"). Inline validation in the existing `.ds-error-text` style: if any of the four is empty, "Pick all three signs and a birth year to estimate."
-
-**Result labeling (ESTIMATE banner — placement is load-bearing).** When the chart was produced by the Big-3 solver, a hairline-bordered **note strip sits directly ABOVE the existing `ChartView`** (between the people switcher and the houses table), spanning the chart column full-width. NOT a colored alert: paper background, 1px `--grey-200` border, square corners. It carries an uppercase `.ds-label` eyebrow `ESTIMATED CHART` followed by one `--grey-600` body line: "Date, time, and place were inferred from your big three — this is an approximation. Enter your full birth date, time, and place for the precise chart." The precise-flow chart shows NO strip. (The solver/inference mechanics live in APP_SPEC — this brief owns only the strip's copy, placement, and restraint.)
-
-**5-second rule + mobile.** The hero headline/subtitle and the `PRECISE`-default left panel are unchanged, so a cold visitor still instantly reads "natal-chart tool"; the `BIG 3` segment is a quiet second option, never the dominant call. At 375px the whole left panel is full-width above the chart as today; the segmented toggle stays a single full-width 2-up control, and the three sign dropdowns + year input + button STACK vertically (one `.ds-field` per row) — no side-by-side, no clipped `<select>`, native dropdowns so the OS picker handles long option lists.
+- **One consistent group rhythm.** Each field group (label + control) is separated from the
+  next by **`--sp-6` (24px)** of vertical space — reuse the `.ds-field` class, which already
+  gives `margin-bottom: --sp-6` and `gap: --sp-2` (8px) between label and control, instead
+  of bespoke inline spacing. Apply `.ds-field` consistently to all three selects AND the
+  year input so every row has identical label→control and row→row spacing.
+- **Explainer separation.** The intro explainer line sits **`--sp-6`** above the first field
+  group (not the current `--sp-5`/tight gap).
+- **Submit button.** The "Estimate chart" button gets **`--sp-2` (8px)** clear above it
+  beyond the last field's `--sp-6` margin — it should read as the end of a calm stack, not
+  crammed under the year input. Keep it `ds-btn ds-btn--secondary ds-btn--block`.
+- **Inline error** keeps `.ds-error-text`, sitting `--sp-2` below the year field and `--sp-4`
+  above the button (unchanged copy: "Pick all three signs and a birth year to estimate.").
+- The result must read as MORE generous whitespace, consistent rhythm, nothing touching —
+  no two rows with different gaps.
 
 ---
-LAYOUT SUMMARY
-- Landing = one birth-info form (date pre-focused) + bold "Load example (Einstein)"; headline "Your birth chart, explained in plain English," subtitle names free/no-signup.
-- Chart view top→bottom: profile switcher (saved people) → houses-as-rows table → element bar → "Today" transit card → Share.
-- Houses table: rows on desktop; reflows to one stacked card per house at ≤640px (no tiny scroll-table).
-- Each placement chip = a tap-to-expand button (visible ⓘ/chevron) showing a 1–2 sentence reading; one pre-expanded in the Einstein demo.
-- Privacy copy is mode-aware: "computed on your device" for compute; Share states birth info is sent to make the link.
-- Time-unknown degrades gracefully (signs yes, houses/Asc grayed with a note); manual-coords escape hatch.
-- Saved-people list always visible; add/switch easy, delete muted+confirmed.
-- Compatibility (synastry): a first-class "Compare two people →" entry ABOVE the transit card (not buried); the view shows an unmistakable PERSON A / PERSON B picker, then summary (both big-threes side by side + two-chart element balance + honest harmony/tension framing, no score), then KEY ASPECTS rows (reading inline), then HOUSE OVERLAY rows (reading inline) — every value visible without a click, un-clipped at desktop AND 375px (labels WRAP), harmony/tension shown by TEXT tag not color, element balance by order+grey-ramp+length. "Load example pair" (Einstein + fixed partner) seeds it in one click for cold visitors.
-- MOST IMPORTANT 5-second call: a one-click "Load example (Einstein)" that instantly renders a real EXPLAINED chart (table + open reading) — the cold visitor sees the explanation-first payoff before typing, which is the entire wedge over astro-seek.
+## FIX 2 — Consistent box padding across ALL result cards
+
+In the estimated-chart result view, bordered boxes have INCONSISTENT internal padding. The
+`.ds-card` boxes (profile summary, Share) are inset with `--sp-8`, the ESTIMATED-CHART badge
+uses `--sp-3 --sp-4`, and the "COMPATIBILITY / Compare two people" box uses `padding:
+var(--sp-5)` — `--sp-5` is undefined → **0**, so its text sits flush against the left/top
+border. That is the odd-one-out the friction lesson warns about.
+
+- **Audit EVERY bordered box/card on the chart page in one pass** (profile summary, the
+  ESTIMATED CHART badge, the "Compare two people" entry, the element/transit cards if boxed,
+  the Share card, and any shared-view wrapper) and normalize ALL of them to **one shared
+  interior padding value on ALL FOUR SIDES**.
+- **Shared value: `--sp-6` (24px) on all sides** for the bordered content boxes (the
+  "Compare two people" entry, the ESTIMATED CHART badge). Keep `.ds-card`'s `--sp-8` where it
+  already reads well, but the rule is binding: **no box may have a smaller or zero pad on any
+  one side than the others** — symmetric on all four sides, nothing touching any edge.
+  Whichever single value you pick, apply it to every peer so they match; do not leave one box
+  inset and a sibling flush.
+- Delete every `var(--sp-5)` occurrence — it is always a 0-pad bug.
+- Verifiable: at desktop and 375px, no text in any bordered box touches its border; left,
+  right, top, and bottom interior padding are visually equal within each box.
+
+---
+## FIX 3 — Save + NAME estimated (Big-3) charts (reuse the existing share pattern)
+
+Today only precise charts feel "save-able with a name"; estimated charts default to the
+generic name "Estimated chart" and offer no naming step. Extend save/share to estimated
+charts AND let the user name them — REUSING the existing `chart-share` Turso secret-link
+flow and the existing `BirthData.name` field. Do NOT add a second parallel identity/name
+field; the one `name` already threaded through compute → save API → reload is the field.
+
+- **Where the name lives.** Add an optional **`NAME THIS CHART`** text input (`.ds-field` +
+  `.ds-input`, `.ds-label`) to the **BIG 3 form**, between the explainer and the SUN SIGN
+  field. Placeholder: e.g. "Me" or "Sam". When filled, the estimate's `BirthData.name`
+  becomes that value (instead of the generic "Estimated chart"); when blank, fall back to
+  "Estimated chart" so nothing breaks.
+- **Save/Share control on the estimated result.** The existing ChartView Share card ("Share
+  this chart" → "Create share link" → copy) MUST render for estimated charts too (it is
+  already gated only by `!isSharedView` — keep it shown). The user can also rename here if no
+  name was set: if you surface a rename affordance, it writes the SAME `birthData.name`, not a
+  new field. The saved-people list (localStorage) already keys on `name`, so a named estimate
+  shows in the switcher by its name.
+- **Persist the estimate identity end to end.** The Big-3 inputs + inferred anchor are
+  already captured in the returned `BirthData` (year/month/day/hour/minute/lat/long +
+  `isEstimate: true`). Confirm `isEstimate` survives the `chart-share` POST (the API's
+  `sanitizeBirth` spreads `...raw`, so it does — keep it) and the reload (`computeChart`
+  already threads `isEstimate` onto `ComputedChart`). The shared link must reload the SAME
+  Big-3 result.
+- **Clearly labeled "estimated" on reload.** A saved/shared estimated chart MUST show the
+  existing ESTIMATED CHART badge (date/time/place inferred) on the shared `/chart/[token]`
+  page, distinguishing it from a precise chart — driven by the persisted `isEstimate` flag,
+  no new code path. The shared-view header should not imply it is a precise birth chart.
+- 5-second-rule note: naming is optional and never blocks estimating — the "Estimate chart"
+  button still works with the name blank; the name input is a quiet convenience, not a gate.
+
+---
+## FIX 4 — Remove the Einstein example from the UI entirely
+
+The user-facing "Load example (Einstein)" affordance is removed from the live UI. Internal
+test/regression anchors that reference Einstein in `*.test.ts` / `*.spec.ts` files may stay;
+NOTHING Einstein-labeled may surface in the product.
+
+- Remove the **"Load example (Einstein)" button** and its `loadEinstein` handler from
+  `page.tsx`, and the now-orphaned `OR / Or enter your own` divider that only existed to
+  separate that button from the birth form. The PRECISE mode then leads directly with the
+  `BirthForm`.
+- Remove every other user-visible Einstein reference: the empty-state copy "...or load the
+  Einstein example" (replace with neutral copy, e.g. "Enter your birth data to see your
+  explained chart"), and any Einstein mention in hero/subtitle/placeholder/help text.
+- **Remove now-dead code, not just the import** (friction lesson: a half-removed feature is
+  one where only the import is deleted). If `EINSTEIN_BIRTH` (and any helper/data that ONLY
+  the UI example used) is no longer referenced by any runtime path, delete it from
+  `lib/chartCompute.ts` exports too — UNLESS a test still imports it, in which case leave the
+  export but ensure no UI surface renders it. The builder must grep for `Einstein` /
+  `EINSTEIN_BIRTH` across `app/**` and confirm zero UI references remain.
+- The Synastry "Load example pair" affordance is OUT OF SCOPE of this fix — do not touch the
+  compatibility example unless it surfaces the word "Einstein" in a user-facing button label
+  that this directive intends to remove. (If Elaine's intent is only the natal landing
+  example, leave the synastry seed; see OPEN QUESTION.)
+
+---
+## 5-second check (landing, post-change)
+
+- **Headline** (unchanged): "Your birth chart, explained in plain English."
+- **Subtitle** (drop the "or load an example" clause): "Free, no signup — type your birth
+  date, time, and place." Or, if PRECISE/BIG 3 are equally first-class now, name both modes.
+- **Primary action:** PRECISE mode shows the birth-info form directly (date pre-focused), no
+  Einstein button above it; BIG 3 is the quiet second tab.
+- The cold-visitor "see the payoff before typing" guarantee previously rested on Einstein —
+  with it removed, the empty state must still tell the user exactly what to do (neutral
+  prompt) and the BIG 3 mode (sign dropdowns) is the lowest-effort first chart.
+
+---
+## SSENSE conformance (all four fixes)
+
+Every changed surface stays austere editorial monochrome: uppercase 11px tracked `.ds-label`
+micro-labels, 1px `--grey-200` hairline borders, square corners, no shadow/color/gradient,
+existing `.ds-field`/`.ds-input`/`.ds-card`/`.ds-btn` classes. The new NAME field and any
+padding normalization must match the precise form's controls exactly.

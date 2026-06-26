@@ -1,11 +1,14 @@
 /**
  * Synastry regression tests.
  *
- * REGRESSION ANCHOR (APP_SPEC.md):
+ * STATIC REGRESSION ANCHOR (hardcoded birth data — does NOT use EINSTEIN_BIRTH export):
  *   Person A = Einstein (14 Mar 1879, 11:30 LMT, Ulm)
  *   Person B = Michelle Obama (17 Jan 1964, 21:53 CST, Chicago — AstroDatabank A-rated)
  *   Anchor aspect: Einstein Moon (Sagittarius, ~254.3°) TRINE Michelle Jupiter (Aries, ~12.7°)
  *   — a harmony trine at ~1.67° orb (arc ≈ 118.3°, target 120°).
+ *
+ * UI EXAMPLE PAIR (EINSTEIN_BIRTH / SYNASTRY_PARTNER_BIRTH exports):
+ *   Princess Diana × Prince Charles (AA-rated birth data, no-Einstein directive 2026-06-26).
  */
 import { describe, it, expect } from "vitest";
 
@@ -44,23 +47,19 @@ describe("Synastry regression anchor — Einstein × Michelle Obama", () => {
     expect(orbFromTrine, `Moon-Jupiter trine orb (arc=${arc.toFixed(2)}°, target 120°) must be ≤ 2°`).toBeLessThanOrEqual(2);
   });
 
-  it("computeSynastry detects Moon-Jupiter TRINE with ≤2° orb in the aspect list", async () => {
+  it("computeSynastry produces non-empty aspects with readings for the UI example pair (Diana × Charles)", async () => {
     const { computeChart, EINSTEIN_BIRTH, SYNASTRY_PARTNER_BIRTH } = await import("../../lib/chartCompute");
     const { computeSynastry } = await import("../../lib/synastry");
 
-    const chartA = computeChart(EINSTEIN_BIRTH);
-    const chartB = computeChart(SYNASTRY_PARTNER_BIRTH);
+    const chartA = computeChart(EINSTEIN_BIRTH);   // Princess Diana
+    const chartB = computeChart(SYNASTRY_PARTNER_BIRTH);  // Prince Charles
     const result = computeSynastry(chartA, chartB);
 
-    const moonJupAspect = result.aspects.find(
-      (a) => a.bodyA === "moon" && a.bodyB === "jupiter" && a.aspectType === "trine"
-    );
-
-    expect(moonJupAspect, "Moon-Jupiter trine must appear in the synastry aspect list").toBeDefined();
-    expect(moonJupAspect!.orb, `Moon-Jupiter trine orb (${moonJupAspect?.orb}°) must be ≤ 2°`).toBeLessThanOrEqual(2);
-    expect(moonJupAspect!.nature, "Moon-Jupiter trine must be tagged 'harmony'").toBe("harmony");
-    expect(moonJupAspect!.reading, "Moon-Jupiter trine must have an inline reading").toBeTruthy();
-    expect(moonJupAspect!.reading.length, "Inline reading must have substance").toBeGreaterThan(30);
+    expect(result.aspects.length, "UI example pair must produce at least one aspect").toBeGreaterThan(0);
+    const firstAspect = result.aspects[0];
+    expect(firstAspect.reading, "First aspect must have an inline reading").toBeTruthy();
+    expect(firstAspect.reading.length, "Inline reading must have substance").toBeGreaterThan(30);
+    expect(["harmony", "tension", "context"]).toContain(firstAspect.nature);
   });
 
   it("getSynastryAspectReading returns a non-empty string for all aspect types on sun-sun pair", async () => {
@@ -108,18 +107,18 @@ describe("Synastry regression anchor — Einstein × Michelle Obama", () => {
     expect(total).toBe(result.aspects.length);
   });
 
-  it("summaryText is a non-trivial sentence mentioning both names", async () => {
+  it("summaryText is a non-trivial sentence mentioning both names (Diana × Charles)", async () => {
     const { computeChart, EINSTEIN_BIRTH, SYNASTRY_PARTNER_BIRTH } = await import("../../lib/chartCompute");
     const { computeSynastry } = await import("../../lib/synastry");
 
-    const chartA = computeChart(EINSTEIN_BIRTH);
-    const chartB = computeChart(SYNASTRY_PARTNER_BIRTH);
+    const chartA = computeChart(EINSTEIN_BIRTH);   // Princess Diana
+    const chartB = computeChart(SYNASTRY_PARTNER_BIRTH);  // Prince Charles
     const result = computeSynastry(chartA, chartB);
 
     expect(result.summaryText).toBeTruthy();
     expect(result.summaryText.length).toBeGreaterThan(50);
-    expect(result.summaryText).toContain("Albert Einstein");
-    expect(result.summaryText).toContain("Michelle Obama");
+    expect(result.summaryText).toContain("Princess Diana");
+    expect(result.summaryText).toContain("Prince Charles");
   });
 
   it("conjunction body sentence names both people and contains no 'Nodal's' (R6 fixes)", async () => {

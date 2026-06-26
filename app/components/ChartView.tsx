@@ -76,7 +76,7 @@ export default function ChartView({
             role="status"
             style={{
               border: "1px solid var(--grey-200)",
-              padding: "var(--sp-3) var(--sp-4)",
+              padding: "var(--sp-6)",
               marginBottom: "var(--sp-4)",
               background: "var(--paper)",
             }}
@@ -190,7 +190,7 @@ export default function ChartView({
             data-testid="open-synastry-btn"
             onClick={onOpenSynastry}
             style={{
-              padding: "var(--sp-5)",
+              padding: "var(--sp-6)",
               border: "1px solid var(--ink)",
               display: "flex",
               alignItems: "center",
@@ -236,8 +236,7 @@ export default function ChartView({
 
       {/* Privacy copy */}
       <p style={{ fontSize: "var(--fs-sm)", color: "var(--grey-600)", marginBottom: "var(--sp-4)" }}>
-        Your chart is computed on your device — nothing is sent anywhere.
-        {!isSharedView && " Creating a share link sends this chart's birth info to our server so the link works."}
+        Chart computation happens in your browser. Birth data is only sent to our server if you choose to create a share link — nothing is uploaded otherwise, and there is no account or tracking.
       </p>
 
       {/* Plain-English reading — always visible, no caret needed */}

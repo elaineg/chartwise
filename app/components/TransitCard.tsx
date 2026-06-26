@@ -67,8 +67,8 @@ function getTransitNote(
   if (natalSelf && natalSelf.sign === planet.sign) {
     const returnTemplates = [
       `${planet.label} has come back to ${planet.signLabel}, where it sat at your birth — a natural reset point for everything ${planet.label} governs.`,
-      `${planet.label} is back in ${planet.signLabel}, its natal position in your chart. This cycle invites you to revisit and renew ${planet.label.toLowerCase()}'s themes with fresh eyes.`,
-      `${planet.label} completes a cycle in ${planet.signLabel} — the same sign it occupied when you were born. Reflect on how far you've come with ${planet.label.toLowerCase()}'s energy.`,
+      `${planet.label} is back in ${planet.signLabel}, its natal position in your chart. This cycle invites you to revisit and renew ${planet.label}'s themes with fresh eyes.`,
+      `${planet.label} completes a cycle in ${planet.signLabel} — the same sign it occupied when you were born. Reflect on how far you've come with ${planet.label}'s energy.`,
     ];
     return returnTemplates[noteIndex % returnTemplates.length];
   }

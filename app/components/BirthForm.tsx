@@ -107,7 +107,7 @@ export default function BirthForm({ onCompute, isComputing = false }: BirthFormP
           data-testid="name-input"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. Albert Einstein"
+          placeholder="e.g. My chart"
           className="ds-input"
         />
       </div>
