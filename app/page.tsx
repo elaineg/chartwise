@@ -122,21 +122,7 @@ export default function Home() {
 
   return (
     <main style={{ minHeight: "100vh", background: "var(--paper)", color: "var(--ink)" }}>
-      <div style={{ maxWidth: "var(--ds-maxw)", margin: "0 auto", padding: "0 var(--ds-page-x)" }}>
-
-        {/* Hero */}
-        <header style={{ paddingTop: "var(--sp-24)", paddingBottom: "var(--sp-8)" }}>
-          <span className="ds-eyebrow">Natal chart · Plain English · No signup</span>
-          <h1 className="ds-display" style={{ marginTop: "var(--sp-2)", marginBottom: "var(--sp-3)" }}>
-            Your birth chart, explained in plain English.
-          </h1>
-          <p style={{ fontSize: "var(--fs-body)", color: "var(--grey-600)", maxWidth: "480px", margin: 0 }}>
-            Free, no signup — type your birth date, time, and place.
-          </p>
-        </header>
-
-        {/* Full-bleed hairline below hero */}
-        <hr className="ds-rule" style={{ margin: "0 0 var(--sp-8) 0" }} />
+      <div style={{ maxWidth: "var(--ds-maxw)", margin: "0 auto", padding: "var(--sp-8) var(--ds-page-x) 0" }}>
 
         {/* Main layout: form left, chart right on desktop */}
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] xl:grid-cols-[340px_1fr]" style={{ gap: "var(--sp-8)" }}>

@@ -2191,3 +2191,79 @@ test("FIX-4: load-einstein-btn is absent from rendered UI", async ({ page }) => 
   // The word "Einstein" should not appear in rendered text on the homepage
   expect(bodyText).not.toContain("Einstein");
 });
+
+// ── HERO-ABSENCE TESTS (added 2026-06-28) ───────────────────────────────────
+// Spec success check: "The page opens DIRECTLY into the birth form with NO hero
+// headline, NO eyebrow micro-label, and NO subtitle."
+// The three exact strings that must be absent from the rendered body:
+//   (a) "Natal chart · Plain English · No signup"
+//   (b) "Your birth chart, explained in plain English."
+//   (c) "Free, no signup — type your birth date, time, and place."
+
+test("HERO-ABSENT: eyebrow micro-label is not rendered in the page body", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  const bodyText = await page.locator("body").innerText();
+  expect(bodyText).not.toContain("Natal chart · Plain English · No signup");
+});
+
+test("HERO-ABSENT: hero headline is not rendered in the page body", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  const bodyText = await page.locator("body").innerText();
+  expect(bodyText).not.toContain("Your birth chart, explained in plain English.");
+});
+
+test("HERO-ABSENT: hero subtitle is not rendered in the page body", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  const bodyText = await page.locator("body").innerText();
+  expect(bodyText).not.toContain("Free, no signup — type your birth date, time, and place.");
+});
+
+test("HERO-ABSENT: entry-mode-toggle (top of birth form) is present near top of page with no large gap above it", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  const toggle = page.getByTestId("entry-mode-toggle");
+  await expect(toggle).toBeVisible();
+  // The toggle should be near the top of the page (y < 200px at 1280-wide viewport).
+  // A large hero block above it would push it far down the page.
+  const box = await toggle.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box!.y).toBeLessThan(300);
+});
+
+test("HERO-ABSENT: birth form first interactive element is visible near top", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  // The date input is the first required field in precise mode
+  const dateInput = page.getByTestId("date-input");
+  await expect(dateInput).toBeVisible();
+  const box = await dateInput.boundingBox();
+  expect(box).not.toBeNull();
+  // Must appear within first ~400px — no large hero block pushing it down
+  expect(box!.y).toBeLessThan(400);
+});
+
+test("HERO-ABSENT: chart can still be generated (regression — core flow 1 unaffected)", async ({ browser }) => {
+  const ctx = await browser.newContext();
+  const EINSTEIN_BIRTH = {
+    name: "Albert Einstein",
+    year: 1879, month: 3, day: 14,
+    hour: 11, minute: 30,
+    latitude: 48.4011, longitude: 9.9876,
+    placeName: "Ulm, Germany",
+    hasBirthTime: true,
+  };
+  const page = await ctx.newPage();
+  await page.addInitScript((data) => {
+    window.localStorage.setItem("chartwise:people", JSON.stringify([data]));
+  }, EINSTEIN_BIRTH);
+  await page.goto("/");
+  await expect(page.getByText("Albert Einstein")).toBeVisible({ timeout: 8000 });
+  await page.getByText("Albert Einstein").first().click();
+  // Chart must still render fully with no hero block present
+  await expect(page.getByTestId("houses-table")).toBeVisible({ timeout: 12000 });
+  await expect(page.getByTestId("house-row-10").first()).toBeVisible();
+  await ctx.close();
+});

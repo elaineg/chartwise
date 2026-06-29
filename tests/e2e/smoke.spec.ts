@@ -29,11 +29,9 @@ test("landing page loads and states its purpose", async ({ page }) => {
   page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
   const resp = await page.goto("/");
   expect(resp?.status()).toBe(200);
-  await expect(page.locator("h1").first()).toBeVisible();
-  // Check key headline text per UX brief
-  await expect(
-    page.getByText("Your birth chart, explained in plain English")
-  ).toBeVisible();
+  // Hero intro text removed 2026-06-28 — page opens directly into birth form.
+  // Assert the entry-mode toggle (top of birth form) is visible with no hero gap.
+  await expect(page.getByTestId("entry-mode-toggle")).toBeVisible();
   // Filter out React dev warnings that only appear in dev mode
   const realErrors = errors.filter(
     (e) =>
